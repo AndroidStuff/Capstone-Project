@@ -10,6 +10,7 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,8 +38,11 @@ public class BikersEndpoint {
             httpMethod = ApiMethod.HttpMethod.GET)
     public BikersResponse getAll() {
         List<Biker> bikers = new ArrayList<>();
-        Location location = new Location();
+        Location location = new Location(new BigDecimal("47.6"), new BigDecimal("122.33"));
         bikers.add(new Biker("Clemente", "morales.fernandez.clemente@gmail.com", "7347896184", location, 35));
+
+        Location location2 = new Location(new BigDecimal("47.6"), new BigDecimal("122.33"));
+        bikers.add(new Biker("William", "morales.fernandez.williams@gmail.com", "73478145184", location2, 35));
         return new BikersResponse(bikers);
     }
 }
