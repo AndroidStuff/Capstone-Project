@@ -10,18 +10,12 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletException;
-
+import mx.com.labuena.services.dao.BikerDao;
+import mx.com.labuena.services.dao.MysqlBikerDao;
 import mx.com.labuena.services.responses.BikersResponse;
 import mx.com.labuena.services.tos.Biker;
-import mx.com.labuena.services.tos.Location;
 
 @Api(
         name = "bikers",
@@ -33,6 +27,8 @@ import mx.com.labuena.services.tos.Location;
         )
 )
 public class BikersEndpoint {
+    private BikerDao bikerDao;
+
     @ApiMethod(name = "save",
             httpMethod = ApiMethod.HttpMethod.POST)
     public void save(Biker biker) {
@@ -42,59 +38,8 @@ public class BikersEndpoint {
     @ApiMethod(name = "getAll",
             httpMethod = ApiMethod.HttpMethod.GET)
     public BikersResponse getAll() {
-        List<Biker> bikers = getBikers();
+        bikerDao = new MysqlBikerDao();
+        List<Biker> bikers = bikerDao.getAll();
         return new BikersResponse(bikers);
     }
-
-
-    private List<Biker> getBikers() {
-        List<Biker> bikers = new ArrayList<>();
-        Connection conn = null;
-
-        try {
-            String url;
-            if (System.getProperty("com.google.appengine.runtime.version").startsWith("Google App Engine/")) {
-                url = System.getProperty("ae-cloudsql.cloudsql-database-url");
-                try {
-                    Class.forName("com.mysql.jdbc.GoogleDriver");
-                } catch (ClassNotFoundException exception) {
-                    throw new ServletException("Error loading Google JDBC Driver", exception);
-                }
-            } else {
-                url = System.getProperty("ae-cloudsql.local-database-url");
-            }
-
-            String bikersQuery = "select name, email, phone, stock from la_buena_db.biker";
-
-
-            conn = DriverManager.getConnection(url);
-
-
-
-            ResultSet rs = conn.prepareStatement(bikersQuery).executeQuery();
-            while (rs.next()) {
-                String email = rs.getString("email");
-                String phone = rs.getString("phone");
-                String name = rs.getString("name");
-                int stock = rs.getInt("stock");
-
-                Location lastLocation = new Location();
-                bikers.add(new Biker(name, email, phone, lastLocation, stock));
-            }
-            rs.close();
-            conn.close();
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        }
-        return bikers;
-    }
-
 }
