@@ -9,17 +9,16 @@ public class Biker {
     private String name;
     private String email;
     private String phone;
-    private Location lastLocation;
+    private BikerLocation bikerLocation;
     private int lastStock;
 
     public Biker() {
     }
 
-    public Biker(String name, String email, String phone, Location lastLocation, int lastStock) {
+    public Biker(String name, String email, String phone, int lastStock) {
         this.name = name;
         this.email = email;
         this.phone = phone;
-        this.lastLocation = lastLocation;
         this.lastStock = lastStock;
     }
 
@@ -47,14 +46,6 @@ public class Biker {
         this.phone = phone;
     }
 
-    public Location getLastLocation() {
-        return lastLocation;
-    }
-
-    public void setLastLocation(Location lastLocation) {
-        this.lastLocation = lastLocation;
-    }
-
     public int getLastStock() {
         return lastStock;
     }
@@ -69,5 +60,13 @@ public class Biker {
 
     public void setBranchId(int branchId) {
         this.branchId = branchId;
+    }
+
+    public BikerLocation getBikerLocation() {
+        return bikerLocation;
+    }
+
+    public void setBikerLocation(BikerLocation bikerLocation) {
+        this.bikerLocation = bikerLocation;
     }
 }

@@ -37,6 +37,12 @@ public class BikersEndpoint {
         bikerDao.save(biker);
     }
 
+    @ApiMethod(name = "location",
+            httpMethod = ApiMethod.HttpMethod.POST)
+    public void saveLocation(Biker biker) throws InternalServerErrorException {
+        bikerDao.saveLocation(biker);
+    }
+
     @ApiMethod(name = "getAll",
             httpMethod = ApiMethod.HttpMethod.GET)
     public BikersResponse getAll() throws InternalServerErrorException {
