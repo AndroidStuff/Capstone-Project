@@ -46,7 +46,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `la_buena_db`.`biker` (
   `id_biker` INT NOT NULL AUTO_INCREMENT,
-  `email` VARCHAR(320) NULL,
+  `email` VARCHAR(320) NOT NULL,
+  `name` VARCHAR(250) NOT NULL,
   `stock` TINYINT NULL DEFAULT 0,
   `phone` VARCHAR(15) NOT NULL,
   `id_branch` INT NOT NULL,

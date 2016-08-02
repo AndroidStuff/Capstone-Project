@@ -64,26 +64,27 @@ public class BikersEndpoint {
                 url = System.getProperty("ae-cloudsql.local-database-url");
             }
 
-            String bikersQuery = "select email, phone, stock from biker";
+            String bikersQuery = "select name, email, phone, stock from la_buena_db.biker";
 
 
             conn = DriverManager.getConnection(url);
+
+
+
             ResultSet rs = conn.prepareStatement(bikersQuery).executeQuery();
             while (rs.next()) {
                 String email = rs.getString("email");
                 String phone = rs.getString("phone");
+                String name = rs.getString("name");
                 int stock = rs.getInt("stock");
 
                 Location lastLocation = new Location();
-                bikers.add(new Biker("Clemente", email, phone, lastLocation, stock));
+                bikers.add(new Biker(name, email, phone, lastLocation, stock));
             }
             rs.close();
             conn.close();
         } catch (ServletException e) {
             e.printStackTrace();
-            Biker biker = new Biker();
-            biker.setName(e.getMessage());
-            bikers.add(biker);
         } catch (SQLException e) {
             if (conn != null) {
                 try {
@@ -92,9 +93,6 @@ public class BikersEndpoint {
                     e1.printStackTrace();
                 }
             }
-            Biker biker = new Biker();
-            biker.setName(e.getMessage());
-            bikers.add(biker);
         }
         return bikers;
     }
