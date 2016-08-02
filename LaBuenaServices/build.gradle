@@ -27,6 +27,8 @@ dependencies {
     compile 'com.google.appengine:appengine-endpoints-deps:1.9.28'
     compile 'javax.servlet:servlet-api:2.5'
     compile 'mysql:mysql-connector-java:5.1.38'
+    compile group: 'com.google.inject', name: 'guice', version: '4.1.0'
+    compile group: 'com.google.inject.extensions', name: 'guice-servlet', version: '4.1.0'
 }
 
 appengine {

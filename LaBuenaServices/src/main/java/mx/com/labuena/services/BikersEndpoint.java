@@ -10,11 +10,11 @@ import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.inject.Inject;
 
 import java.util.List;
 
 import mx.com.labuena.services.dao.BikerDao;
-import mx.com.labuena.services.dao.MysqlBikerDao;
 import mx.com.labuena.services.responses.BikersResponse;
 import mx.com.labuena.services.tos.Biker;
 
@@ -28,6 +28,7 @@ import mx.com.labuena.services.tos.Biker;
         )
 )
 public class BikersEndpoint {
+    @Inject
     private BikerDao bikerDao;
 
     @ApiMethod(name = "save",
@@ -39,7 +40,6 @@ public class BikersEndpoint {
     @ApiMethod(name = "getAll",
             httpMethod = ApiMethod.HttpMethod.GET)
     public BikersResponse getAll() throws InternalServerErrorException {
-        bikerDao = new MysqlBikerDao();
         List<Biker> bikers = bikerDao.getAll();
         return new BikersResponse(bikers);
     }
