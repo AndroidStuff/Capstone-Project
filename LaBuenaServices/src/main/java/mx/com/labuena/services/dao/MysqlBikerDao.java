@@ -1,10 +1,14 @@
 package mx.com.labuena.services.dao;
 
+import com.google.api.server.spi.response.InternalServerErrorException;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import mx.com.labuena.services.tos.Biker;
 import mx.com.labuena.services.tos.Location;
@@ -14,8 +18,10 @@ import mx.com.labuena.services.tos.Location;
  */
 
 public class MysqlBikerDao extends BaseDao implements BikerDao {
+    private static final Logger log = Logger.getLogger(MysqlBikerDao.class.getName());
+
     @Override
-    public List<Biker> getAll() {
+    public List<Biker> getAll() throws InternalServerErrorException {
         List<Biker> bikers = new ArrayList<>();
         Connection conn = openConnection();
 
@@ -34,9 +40,11 @@ public class MysqlBikerDao extends BaseDao implements BikerDao {
             }
             rs.close();
             closeConnection(conn);
+            return bikers;
         } catch (SQLException e) {
             closeConnection(conn);
+            log.log(Level.SEVERE, e.getMessage(), e);
+            throw new InternalServerErrorException(e);
         }
-        return bikers;
     }
 }

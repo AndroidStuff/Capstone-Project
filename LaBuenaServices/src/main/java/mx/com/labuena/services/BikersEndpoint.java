@@ -9,6 +9,7 @@ package mx.com.labuena.services;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
+import com.google.api.server.spi.response.InternalServerErrorException;
 
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class BikersEndpoint {
 
     @ApiMethod(name = "getAll",
             httpMethod = ApiMethod.HttpMethod.GET)
-    public BikersResponse getAll() {
+    public BikersResponse getAll() throws InternalServerErrorException {
         bikerDao = new MysqlBikerDao();
         List<Biker> bikers = bikerDao.getAll();
         return new BikersResponse(bikers);

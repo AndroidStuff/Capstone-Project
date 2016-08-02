@@ -1,5 +1,7 @@
 package mx.com.labuena.services.dao;
 
+import com.google.api.server.spi.response.InternalServerErrorException;
+
 import java.util.List;
 
 import mx.com.labuena.services.tos.Biker;
@@ -9,5 +11,5 @@ import mx.com.labuena.services.tos.Biker;
  */
 
 public interface BikerDao {
-    List<Biker> getAll();
+    List<Biker> getAll() throws InternalServerErrorException;
 }
