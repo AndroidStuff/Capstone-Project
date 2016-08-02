@@ -33,8 +33,8 @@ public class BikersEndpoint {
 
     @ApiMethod(name = "save",
             httpMethod = ApiMethod.HttpMethod.POST)
-    public void save(Biker biker) {
-
+    public void save(Biker biker) throws InternalServerErrorException {
+        bikerDao.save(biker);
     }
 
     @ApiMethod(name = "getAll",

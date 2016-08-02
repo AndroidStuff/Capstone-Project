@@ -12,4 +12,5 @@ import mx.com.labuena.services.tos.Biker;
 
 public interface BikerDao {
     List<Biker> getAll() throws InternalServerErrorException;
+    void save(Biker biker) throws InternalServerErrorException;
 }

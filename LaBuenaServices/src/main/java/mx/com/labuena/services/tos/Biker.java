@@ -5,6 +5,7 @@ package mx.com.labuena.services.tos;
  */
 
 public class Biker {
+    private int branchId;
     private String name;
     private String email;
     private String phone;
@@ -60,5 +61,13 @@ public class Biker {
 
     public void setLastStock(int lastStock) {
         this.lastStock = lastStock;
+    }
+
+    public int getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(int branchId) {
+        this.branchId = branchId;
     }
 }

@@ -3,6 +3,7 @@ package mx.com.labuena.services.dao;
 import com.google.api.server.spi.response.InternalServerErrorException;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -43,6 +44,42 @@ public class MysqlBikerDao extends BaseDao implements BikerDao {
             return bikers;
         } catch (SQLException e) {
             closeConnection(conn);
+            log.log(Level.SEVERE, e.getMessage(), e);
+            throw new InternalServerErrorException(e);
+        }
+    }
+
+    @Override
+    public void save(Biker biker) throws InternalServerErrorException {
+        Connection conn = openConnection();
+        try {
+            try {
+                String branchesQuery = "select id_branch from la_buena_db.branch";
+                ResultSet rs = conn.prepareStatement(branchesQuery).executeQuery();
+                int branchId = 0;
+                while (rs.next()) {
+                    branchId = rs.getInt("id_branch");
+                    break;
+                }
+
+                String saveBikerQuery = "insert into la_buena_db.biker values (0, ?, ?, 0, ?, ?);";
+                conn.setAutoCommit(false);
+                PreparedStatement preparedStatement = conn.prepareStatement(saveBikerQuery);
+                preparedStatement.setString(1, biker.getEmail());
+                preparedStatement.setString(2, biker.getName());
+                preparedStatement.setString(3, biker.getPhone());
+                preparedStatement.setInt(4, branchId);
+                preparedStatement.execute();
+                conn.commit();
+            } catch (SQLException e) {
+                conn.rollback();
+                log.log(Level.SEVERE, e.getMessage(), e);
+                throw new InternalServerErrorException(e);
+            } finally {
+                conn.setAutoCommit(true);
+                closeConnection(conn);
+            }
+        } catch (SQLException e) {
             log.log(Level.SEVERE, e.getMessage(), e);
             throw new InternalServerErrorException(e);
         }
