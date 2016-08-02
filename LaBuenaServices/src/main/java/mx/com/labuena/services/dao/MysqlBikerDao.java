@@ -51,33 +51,34 @@ public class MysqlBikerDao extends BaseDao implements BikerDao {
 
     @Override
     public void save(Biker biker) throws InternalServerErrorException {
-        Connection conn = openConnection();
+        Connection connection = openConnection();
         try {
             try {
                 String branchesQuery = "select id_branch from la_buena_db.branch";
-                ResultSet rs = conn.prepareStatement(branchesQuery).executeQuery();
+                ResultSet resultSet = connection.prepareStatement(branchesQuery).executeQuery();
                 int branchId = 0;
-                while (rs.next()) {
-                    branchId = rs.getInt("id_branch");
+                while (resultSet.next()) {
+                    branchId = resultSet.getInt("id_branch");
                     break;
                 }
+                resultSet.close();
 
                 String saveBikerQuery = "insert into la_buena_db.biker values (0, ?, ?, 0, ?, ?);";
-                conn.setAutoCommit(false);
-                PreparedStatement preparedStatement = conn.prepareStatement(saveBikerQuery);
+                connection.setAutoCommit(false);
+                PreparedStatement preparedStatement = connection.prepareStatement(saveBikerQuery);
                 preparedStatement.setString(1, biker.getEmail());
                 preparedStatement.setString(2, biker.getName());
                 preparedStatement.setString(3, biker.getPhone());
                 preparedStatement.setInt(4, branchId);
                 preparedStatement.execute();
-                conn.commit();
+                connection.commit();
             } catch (SQLException e) {
-                conn.rollback();
+                connection.rollback();
                 log.log(Level.SEVERE, e.getMessage(), e);
                 throw new InternalServerErrorException(e);
             } finally {
-                conn.setAutoCommit(true);
-                closeConnection(conn);
+                connection.setAutoCommit(true);
+                closeConnection(connection);
             }
         } catch (SQLException e) {
             log.log(Level.SEVERE, e.getMessage(), e);

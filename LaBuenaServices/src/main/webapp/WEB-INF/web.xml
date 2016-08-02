@@ -22,7 +22,7 @@
         <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
         <init-param>
             <param-name>services</param-name>
-            <param-value>mx.com.labuena.services.BikersEndpoint</param-value>
+            <param-value>mx.com.labuena.services.resources.BikersEndpoint</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>

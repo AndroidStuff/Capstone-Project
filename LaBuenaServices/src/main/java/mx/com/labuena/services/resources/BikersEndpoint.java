@@ -4,7 +4,7 @@
    https://github.com/GoogleCloudPlatform/gradle-appengine-templates/tree/master/HelloEndpoints
 */
 
-package mx.com.labuena.services;
+package mx.com.labuena.services.resources;
 
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
