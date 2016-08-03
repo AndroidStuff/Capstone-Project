@@ -51,7 +51,7 @@ public class MysqlBranchDao extends BaseDao implements BranchDao {
         try {
             try {
 
-                String saveBranchQuery = "insert into la_buena_db.branch values (0, ?, ?);";
+                String saveBranchQuery = "insert into la_buena_db.branch (id_branch, email, name) values (0, ?, ?);";
                 conn.setAutoCommit(false);
                 PreparedStatement preparedStatement = conn.prepareStatement(saveBranchQuery);
                 preparedStatement.setString(1, branch.getEmail());
