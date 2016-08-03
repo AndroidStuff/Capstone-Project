@@ -1,6 +1,7 @@
 package mx.com.labuena.services.dao;
 
 import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.inject.Inject;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,6 +12,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.sql.DataSource;
+
 import mx.com.labuena.services.tos.Branch;
 
 /**
@@ -19,6 +22,11 @@ import mx.com.labuena.services.tos.Branch;
 
 public class MysqlBranchDao extends BaseDao implements BranchDao {
     private static final Logger log = Logger.getLogger(MysqlBranchDao.class.getName());
+
+    @Inject
+    public MysqlBranchDao(DataSource dataSource){
+        super(dataSource);
+    }
 
     @Override
     public List<Branch> getAll() throws InternalServerErrorException {

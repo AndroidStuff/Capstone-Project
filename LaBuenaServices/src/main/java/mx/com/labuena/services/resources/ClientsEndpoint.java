@@ -8,15 +8,16 @@ import com.google.inject.Inject;
 
 import java.util.List;
 
-import mx.com.labuena.services.dao.BranchDao;
-import mx.com.labuena.services.responses.BranchesResponse;
-import mx.com.labuena.services.tos.Branch;
+import mx.com.labuena.services.dao.ClientDao;
+import mx.com.labuena.services.responses.ClientsResponse;
+import mx.com.labuena.services.tos.Client;
+
 
 /**
- * Created by moracl6 on 8/2/2016.
+ * Created by moracl6 on 8/3/2016.
  */
 @Api(
-        name = "branches",
+        name = "clients",
         version = "v2",
         namespace = @ApiNamespace(
                 ownerDomain = "services.labuena.com.mx",
@@ -24,20 +25,20 @@ import mx.com.labuena.services.tos.Branch;
                 packagePath = ""
         )
 )
-public class BranchesEndpoint {
+public class ClientsEndpoint {
     @Inject
-    private BranchDao branchDao;
+    private ClientDao clientDao;
 
     @ApiMethod(name = "save",
             httpMethod = ApiMethod.HttpMethod.POST)
-    public void save(Branch branch) throws InternalServerErrorException {
-        branchDao.save(branch);
+    public void save(Client client) throws InternalServerErrorException {
+        clientDao.save(client);
     }
 
     @ApiMethod(name = "getAll",
             httpMethod = ApiMethod.HttpMethod.GET)
-    public BranchesResponse getAll() throws InternalServerErrorException {
-        List<Branch> branches = branchDao.getAll();
-        return new BranchesResponse(branches);
+    public ClientsResponse getAll() throws InternalServerErrorException {
+        List<Client> clients = clientDao.getAll();
+        return new ClientsResponse(clients);
     }
 }

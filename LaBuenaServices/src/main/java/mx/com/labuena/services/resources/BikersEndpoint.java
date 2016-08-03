@@ -20,7 +20,7 @@ import mx.com.labuena.services.tos.Biker;
 
 @Api(
         name = "bikers",
-        version = "v1",
+        version = "v2",
         namespace = @ApiNamespace(
                 ownerDomain = "services.labuena.com.mx",
                 ownerName = "services.labuena.com.mx",

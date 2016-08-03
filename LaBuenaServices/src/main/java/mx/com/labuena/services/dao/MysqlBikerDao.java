@@ -1,6 +1,7 @@
 package mx.com.labuena.services.dao;
 
 import com.google.api.server.spi.response.InternalServerErrorException;
+import com.google.inject.Inject;
 import com.mysql.jdbc.Statement;
 
 import java.sql.Connection;
@@ -11,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.sql.DataSource;
 
 import mx.com.labuena.services.tos.Biker;
 import mx.com.labuena.services.tos.BikerLocation;
@@ -23,6 +26,11 @@ import mx.com.labuena.services.utils.DateExtensor;
 
 public class MysqlBikerDao extends BaseDao implements BikerDao {
     private static final Logger log = Logger.getLogger(MysqlBikerDao.class.getName());
+
+    @Inject
+    public MysqlBikerDao(DataSource dataSource) {
+        super(dataSource);
+    }
 
     @Override
     public List<Biker> getAll() throws InternalServerErrorException {
