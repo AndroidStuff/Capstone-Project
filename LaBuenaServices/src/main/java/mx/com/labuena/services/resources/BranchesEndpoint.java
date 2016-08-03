@@ -6,7 +6,9 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.inject.Inject;
 
+import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Logger;
 
 import mx.com.labuena.services.dao.BranchDao;
 import mx.com.labuena.services.responses.BranchesResponse;
@@ -25,6 +27,8 @@ import mx.com.labuena.services.tos.Branch;
         )
 )
 public class BranchesEndpoint {
+    private static final Logger log = Logger.getLogger(BranchesEndpoint.class.getName());
+
     @Inject
     private BranchDao branchDao;
 
@@ -36,7 +40,7 @@ public class BranchesEndpoint {
 
     @ApiMethod(name = "getAll",
             httpMethod = ApiMethod.HttpMethod.GET)
-    public BranchesResponse getAll() throws InternalServerErrorException {
+    public BranchesResponse getAll() throws InternalServerErrorException, SQLException {
         List<Branch> branches = branchDao.getAll();
         return new BranchesResponse(branches);
     }

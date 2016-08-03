@@ -15,27 +15,27 @@ import javax.sql.DataSource;
 
 public class BaseDao {
     private static final Logger log = Logger.getLogger(BaseDao.class.getName());
-    private final DataSource dataSource;
+
+    private DataSource dataSource;
 
     public BaseDao(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     protected Connection openConnection() throws InternalServerErrorException {
-        Connection conn = null;
         try {
             return dataSource.getConnection();
         } catch (SQLException e) {
-            closeConnection(conn);
-            log.log(Level.SEVERE, e.getMessage(), e);
-            throw new InternalServerErrorException(e);
+            e.printStackTrace();
         }
+
+        return null;
     }
 
-    protected void closeConnection(Connection conn) throws InternalServerErrorException {
-        if (conn != null) {
+    protected void closeConnection(Connection connection) throws InternalServerErrorException {
+        if (connection != null) {
             try {
-                conn.close();
+                connection.close();
             } catch (SQLException e) {
                 log.log(Level.SEVERE, e.getMessage(), e);
                 throw new InternalServerErrorException(e);

@@ -7,6 +7,7 @@ import java.util.Set;
 
 import mx.com.labuena.services.resources.BikersEndpoint;
 import mx.com.labuena.services.resources.BranchesEndpoint;
+import mx.com.labuena.services.resources.ClientsEndpoint;
 
 /**
  * Created by moracl6 on 8/2/2016.
@@ -19,6 +20,7 @@ public class LaBuenaEndpointModule extends GuiceSystemServiceServletModule {
         Set<Class<?>> serviceClasses = new HashSet<>();
         serviceClasses.add(BikersEndpoint.class);
         serviceClasses.add(BranchesEndpoint.class);
+        serviceClasses.add(ClientsEndpoint.class);
         this.serveGuiceSystemServiceServlet("/_ah/spi/*", serviceClasses);
     }
 }

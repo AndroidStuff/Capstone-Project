@@ -24,7 +24,7 @@ public class MysqlBranchDao extends BaseDao implements BranchDao {
     private static final Logger log = Logger.getLogger(MysqlBranchDao.class.getName());
 
     @Inject
-    public MysqlBranchDao(DataSource dataSource){
+    public MysqlBranchDao(DataSource dataSource) {
         super(dataSource);
     }
 
@@ -34,8 +34,8 @@ public class MysqlBranchDao extends BaseDao implements BranchDao {
         Connection conn = openConnection();
 
         try {
-            String bikersQuery = "select name, email from la_buena_db.branch";
-            ResultSet rs = conn.prepareStatement(bikersQuery).executeQuery();
+            String branchesQuery = "select name, email from la_buena_db.branch";
+            ResultSet rs = conn.prepareStatement(branchesQuery).executeQuery();
 
             while (rs.next()) {
                 String email = rs.getString("email");
