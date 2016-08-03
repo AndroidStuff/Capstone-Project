@@ -8,14 +8,15 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * Created by moracl6 on 8/3/2016.
  */
 
-public class MySqlDataSourceProvider implements Provider<Connection> {
-    private static final Logger log = Logger.getLogger(MySqlDataSourceProvider.class.getName());
+public class ConnectionProvider implements Provider<Connection> {
+    private static final Logger log = Logger.getLogger(ConnectionProvider.class.getName());
 
     private static final String URL_FORMAT ="%s?user=%&password=%";
     @Override
@@ -38,11 +39,11 @@ public class MySqlDataSourceProvider implements Provider<Connection> {
             return DriverManager.getConnection(url);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            log.log(Level.SEVERE, e.getMessage(), e);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            log.log(Level.SEVERE, e.getMessage(), e);
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.log(Level.SEVERE, e.getMessage(), e);
         }
 
         return null;

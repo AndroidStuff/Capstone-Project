@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.sql.DataSource;
-
 import mx.com.labuena.services.tos.Biker;
 import mx.com.labuena.services.tos.BikerLocation;
 import mx.com.labuena.services.tos.Location;
@@ -28,18 +26,17 @@ public class MysqlBikerDao extends BaseDao implements BikerDao {
     private static final Logger log = Logger.getLogger(MysqlBikerDao.class.getName());
 
     @Inject
-    public MysqlBikerDao(DataSource dataSource) {
-        super(dataSource);
+    public MysqlBikerDao(Connection connection) {
+        super(connection);
     }
 
     @Override
     public List<Biker> getAll() throws InternalServerErrorException {
         List<Biker> bikers = new ArrayList<>();
-        Connection conn = openConnection();
 
         try {
             String bikersQuery = "select name, email, phone, stock from la_buena_db.biker";
-            ResultSet rs = conn.prepareStatement(bikersQuery).executeQuery();
+            ResultSet rs = connection.prepareStatement(bikersQuery).executeQuery();
 
             while (rs.next()) {
                 String email = rs.getString("email");
@@ -49,10 +46,10 @@ public class MysqlBikerDao extends BaseDao implements BikerDao {
                 bikers.add(new Biker(name, email, phone, stock));
             }
             rs.close();
-            closeConnection(conn);
+            closeConnection(connection);
             return bikers;
         } catch (SQLException e) {
-            closeConnection(conn);
+            closeConnection(connection);
             log.log(Level.SEVERE, e.getMessage(), e);
             throw new InternalServerErrorException(e);
         }
@@ -60,7 +57,6 @@ public class MysqlBikerDao extends BaseDao implements BikerDao {
 
     @Override
     public void save(Biker biker) throws InternalServerErrorException {
-        Connection connection = openConnection();
         try {
             try {
                 String branchesQuery = "select id_branch from la_buena_db.branch";
@@ -97,7 +93,6 @@ public class MysqlBikerDao extends BaseDao implements BikerDao {
 
     @Override
     public void saveLocation(Biker biker) throws InternalServerErrorException {
-        Connection connection = openConnection();
         try {
             try {
                 BikerLocation bikerLocation = biker.getBikerLocation();

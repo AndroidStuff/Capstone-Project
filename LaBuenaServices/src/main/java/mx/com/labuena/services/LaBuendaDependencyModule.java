@@ -7,7 +7,7 @@ import java.sql.Connection;
 import mx.com.labuena.services.dao.BikerDao;
 import mx.com.labuena.services.dao.BranchDao;
 import mx.com.labuena.services.dao.ClientDao;
-import mx.com.labuena.services.dao.MySqlDataSourceProvider;
+import mx.com.labuena.services.dao.ConnectionProvider;
 import mx.com.labuena.services.dao.MysqlBikerDao;
 import mx.com.labuena.services.dao.MysqlBranchDao;
 import mx.com.labuena.services.dao.MysqlClientDao;
@@ -21,7 +21,7 @@ public class LaBuendaDependencyModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(Connection.class).toProvider(new MySqlDataSourceProvider());
+        bind(Connection.class).toProvider(new ConnectionProvider());
         bind(BikerDao.class).to(MysqlBikerDao.class);
         bind(BranchDao.class).to(MysqlBranchDao.class);
         bind(ClientDao.class).to(MysqlClientDao.class);

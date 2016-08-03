@@ -7,29 +7,16 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.sql.DataSource;
-
 /**
  * Created by moracl6 on 8/2/2016.
  */
 
 public class BaseDao {
     private static final Logger log = Logger.getLogger(BaseDao.class.getName());
+    protected final Connection connection;
 
-    private DataSource dataSource;
-
-    public BaseDao(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
-    protected Connection openConnection() throws InternalServerErrorException {
-        try {
-            return dataSource.getConnection();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return null;
+    public BaseDao(Connection connection) {
+        this.connection = connection;
     }
 
     protected void closeConnection(Connection connection) throws InternalServerErrorException {
