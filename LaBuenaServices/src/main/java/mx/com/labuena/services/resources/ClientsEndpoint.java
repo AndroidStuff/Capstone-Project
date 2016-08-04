@@ -14,11 +14,11 @@ import mx.com.labuena.services.messaging.Message;
 import mx.com.labuena.services.messaging.MessageNotifier;
 import mx.com.labuena.services.messaging.MessageWithSingleReceiver;
 import mx.com.labuena.services.responses.ClientsResponse;
-import mx.com.labuena.services.tos.BikeDriverSelector;
-import mx.com.labuena.services.tos.Biker;
-import mx.com.labuena.services.tos.Client;
-import mx.com.labuena.services.tos.Order;
-import mx.com.labuena.services.tos.OrderNotification;
+import mx.com.labuena.services.models.BikeDriverSelector;
+import mx.com.labuena.services.models.Biker;
+import mx.com.labuena.services.models.Client;
+import mx.com.labuena.services.models.Order;
+import mx.com.labuena.services.models.OrderNotification;
 
 
 /**

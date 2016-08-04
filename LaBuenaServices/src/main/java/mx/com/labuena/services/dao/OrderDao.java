@@ -2,7 +2,7 @@ package mx.com.labuena.services.dao;
 
 import com.google.api.server.spi.response.InternalServerErrorException;
 
-import mx.com.labuena.services.tos.Order;
+import mx.com.labuena.services.models.Order;
 
 /**
  * Created by moracl6 on 8/4/2016.

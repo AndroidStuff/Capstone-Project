@@ -4,7 +4,7 @@ import com.google.api.server.spi.response.InternalServerErrorException;
 
 import java.util.List;
 
-import mx.com.labuena.services.tos.Branch;
+import mx.com.labuena.services.models.Branch;
 
 /**
  * Created by moracl6 on 8/2/2016.

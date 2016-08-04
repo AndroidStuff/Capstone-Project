@@ -13,9 +13,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import mx.com.labuena.services.tos.Biker;
-import mx.com.labuena.services.tos.BikerLocation;
-import mx.com.labuena.services.tos.Coordinates;
+import mx.com.labuena.services.models.Biker;
+import mx.com.labuena.services.models.BikerLocation;
+import mx.com.labuena.services.models.Coordinates;
 import mx.com.labuena.services.utils.DateExtensor;
 
 /**

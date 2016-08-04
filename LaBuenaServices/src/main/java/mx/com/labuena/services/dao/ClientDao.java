@@ -4,7 +4,7 @@ import com.google.api.server.spi.response.InternalServerErrorException;
 
 import java.util.List;
 
-import mx.com.labuena.services.tos.Client;
+import mx.com.labuena.services.models.Client;
 
 /**
  * Created by moracl6 on 8/3/2016.

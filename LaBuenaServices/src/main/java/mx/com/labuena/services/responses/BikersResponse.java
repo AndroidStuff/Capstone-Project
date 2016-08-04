@@ -2,7 +2,7 @@ package mx.com.labuena.services.responses;
 
 import java.util.List;
 
-import mx.com.labuena.services.tos.Biker;
+import mx.com.labuena.services.models.Biker;
 
 /**
  * Created by moracl6 on 8/1/2016.

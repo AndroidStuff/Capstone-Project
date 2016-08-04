@@ -16,7 +16,7 @@ import java.util.List;
 
 import mx.com.labuena.services.dao.BikerDao;
 import mx.com.labuena.services.responses.BikersResponse;
-import mx.com.labuena.services.tos.Biker;
+import mx.com.labuena.services.models.Biker;
 
 @Api(
         name = "bikers",

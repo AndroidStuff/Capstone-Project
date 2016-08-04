@@ -10,7 +10,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.math.BigDecimal;
 
-import mx.com.labuena.services.tos.Coordinates;
+import mx.com.labuena.services.models.Coordinates;
 
 /**
  * Created by moracl6 on 8/3/2016.
