@@ -9,8 +9,10 @@ import com.google.inject.Inject;
 import java.util.List;
 
 import mx.com.labuena.services.dao.ClientDao;
+import mx.com.labuena.services.messaging.MessageNotifier;
 import mx.com.labuena.services.responses.ClientsResponse;
 import mx.com.labuena.services.tos.Client;
+import mx.com.labuena.services.tos.Order;
 
 
 /**
@@ -29,6 +31,9 @@ public class ClientsEndpoint {
     @Inject
     private ClientDao clientDao;
 
+    @Inject
+    private MessageNotifier messageNotifier;
+
     @ApiMethod(name = "save",
             httpMethod = ApiMethod.HttpMethod.POST)
     public void save(Client client) throws InternalServerErrorException {
@@ -40,5 +45,11 @@ public class ClientsEndpoint {
     public ClientsResponse getAll() throws InternalServerErrorException {
         List<Client> clients = clientDao.getAll();
         return new ClientsResponse(clients);
+    }
+
+    @ApiMethod(name = "requestTortillas",
+            httpMethod = ApiMethod.HttpMethod.POST)
+    public void requestTortillas(Order order) {
+
     }
 }

@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 
 import mx.com.labuena.services.tos.Biker;
 import mx.com.labuena.services.tos.BikerLocation;
-import mx.com.labuena.services.tos.Location;
+import mx.com.labuena.services.tos.Coordinates;
 import mx.com.labuena.services.utils.DateExtensor;
 
 /**
@@ -96,13 +96,13 @@ public class MysqlBikerDao extends BaseDao implements BikerDao {
         try {
             try {
                 BikerLocation bikerLocation = biker.getBikerLocation();
-                Location location = bikerLocation.getLocation();
+                Coordinates coordinates = bikerLocation.getCoordinates();
                 String saveLocationQuery = "insert into la_buena_db.location (id_location, latitude, longitude, created_at) values (0, ?, ?, ?);";
                 connection.setAutoCommit(false);
                 PreparedStatement preparedStatement = connection.prepareStatement(saveLocationQuery,
                         Statement.RETURN_GENERATED_KEYS);
-                preparedStatement.setBigDecimal(1, location.getLatitude());
-                preparedStatement.setBigDecimal(2, location.getLongitude());
+                preparedStatement.setBigDecimal(1, coordinates.getLatitude());
+                preparedStatement.setBigDecimal(2, coordinates.getLongitude());
                 preparedStatement.setDate(3, DateExtensor.toSqlDate(bikerLocation.getReadAt()));
 
                 int affectedRows = preparedStatement.executeUpdate();

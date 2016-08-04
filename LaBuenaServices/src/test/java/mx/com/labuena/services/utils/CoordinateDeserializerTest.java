@@ -9,7 +9,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.math.BigDecimal;
 
-import mx.com.labuena.services.tos.Location;
+import mx.com.labuena.services.tos.Coordinates;
 
 /**
  * Created by moracl6 on 8/3/2016.
@@ -21,15 +21,15 @@ public class CoordinateDeserializerTest {
     @Test
     public void when_json_includes_coordinates_deserializer_applies_coordinate_deserializer() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        Location locationFromJson =
-                mapper.readValue(DUMMY_JSON_COORDINATES, new TypeReference<Location>() {
+        Coordinates coordinatesFromJson =
+                mapper.readValue(DUMMY_JSON_COORDINATES, new TypeReference<Coordinates>() {
                 });
-        Location expectedLocation = buildExpectedLocation();
-        Assert.assertEquals(expectedLocation, locationFromJson);
+        Coordinates expectedCoordinates = buildExpectedLocation();
+        Assert.assertEquals(expectedCoordinates, coordinatesFromJson);
     }
 
-    private Location buildExpectedLocation() {
-        return new Location(new BigDecimal("60.06484").setScale(6, BigDecimal.ROUND_HALF_UP),
+    private Coordinates buildExpectedLocation() {
+        return new Coordinates(new BigDecimal("60.06484").setScale(6, BigDecimal.ROUND_HALF_UP),
                 new BigDecimal("-135.878906").setScale(6, BigDecimal.ROUND_HALF_UP));
     }
 }

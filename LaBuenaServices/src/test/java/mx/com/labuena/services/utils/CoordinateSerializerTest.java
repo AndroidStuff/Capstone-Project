@@ -10,7 +10,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.math.BigDecimal;
 
-import mx.com.labuena.services.tos.Location;
+import mx.com.labuena.services.tos.Coordinates;
 
 /**
  * Created by moracl6 on 8/3/2016.
@@ -22,16 +22,16 @@ public class CoordinateSerializerTest {
     @Test
     public void when_json_includes_coordinates_deserializer_applies_coordinate_deserializer() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        ObjectWriter writer = mapper.writerWithType(new TypeReference<Location>() {
+        ObjectWriter writer = mapper.writerWithType(new TypeReference<Coordinates>() {
         });
-        Location expectedLocation = buildExpectedLocation();
-        String jsonCoordinates = writer.writeValueAsString(expectedLocation);
+        Coordinates expectedCoordinates = buildExpectedLocation();
+        String jsonCoordinates = writer.writeValueAsString(expectedCoordinates);
 
         Assert.assertEquals(DUMMY_JSON_COORDINATES, jsonCoordinates);
     }
 
-    private Location buildExpectedLocation() {
-        return new Location(new BigDecimal("60.064840").setScale(6, BigDecimal.ROUND_HALF_UP),
+    private Coordinates buildExpectedLocation() {
+        return new Coordinates(new BigDecimal("60.064840").setScale(6, BigDecimal.ROUND_HALF_UP),
                 new BigDecimal("-135.878906").setScale(6, BigDecimal.ROUND_HALF_UP));
     }
 }

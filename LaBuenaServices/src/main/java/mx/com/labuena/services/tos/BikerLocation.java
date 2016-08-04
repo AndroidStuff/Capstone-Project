@@ -8,15 +8,15 @@ import java.util.Date;
 
 public class BikerLocation {
     private Date readAt;
-    private Location location;
+    private Coordinates coordinates;
 
     public BikerLocation() {
 
     }
 
-    public BikerLocation(Date readAt, Location location) {
+    public BikerLocation(Date readAt, Coordinates coordinates) {
         this.readAt = readAt;
-        this.location = location;
+        this.coordinates = coordinates;
     }
 
     public Date getReadAt() {
@@ -27,11 +27,11 @@ public class BikerLocation {
         this.readAt = readAt;
     }
 
-    public Location getLocation() {
-        return location;
+    public Coordinates getCoordinates() {
+        return coordinates;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
     }
 }

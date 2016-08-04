@@ -5,4 +5,5 @@ package mx.com.labuena.services.tos;
  */
 
 public class Order {
+
 }

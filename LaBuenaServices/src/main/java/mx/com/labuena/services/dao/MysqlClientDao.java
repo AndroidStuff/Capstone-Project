@@ -15,7 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import mx.com.labuena.services.tos.Client;
-import mx.com.labuena.services.tos.Location;
+import mx.com.labuena.services.tos.Coordinates;
 
 /**
  * Created by moracl6 on 8/3/2016.
@@ -46,7 +46,7 @@ public class MysqlClientDao extends BaseDao implements ClientDao {
                 BigDecimal latitude = resultSet.getBigDecimal("latitude");
                 BigDecimal longitude = resultSet.getBigDecimal("longitude");
 
-                clients.add(new Client(email, name, new Location(latitude, longitude)));
+                clients.add(new Client(email, name, new Coordinates(latitude, longitude)));
             }
             resultSet.close();
             closeConnection(connection);
@@ -62,13 +62,13 @@ public class MysqlClientDao extends BaseDao implements ClientDao {
     public void save(Client client) throws InternalServerErrorException {
         try {
             try {
-                Location location = client.getCoordinates();
+                Coordinates coordinates = client.getCoordinates();
                 String saveLocationQuery = "insert into la_buena_db.location (id_location, latitude, longitude, created_at) values (0, ?, ?);";
                 connection.setAutoCommit(false);
                 PreparedStatement preparedStatement = connection.prepareStatement(saveLocationQuery,
                         Statement.RETURN_GENERATED_KEYS);
-                preparedStatement.setBigDecimal(1, location.getLatitude());
-                preparedStatement.setBigDecimal(2, location.getLongitude());
+                preparedStatement.setBigDecimal(1, coordinates.getLatitude());
+                preparedStatement.setBigDecimal(2, coordinates.getLongitude());
 
                 int affectedRows = preparedStatement.executeUpdate();
 

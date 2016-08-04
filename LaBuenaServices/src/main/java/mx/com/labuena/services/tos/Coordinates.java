@@ -14,14 +14,14 @@ import mx.com.labuena.services.utils.CoordinateSerializer;
  * Created by moracl6 on 8/1/2016.
  */
 
-public class Location {
+public class Coordinates {
     private BigDecimal latitude;
     private BigDecimal longitude;
 
-    public Location() {
+    public Coordinates() {
     }
 
-    public Location(BigDecimal latitude, BigDecimal longitude) {
+    public Coordinates(BigDecimal latitude, BigDecimal longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -52,11 +52,11 @@ public class Location {
 
         if (o == null || getClass() != o.getClass()) return false;
 
-        Location location = (Location) o;
+        Coordinates coordinates = (Coordinates) o;
 
         return new org.apache.commons.lang3.builder.EqualsBuilder()
-                .append(latitude, location.latitude)
-                .append(longitude, location.longitude)
+                .append(latitude, coordinates.latitude)
+                .append(longitude, coordinates.longitude)
                 .isEquals();
     }
 

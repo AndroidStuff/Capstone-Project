@@ -11,6 +11,8 @@ import mx.com.labuena.services.dao.ConnectionProvider;
 import mx.com.labuena.services.dao.MysqlBikerDao;
 import mx.com.labuena.services.dao.MysqlBranchDao;
 import mx.com.labuena.services.dao.MysqlClientDao;
+import mx.com.labuena.services.messaging.FirebaseCloudMessageNotifier;
+import mx.com.labuena.services.messaging.MessageNotifier;
 
 /**
  * LaBuena dependency graph.
@@ -22,8 +24,10 @@ public class LaBuendaDependencyModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(Connection.class).toProvider(new ConnectionProvider());
+        bind(MessageNotifier.class).to(FirebaseCloudMessageNotifier.class);
         bind(BikerDao.class).to(MysqlBikerDao.class);
         bind(BranchDao.class).to(MysqlBranchDao.class);
         bind(ClientDao.class).to(MysqlClientDao.class);
+
     }
 }

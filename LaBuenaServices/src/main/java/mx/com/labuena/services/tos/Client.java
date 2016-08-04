@@ -8,12 +8,12 @@ public class Client {
     private String email;
     private String name;
 
-    private Location coordinates;
+    private Coordinates coordinates;
 
     public Client() {
     }
 
-    public Client(String email, String name, Location coordinates) {
+    public Client(String email, String name, Coordinates coordinates) {
         this.email = email;
         this.name = name;
         this.coordinates = coordinates;
@@ -35,11 +35,11 @@ public class Client {
         this.name = name;
     }
 
-    public Location getCoordinates() {
+    public Coordinates getCoordinates() {
         return coordinates;
     }
 
-    public void setCoordinates(Location coordinates) {
+    public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
     }
 }
