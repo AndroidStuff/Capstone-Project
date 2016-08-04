@@ -8,8 +8,8 @@ import com.google.inject.Inject;
 
 import java.util.List;
 
-import mx.com.labuena.services.dao.ClientDao;
-import mx.com.labuena.services.dao.OrderDao;
+import mx.com.labuena.services.models.ClientDao;
+import mx.com.labuena.services.models.OrderDao;
 import mx.com.labuena.services.messaging.Message;
 import mx.com.labuena.services.messaging.MessageNotifier;
 import mx.com.labuena.services.messaging.MessageWithSingleReceiver;

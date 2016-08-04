@@ -13,8 +13,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import mx.com.labuena.services.models.BikeDriverSelector;
 import mx.com.labuena.services.models.Biker;
+import mx.com.labuena.services.models.BikerDao;
 import mx.com.labuena.services.models.BikerLocation;
+import mx.com.labuena.services.models.Client;
 import mx.com.labuena.services.models.Coordinates;
 import mx.com.labuena.services.utils.DateExtensor;
 
@@ -22,18 +25,18 @@ import mx.com.labuena.services.utils.DateExtensor;
  * Created by moracl6 on 8/2/2016.
  */
 
-public class MysqlBikerDao extends BaseDao implements BikerDao {
+public class MysqlBikerDao extends BaseDao implements BikerDao, BikeDriverSelector {
     private static final Logger log = Logger.getLogger(MysqlBikerDao.class.getName());
 
     @Inject
-    public MysqlBikerDao(Connection connection) {
-        super(connection);
+    public MysqlBikerDao(ConnectionProvider connectionProvider) {
+        super(connectionProvider);
     }
 
     @Override
     public List<Biker> getAll() throws InternalServerErrorException {
         List<Biker> bikers = new ArrayList<>();
-
+        Connection connection = connectionProvider.get();
         try {
             String bikersQuery = "select name, email, phone, stock from la_buena_db.biker";
             ResultSet rs = connection.prepareStatement(bikersQuery).executeQuery();
@@ -58,6 +61,7 @@ public class MysqlBikerDao extends BaseDao implements BikerDao {
     @Override
     public void save(Biker biker) throws InternalServerErrorException {
         try {
+            Connection connection = connectionProvider.get();
             try {
                 String branchesQuery = "select id_branch from la_buena_db.branch";
                 ResultSet resultSet = connection.prepareStatement(branchesQuery).executeQuery();
@@ -94,6 +98,7 @@ public class MysqlBikerDao extends BaseDao implements BikerDao {
     @Override
     public void saveLocation(Biker biker) throws InternalServerErrorException {
         try {
+            Connection connection = connectionProvider.get();
             try {
                 BikerLocation bikerLocation = biker.getBikerLocation();
                 Coordinates coordinates = bikerLocation.getCoordinates();
@@ -166,5 +171,15 @@ public class MysqlBikerDao extends BaseDao implements BikerDao {
             log.log(Level.SEVERE, e.getMessage(), e);
             throw new InternalServerErrorException(e);
         }
+    }
+
+    /**
+     * Implements the bike driver selection based in biker work load.
+     * @param client Client to deliver.
+     * @return Biker to deliver an order.
+     */
+    @Override
+    public Biker selectDriver(Client client) {
+        return null;
     }
 }

@@ -1,10 +1,8 @@
-package mx.com.labuena.services.dao;
+package mx.com.labuena.services.models;
 
 import com.google.api.server.spi.response.InternalServerErrorException;
 
 import java.util.List;
-
-import mx.com.labuena.services.models.Biker;
 
 /**
  * Created by moracl6 on 8/2/2016.

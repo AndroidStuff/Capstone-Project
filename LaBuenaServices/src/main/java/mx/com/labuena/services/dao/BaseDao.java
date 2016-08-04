@@ -13,10 +13,10 @@ import java.util.logging.Logger;
 
 public class BaseDao {
     private static final Logger log = Logger.getLogger(BaseDao.class.getName());
-    protected final Connection connection;
+    protected final ConnectionProvider connectionProvider;
 
-    public BaseDao(Connection connection) {
-        this.connection = connection;
+    public BaseDao(ConnectionProvider connectionProvider) {
+        this.connectionProvider = connectionProvider;
     }
 
     protected void closeConnection(Connection connection) throws InternalServerErrorException {

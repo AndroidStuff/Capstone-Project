@@ -12,21 +12,23 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import mx.com.labuena.services.models.Order;
+import mx.com.labuena.services.models.OrderDao;
 
 /**
  * Created by moracl6 on 8/4/2016.
  */
 
-public class MysqlOrderDao  extends BaseDao implements OrderDao {
+public class MysqlOrderDao extends BaseDao implements OrderDao {
     private static final Logger log = Logger.getLogger(MysqlOrderDao.class.getName());
 
     @Inject
-    public MysqlOrderDao(Connection connection) {
-        super(connection);
+    public MysqlOrderDao(ConnectionProvider connectionProvider) {
+        super(connectionProvider);
     }
 
     @Override
     public int save(Order order) throws InternalServerErrorException {
+        Connection connection = connectionProvider.get();
         try {
             try {
 
@@ -35,7 +37,7 @@ public class MysqlOrderDao  extends BaseDao implements OrderDao {
                 connection.setAutoCommit(false);
                 PreparedStatement preparedStatement = connection.prepareStatement(saveBranchQuery,
                         Statement.RETURN_GENERATED_KEYS);
-                preparedStatement.setInt(1,order.getClientId());
+                preparedStatement.setInt(1, order.getClientId());
                 preparedStatement.setInt(2, order.getBikerId());
                 preparedStatement.setInt(3, order.getQuantity());
                 int affectedRows = preparedStatement.executeUpdate();

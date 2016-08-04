@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import mx.com.labuena.services.models.Client;
+import mx.com.labuena.services.models.ClientDao;
 import mx.com.labuena.services.models.Coordinates;
 
 /**
@@ -25,14 +26,14 @@ public class MysqlClientDao extends BaseDao implements ClientDao {
     private static final Logger log = Logger.getLogger(MysqlClientDao.class.getName());
 
     @Inject
-    public MysqlClientDao(Connection connection) {
-        super(connection);
+    public MysqlClientDao(ConnectionProvider connectionProvider) {
+        super(connectionProvider);
     }
 
     @Override
     public List<Client> getAll() throws InternalServerErrorException {
         List<Client> clients = new ArrayList<>();
-
+        Connection connection = connectionProvider.get();
         try {
             String clientsQuery = "select client.email, client.name, " +
                     "location.latitude, location.longitude from la_buena_db.client client " +
@@ -61,6 +62,7 @@ public class MysqlClientDao extends BaseDao implements ClientDao {
     @Override
     public void save(Client client) throws InternalServerErrorException {
         try {
+            Connection connection = connectionProvider.get();
             try {
                 Coordinates coordinates = client.getCoordinates();
                 String saveLocationQuery = "insert into la_buena_db.location (id_location, latitude, longitude, created_at) values (0, ?, ?);";

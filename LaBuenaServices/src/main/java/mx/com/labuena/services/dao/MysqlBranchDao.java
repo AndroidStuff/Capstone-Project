@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import mx.com.labuena.services.models.Branch;
+import mx.com.labuena.services.models.BranchDao;
 
 /**
  * Created by moracl6 on 8/2/2016.
@@ -22,14 +23,14 @@ public class MysqlBranchDao extends BaseDao implements BranchDao {
     private static final Logger log = Logger.getLogger(MysqlBranchDao.class.getName());
 
     @Inject
-    public MysqlBranchDao(Connection connection) {
-        super(connection);
+    public MysqlBranchDao(ConnectionProvider connectionProvider) {
+        super(connectionProvider);
     }
 
     @Override
     public List<Branch> getAll() throws InternalServerErrorException {
         List<Branch> branches = new ArrayList<>();
-
+        Connection connection = connectionProvider.get();
         try {
             String branchesQuery = "select name, email from la_buena_db.branch";
             ResultSet rs = connection.prepareStatement(branchesQuery).executeQuery();
@@ -53,6 +54,7 @@ public class MysqlBranchDao extends BaseDao implements BranchDao {
     @Override
     public void save(Branch branch) throws InternalServerErrorException {
         try {
+            Connection connection = connectionProvider.get();
             try {
 
                 String saveBranchQuery = "insert into la_buena_db.branch (id_branch, email, name) values (0, ?, ?);";

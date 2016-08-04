@@ -14,7 +14,7 @@ import com.google.inject.Inject;
 
 import java.util.List;
 
-import mx.com.labuena.services.dao.BikerDao;
+import mx.com.labuena.services.models.BikerDao;
 import mx.com.labuena.services.responses.BikersResponse;
 import mx.com.labuena.services.models.Biker;
 

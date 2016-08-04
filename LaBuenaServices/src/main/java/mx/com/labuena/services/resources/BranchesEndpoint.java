@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
-import mx.com.labuena.services.dao.BranchDao;
+import mx.com.labuena.services.models.BranchDao;
 import mx.com.labuena.services.responses.BranchesResponse;
 import mx.com.labuena.services.models.Branch;
 
