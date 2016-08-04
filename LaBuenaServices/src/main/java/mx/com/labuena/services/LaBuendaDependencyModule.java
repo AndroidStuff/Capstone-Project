@@ -11,6 +11,8 @@ import mx.com.labuena.services.dao.ConnectionProvider;
 import mx.com.labuena.services.dao.MysqlBikerDao;
 import mx.com.labuena.services.dao.MysqlBranchDao;
 import mx.com.labuena.services.dao.MysqlClientDao;
+import mx.com.labuena.services.dao.MysqlOrderDao;
+import mx.com.labuena.services.dao.OrderDao;
 import mx.com.labuena.services.messaging.FirebaseCloudMessageNotifier;
 import mx.com.labuena.services.messaging.MessageNotifier;
 
@@ -28,6 +30,7 @@ public class LaBuendaDependencyModule extends AbstractModule {
         bind(BikerDao.class).to(MysqlBikerDao.class);
         bind(BranchDao.class).to(MysqlBranchDao.class);
         bind(ClientDao.class).to(MysqlClientDao.class);
+        bind(OrderDao.class).to(MysqlOrderDao.class);
 
     }
 }

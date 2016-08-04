@@ -5,6 +5,7 @@ package mx.com.labuena.services.models;
  */
 
 public class Client {
+    private int clientId;
     private String email;
     private String name;
 
@@ -41,5 +42,13 @@ public class Client {
 
     public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
+    }
+
+    public int getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(int clientId) {
+        this.clientId = clientId;
     }
 }

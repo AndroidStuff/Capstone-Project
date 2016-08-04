@@ -6,6 +6,7 @@ package mx.com.labuena.services.models;
 
 public class Biker {
     private int branchId;
+    private int bikerId;
     private String name;
     private String email;
     private String phone;
@@ -77,5 +78,13 @@ public class Biker {
 
     public void setGcmToken(String gcmToken) {
         this.gcmToken = gcmToken;
+    }
+
+    public int getBikerId() {
+        return bikerId;
+    }
+
+    public void setBikerId(int bikerId) {
+        this.bikerId = bikerId;
     }
 }

@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS `la_buena_db`.`order` (
   `id_client` INT NOT NULL,
   `quantity` TINYINT NOT NULL,
   `delivered` BIT NOT NULL DEFAULT 0,
-  `id_biker` INT NULL,
+  `id_biker` INT NOT NULL,
   `created_at` timestamp default current_timestamp,
    `updated_at` timestamp NULL,
   PRIMARY KEY (`id_order`),
