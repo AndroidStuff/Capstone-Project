@@ -1,7 +1,7 @@
 
-CREATE SCHEMA IF NOT EXISTS `la_buena_db` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+CREATE SCHEMA IF NOT EXISTS `la_buena_db` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
-USE `la_buena_db` ;
+USE `la_buena_db`;
 
 -- -----------------------------------------------------
 -- Table `la_buena_db`.`branch`
@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS `la_buena_db`.`branch` (
   `id_branch` INT NOT NULL AUTO_INCREMENT,
   `email` VARCHAR(320) NOT NULL,
   `name` VARCHAR(250) NOT NULL,
+  `cloud_messaging_token` VARCHAR(250) NULL,
   `created_at` timestamp default current_timestamp,
    `updated_at` timestamp NULL,
   PRIMARY KEY (`id_branch`))
@@ -57,6 +58,7 @@ CREATE TABLE IF NOT EXISTS `la_buena_db`.`biker` (
   `stock` TINYINT NULL DEFAULT 0,
   `phone` VARCHAR(15) NOT NULL,
   `id_branch` INT NOT NULL,
+  `cloud_messaging_token` VARCHAR(250) NULL,
   `created_at` timestamp default current_timestamp,
    `updated_at` timestamp NULL,
   PRIMARY KEY (`id_biker`),
