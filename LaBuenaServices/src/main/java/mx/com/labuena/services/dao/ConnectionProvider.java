@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 public class ConnectionProvider implements Provider<Connection> {
     private static final Logger log = Logger.getLogger(ConnectionProvider.class.getName());
 
-    private static final String URL_FORMAT ="%s?user=%s&amp;password=%s";
+    private static final String URL_FORMAT ="%s?user=%s&password=%s";
     @Override
     public Connection get() {
 
