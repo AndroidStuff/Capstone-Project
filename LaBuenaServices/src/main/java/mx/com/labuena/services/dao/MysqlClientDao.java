@@ -106,4 +106,9 @@ public class MysqlClientDao extends BaseDao implements ClientDao {
             throw new InternalServerErrorException(e);
         }
     }
+
+    @Override
+    public Client findByEmail(String email) throws InternalServerErrorException {
+        return null;
+    }
 }

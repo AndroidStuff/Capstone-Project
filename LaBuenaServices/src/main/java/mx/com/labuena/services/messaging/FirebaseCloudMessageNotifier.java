@@ -1,5 +1,6 @@
 package mx.com.labuena.services.messaging;
 
+import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.appengine.repackaged.org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.BufferedReader;
@@ -12,6 +13,8 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import mx.com.labuena.services.utils.PropertyReader;
+
 /**
  * Firebase Cloud Message notifier.
  * Created by moracl6 on 8/4/2016.
@@ -21,8 +24,10 @@ public class FirebaseCloudMessageNotifier implements MessageNotifier {
 
     private static final Logger log = Logger.getLogger(FirebaseCloudMessageNotifier.class.getName());
 
-    public void sendMessage(String apiKey, Message message) {
+    public void sendMessage(Message message) throws InternalServerErrorException {
         try {
+
+            String apiKey = PropertyReader.readProperty("la_buena.properties", "FCM_URL");
 
             URL url = new URL("https://fcm.googleapis.com/fcm/send");
 
@@ -62,9 +67,11 @@ public class FirebaseCloudMessageNotifier implements MessageNotifier {
             log.log(Level.INFO, response.toString());
 
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            log.log(Level.SEVERE, e.getMessage(), e);
+            throw new InternalServerErrorException(e);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.log(Level.SEVERE, e.getMessage(), e);
+            throw new InternalServerErrorException(e);
         }
     }
 }

@@ -7,11 +7,13 @@ package mx.com.labuena.services.tos;
 public class OrderNotification {
     private int quantity;
     private Coordinates coordinates;
+    private int orderId;
 
     public OrderNotification() {
     }
 
-    public OrderNotification(int quantity, Coordinates coordinates) {
+    public OrderNotification(int orderId, int quantity, Coordinates coordinates) {
+        this.orderId = orderId;
         this.quantity = quantity;
         this.coordinates = coordinates;
     }
@@ -30,5 +32,13 @@ public class OrderNotification {
 
     public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
+    }
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
     }
 }

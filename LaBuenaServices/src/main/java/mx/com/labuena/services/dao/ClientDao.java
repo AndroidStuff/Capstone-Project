@@ -13,4 +13,5 @@ import mx.com.labuena.services.tos.Client;
 public interface ClientDao {
     List<Client> getAll() throws InternalServerErrorException;
     void save(Client client) throws InternalServerErrorException;
+    Client findByEmail(String email) throws InternalServerErrorException;
 }

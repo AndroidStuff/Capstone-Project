@@ -11,6 +11,7 @@ public class Biker {
     private String phone;
     private BikerLocation bikerLocation;
     private int lastStock;
+    private String gcmToken;
 
     public Biker() {
     }
@@ -68,5 +69,13 @@ public class Biker {
 
     public void setBikerLocation(BikerLocation bikerLocation) {
         this.bikerLocation = bikerLocation;
+    }
+
+    public String getGcmToken() {
+        return gcmToken;
+    }
+
+    public void setGcmToken(String gcmToken) {
+        this.gcmToken = gcmToken;
     }
 }

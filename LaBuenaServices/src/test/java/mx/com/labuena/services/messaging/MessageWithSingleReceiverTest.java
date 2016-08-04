@@ -20,11 +20,12 @@ import mx.com.labuena.services.tos.OrderNotification;
 public class MessageWithSingleReceiverTest {
     private static final String DUMMY_JSON_COORDINATES = "{\"to\":\"bk3RNwTe3H0:CI2k_HHwgIpoDKCIZvvDMExUdFQ3P1...\"," +
             "\"data\":{\"quantity\":5," +
-            "\"coordinates\":{\"latitude\":\"60.064840\",\"longitude\":\"-135.878906\"}}}";
+            "\"coordinates\":{\"latitude\":\"60.064840\",\"longitude\":\"-135.878906\"},\"orderId\":4567}}";
     public static final String DUMMY_RECEIVER = "bk3RNwTe3H0:CI2k_HHwgIpoDKCIZvvDMExUdFQ3P1...";
     public static final String DUMMY_LATITUDE = "60.064840";
     public static final String DUMMY_LONGITUDE = "-135.878906";
     public static final int DUMMY_TORTILAS_QUANTITY = 5;
+    private static final int DUMMY_ORDER_ID = 4567;
 
     @Test
     public void message_with_single_receiver_includes_body_and_receiver() throws IOException {
@@ -38,7 +39,7 @@ public class MessageWithSingleReceiverTest {
     }
 
     private MessageWithSingleReceiver<OrderNotification> buildDummyOrderNotification() {
-        OrderNotification orderNotification = new OrderNotification(DUMMY_TORTILAS_QUANTITY,
+        OrderNotification orderNotification = new OrderNotification(DUMMY_ORDER_ID, DUMMY_TORTILAS_QUANTITY,
                 new Coordinates(new BigDecimal(DUMMY_LATITUDE).setScale(6, BigDecimal.ROUND_HALF_UP),
                         new BigDecimal(DUMMY_LONGITUDE).setScale(6, BigDecimal.ROUND_HALF_UP)));
 
