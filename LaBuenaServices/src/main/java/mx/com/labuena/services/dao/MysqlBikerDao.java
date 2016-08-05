@@ -174,11 +174,39 @@ public class MysqlBikerDao extends BaseDao implements BikerDao, BikeDriverSelect
 
     /**
      * Implements the bike driver selection based in biker work load.
+     *
      * @param coordinates Client location to deliver.
      * @return Biker to deliver an order.
      */
     @Override
-    public Biker selectDriver(Coordinates coordinates) {
-        return null;
+    public Biker selectDriver(Coordinates coordinates) throws InternalServerErrorException {
+        Connection connection = connectionProvider.get();
+        try {
+            Biker biker = null;
+            String bikersQuery = "select biker.id_biker, biker.email, biker.name, " +
+                    "biker.cloud_messaging_token, count(order.id_biker) from la_buena_db.biker " +
+                    "  left join la_buena_db.order on biker.id_biker = order.id_biker " +
+                    "  where order.delivered = 0 or order.delivered is null " +
+                    "  group by biker.id_biker\n" +
+                    "  order by count(order.id_biker);";
+            ResultSet resultSet = connection.prepareStatement(bikersQuery).executeQuery();
+
+            while (resultSet.next()) {
+                int idBiker = resultSet.getInt("id_biker");
+                String email = resultSet.getString("email");
+                String name = resultSet.getString("name");
+                String token = resultSet.getString("cloud_messaging_token");
+                int stock = resultSet.getInt("stock");
+
+                biker = new Biker(idBiker, name, email, token, stock);
+            }
+            resultSet.close();
+            closeConnection(connection);
+            return biker;
+        } catch (SQLException e) {
+            closeConnection(connection);
+            log.log(Level.SEVERE, e.getMessage(), e);
+            throw new InternalServerErrorException(e);
+        }
     }
 }

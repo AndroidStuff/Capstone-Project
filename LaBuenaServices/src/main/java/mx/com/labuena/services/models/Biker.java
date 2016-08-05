@@ -24,6 +24,15 @@ public class Biker {
         this.lastStock = lastStock;
     }
 
+    public Biker(int bikerId, String name, String email, String token, int lastStock) {
+        this.bikerId = bikerId;
+        this.name = name;
+        this.email = email;
+        this.gcmToken = token;
+        this.lastStock = lastStock;
+
+    }
+
     public String getName() {
         return name;
     }
