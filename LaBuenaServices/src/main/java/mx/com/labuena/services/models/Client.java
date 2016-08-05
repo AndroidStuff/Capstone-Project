@@ -9,15 +9,12 @@ public class Client {
     private String email;
     private String name;
 
-    private Coordinates coordinates;
-
     public Client() {
     }
 
-    public Client(String email, String name, Coordinates coordinates) {
+    public Client(String email, String name) {
         this.email = email;
         this.name = name;
-        this.coordinates = coordinates;
     }
 
     public String getEmail() {
@@ -34,14 +31,6 @@ public class Client {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Coordinates getCoordinates() {
-        return coordinates;
-    }
-
-    public void setCoordinates(Coordinates coordinates) {
-        this.coordinates = coordinates;
     }
 
     public int getClientId() {

@@ -17,7 +17,6 @@ import mx.com.labuena.services.models.BikeDriverSelector;
 import mx.com.labuena.services.models.Biker;
 import mx.com.labuena.services.models.BikerDao;
 import mx.com.labuena.services.models.BikerLocation;
-import mx.com.labuena.services.models.Client;
 import mx.com.labuena.services.models.Coordinates;
 import mx.com.labuena.services.utils.DateExtensor;
 
@@ -175,11 +174,11 @@ public class MysqlBikerDao extends BaseDao implements BikerDao, BikeDriverSelect
 
     /**
      * Implements the bike driver selection based in biker work load.
-     * @param client Client to deliver.
+     * @param coordinates Client location to deliver.
      * @return Biker to deliver an order.
      */
     @Override
-    public Biker selectDriver(Client client) {
+    public Biker selectDriver(Coordinates coordinates) {
         return null;
     }
 }

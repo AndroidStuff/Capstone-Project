@@ -8,6 +8,7 @@ public class Order {
     private int quantity;
     private int bikerId;
     private int clientId;
+    private Coordinates coordinates;
 
     public Order(String clientEmail, int quantity) {
         this.clientEmail = clientEmail;
@@ -47,5 +48,13 @@ public class Order {
 
     public void setClientId(int clientId) {
         this.clientId = clientId;
+    }
+
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
     }
 }

@@ -63,13 +63,13 @@ public class ClientsEndpoint {
             httpMethod = ApiMethod.HttpMethod.POST)
     public void requestTortillas(Order order) throws InternalServerErrorException {
         Client client = clientDao.findByEmail(order.getClientEmail());
-        Biker biker = bikeDriverSelector.selectDriver(client);
+        Biker biker = bikeDriverSelector.selectDriver(order.getCoordinates());
         order.setClientId(client.getClientId());
         order.setBikerId(biker.getBikerId());
         int orderId = orderDao.save(order);
 
         OrderNotification orderNotification = new OrderNotification(orderId, order.getQuantity(),
-                client.getCoordinates());
+                order.getCoordinates());
         Message<OrderNotification> message =
                 new MessageWithSingleReceiver<>(biker.getGcmToken(), orderNotification);
         messageNotifier.sendMessage(message);

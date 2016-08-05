@@ -6,5 +6,5 @@ package mx.com.labuena.services.models;
  */
 
 public interface BikeDriverSelector {
-    Biker selectDriver(Client client);
+    Biker selectDriver(Coordinates coordinates);
 }

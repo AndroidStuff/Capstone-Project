@@ -2,9 +2,7 @@ package mx.com.labuena.services.dao;
 
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.inject.Inject;
-import com.mysql.jdbc.Statement;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,7 +14,6 @@ import java.util.logging.Logger;
 
 import mx.com.labuena.services.models.Client;
 import mx.com.labuena.services.models.ClientDao;
-import mx.com.labuena.services.models.Coordinates;
 
 /**
  * Created by moracl6 on 8/3/2016.
@@ -35,19 +32,14 @@ public class MysqlClientDao extends BaseDao implements ClientDao {
         List<Client> clients = new ArrayList<>();
         Connection connection = connectionProvider.get();
         try {
-            String clientsQuery = "select client.email, client.name, " +
-                    "location.latitude, location.longitude from la_buena_db.client client " +
-                    "join la_buena_db.location location" +
-                    " on client.id_location = location.id_location;";
+            String clientsQuery = "select client.email, client.name from la_buena_db.client client;";
             ResultSet resultSet = connection.prepareStatement(clientsQuery).executeQuery();
 
             while (resultSet.next()) {
                 String email = resultSet.getString("email");
                 String name = resultSet.getString("name");
-                BigDecimal latitude = resultSet.getBigDecimal("latitude");
-                BigDecimal longitude = resultSet.getBigDecimal("longitude");
 
-                clients.add(new Client(email, name, new Coordinates(latitude, longitude)));
+                clients.add(new Client(email, name));
             }
             resultSet.close();
             closeConnection(connection);
@@ -64,35 +56,12 @@ public class MysqlClientDao extends BaseDao implements ClientDao {
         try {
             Connection connection = connectionProvider.get();
             try {
-                Coordinates coordinates = client.getCoordinates();
-                String saveLocationQuery = "insert into la_buena_db.location (id_location, latitude, longitude, created_at) values (0, ?, ?);";
+
+                String saveClientLocationQuery = "insert into la_buena_db.client (id_client, email, name) values (0, ?, ?);";
                 connection.setAutoCommit(false);
-                PreparedStatement preparedStatement = connection.prepareStatement(saveLocationQuery,
-                        Statement.RETURN_GENERATED_KEYS);
-                preparedStatement.setBigDecimal(1, coordinates.getLatitude());
-                preparedStatement.setBigDecimal(2, coordinates.getLongitude());
-
-                int affectedRows = preparedStatement.executeUpdate();
-
-                if (affectedRows == 0) {
-                    throw new SQLException("Registering client location failed, no rows affected.");
-                }
-
-                int locationId = 0;
-
-                ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-                if (generatedKeys.next()) {
-                    locationId = generatedKeys.getInt(1);
-                } else {
-                    throw new SQLException("Creating location row failed, no ID obtained.");
-                }
-
-                String saveClientLocationQuery = "insert into la_buena_db.client (id_client, id_location, email, name) values (0, ?, ?, ?);";
-                connection.setAutoCommit(false);
-                preparedStatement = connection.prepareStatement(saveClientLocationQuery);
-                preparedStatement.setInt(1, locationId);
-                preparedStatement.setString(2, client.getEmail());
-                preparedStatement.setString(3, client.getName());
+                PreparedStatement preparedStatement = connection.prepareStatement(saveClientLocationQuery);
+                preparedStatement.setString(1, client.getEmail());
+                preparedStatement.setString(2, client.getName());
                 preparedStatement.execute();
                 connection.commit();
             } catch (SQLException e) {

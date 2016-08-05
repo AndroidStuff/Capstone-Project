@@ -34,17 +34,12 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `la_buena_db`.`client` (
   `id_client` INT NOT NULL AUTO_INCREMENT,
-  `id_location` INT NULL,
   `email` VARCHAR(320) NOT NULL,
    `name` VARCHAR(250) NULL,
+   `cloud_messaging_token` VARCHAR(250) NULL,
  `created_at` timestamp default current_timestamp,
  `updated_at` timestamp NULL,
-  PRIMARY KEY (`id_client`),
-  CONSTRAINT `fk_client_location`
-    FOREIGN KEY (`id_location`)
-    REFERENCES `la_buena_db`.`location` (`id_location`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION)
+  PRIMARY KEY (`id_client`))
 ENGINE = InnoDB;
 
 
@@ -97,6 +92,7 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `la_buena_db`.`order` (
   `id_order` INT NOT NULL AUTO_INCREMENT,
   `id_client` INT NOT NULL,
+  `id_location` INT NOT NULL,
   `quantity` TINYINT NOT NULL,
   `delivered` BIT NOT NULL DEFAULT 0,
   `id_biker` INT NOT NULL,
@@ -114,6 +110,12 @@ CREATE TABLE IF NOT EXISTS `la_buena_db`.`order` (
     FOREIGN KEY (`id_biker`)
     REFERENCES `la_buena_db`.`biker` (`id_biker`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON UPDATE NO ACTION
+
+    CONSTRAINT `fk_order_location`
+        FOREIGN KEY (`id_location`)
+        REFERENCES `la_buena_db`.`location` (`id_location`)
+        ON DELETE CASCADE
+        ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
