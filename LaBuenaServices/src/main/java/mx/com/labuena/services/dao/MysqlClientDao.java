@@ -80,6 +80,29 @@ public class MysqlClientDao extends BaseDao implements ClientDao {
 
     @Override
     public Client findByEmail(String email) throws InternalServerErrorException {
-        return null;
+        Connection connection = connectionProvider.get();
+        try {
+            Client client = null;
+            String clientsQuery = "select client.id_client, client.email, client.name " +
+                    "from la_buena_db.client client where client.email = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(clientsQuery);
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                String clientEmail = resultSet.getString("email");
+                String name = resultSet.getString("name");
+                int clientId = resultSet.getInt("id_client");
+
+                client = new Client(clientId, clientEmail, name);
+            }
+            resultSet.close();
+            closeConnection(connection);
+            return client;
+        } catch (SQLException e) {
+            closeConnection(connection);
+            log.log(Level.SEVERE, e.getMessage(), e);
+            throw new InternalServerErrorException(e);
+        }
     }
 }
