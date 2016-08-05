@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `la_buena_db`.`order` (
     FOREIGN KEY (`id_biker`)
     REFERENCES `la_buena_db`.`biker` (`id_biker`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+    ON UPDATE NO ACTION,
 
     CONSTRAINT `fk_order_location`
         FOREIGN KEY (`id_location`)
