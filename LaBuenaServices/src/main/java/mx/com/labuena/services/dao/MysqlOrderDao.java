@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import mx.com.labuena.services.models.Coordinates;
 import mx.com.labuena.services.models.Order;
 import mx.com.labuena.services.models.OrderDao;
 
@@ -32,15 +33,39 @@ public class MysqlOrderDao extends BaseDao implements OrderDao {
         try {
             try {
 
-                String saveBranchQuery = "insert into la_buena_db.order " +
-                        "(id_order, id_client, id_biker, quantity) values (0, ?, ?, ?);";
+                Coordinates coordinates = order.getCoordinates();
+                String saveLocationQuery = "insert into la_buena_db.location (id_location, latitude, longitude) values (0, ?, ?);";
                 connection.setAutoCommit(false);
-                PreparedStatement preparedStatement = connection.prepareStatement(saveBranchQuery,
+                PreparedStatement preparedStatement = connection.prepareStatement(saveLocationQuery,
+                        Statement.RETURN_GENERATED_KEYS);
+                preparedStatement.setBigDecimal(1, coordinates.getLatitude());
+                preparedStatement.setBigDecimal(2, coordinates.getLongitude());
+
+                int affectedRows = preparedStatement.executeUpdate();
+
+                if (affectedRows == 0) {
+                    throw new SQLException("Registering order location failed, no rows affected.");
+                }
+
+                int locationId = 0;
+
+                ResultSet locationGeneratedKeys = preparedStatement.getGeneratedKeys();
+                if (locationGeneratedKeys.next()) {
+                    locationId = locationGeneratedKeys.getInt(1);
+                } else {
+                    throw new SQLException("Creating location row failed, no ID obtained.");
+                }
+
+                String saveBranchQuery = "insert into la_buena_db.order " +
+                        "(id_order, id_client, id_biker, quantity, id_location) values (0, ?, ?, ?, ?);";
+                connection.setAutoCommit(false);
+                preparedStatement = connection.prepareStatement(saveBranchQuery,
                         Statement.RETURN_GENERATED_KEYS);
                 preparedStatement.setInt(1, order.getClientId());
                 preparedStatement.setInt(2, order.getBikerId());
                 preparedStatement.setInt(3, order.getQuantity());
-                int affectedRows = preparedStatement.executeUpdate();
+                preparedStatement.setInt(4, locationId);
+                affectedRows = preparedStatement.executeUpdate();
 
                 if (affectedRows == 0) {
                     throw new SQLException("Registering order failed, no rows affected.");
@@ -48,9 +73,9 @@ public class MysqlOrderDao extends BaseDao implements OrderDao {
 
                 int orderId = 0;
 
-                ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-                if (generatedKeys.next()) {
-                    orderId = generatedKeys.getInt(1);
+                ResultSet orderGeneratedKeys = preparedStatement.getGeneratedKeys();
+                if (orderGeneratedKeys.next()) {
+                    orderId = orderGeneratedKeys.getInt(1);
                 } else {
                     throw new SQLException("Creating order row failed, no ID obtained.");
                 }
