@@ -1,8 +1,14 @@
 package mx.com.labuena.tortillas.setup;
 
 import android.app.Application;
+import android.support.design.BuildConfig;
+
+import org.greenrobot.eventbus.EventBus;
+
+import javax.inject.Singleton;
 
 import dagger.Module;
+import dagger.Provides;
 
 /**
  * Created by clerks on 8/6/16.
@@ -14,5 +20,12 @@ public class LaBuenaApplicationModules {
 
     public LaBuenaApplicationModules(Application application) {
         this.application = application;
+    }
+
+    @Provides
+    @Singleton
+    public EventBus providesEventBus() {
+        return EventBus.builder().throwSubscriberException(BuildConfig.DEBUG)
+                .logSubscriberExceptions(true).throwSubscriberException(true).build();
     }
 }

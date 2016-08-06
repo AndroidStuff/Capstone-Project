@@ -45,9 +45,12 @@ dependencies {
     compile "com.android.support:design:$rootProject.supportLibraryVersion"
     compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     compile 'com.android.support:multidex:1.0.1'
-    apt 'com.google.dagger:dagger-compiler:2.5'
-    compile 'com.google.dagger:dagger:2.5'
+
+    apt "com.google.dagger:dagger-compiler:$rootProject.ext.daggerVersion"
+    compile "com.google.dagger:dagger:$rootProject.ext.daggerVersion"
     provided 'javax.annotation:jsr250-api:1.0'
+
+    compile "org.greenrobot:eventbus:$rootProject.ext.eventbusVersion"
 
     compile project(path: ':LaBuenaServices', configuration: 'android-endpoints')
 
