@@ -22,17 +22,23 @@ public abstract class BaseFragment extends Fragment {
         super.onCreate(savedInstanceState);
         injectDependencies();
         loadFragmentArguments();
-        initFragmentCreation(savedInstanceState);
+        initFragment(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        return inflater.inflate(getLayoutId(), container, false);
+        View rootView = inflater.inflate(getLayoutId(), container, false);
+        initView(rootView);
+        return rootView;
     }
 
-    protected void initFragmentCreation(Bundle savedInstanceState) {
+    protected void initView(View rootView) {
+
+    }
+
+    protected void initFragment(Bundle savedInstanceState) {
 
     }
 
