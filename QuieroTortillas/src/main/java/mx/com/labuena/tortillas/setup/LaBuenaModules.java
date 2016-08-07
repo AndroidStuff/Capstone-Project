@@ -3,7 +3,8 @@ package mx.com.labuena.tortillas.setup;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import mx.com.labuena.tortillas.HomeActivity;
+import mx.com.labuena.tortillas.views.activities.HomeActivity;
+import mx.com.labuena.tortillas.views.fragments.LoginFragment;
 
 /**
  * Created by clerks on 8/6/16.
@@ -11,5 +12,6 @@ import mx.com.labuena.tortillas.HomeActivity;
 @Singleton
 @Component(modules = {LaBuenaApplicationModules.class})
 public interface LaBuenaModules {
-    void inject(HomeActivity scanCardFragment);
+    void inject(HomeActivity homeActivity);
+    void inject(LoginFragment loginFragment);
 }

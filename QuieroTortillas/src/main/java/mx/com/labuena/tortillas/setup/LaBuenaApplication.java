@@ -26,6 +26,11 @@ public class LaBuenaApplication extends Application {
         return laBuenaModules;
     }
 
+
+    public static LaBuenaModules getObjectGraph(Context context) {
+        return ((LaBuenaApplication) context).getObjectGraph();
+    }
+
     private void initObjectGraph() {
         laBuenaModules = DaggerLaBuenaModules.builder()
                 .laBuenaApplicationModules(
