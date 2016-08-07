@@ -53,9 +53,12 @@ dependencies {
     compile "org.greenrobot:eventbus:$rootProject.ext.eventbusVersion"
 
     compile "com.google.firebase:firebase-core:$rootProject.ext.firebaseVersion"
-    compile "com.google.firebase:firebase-auth:$rootProject.ext.firebaseVersion"
     compile "com.google.firebase:firebase-messaging:$rootProject.ext.firebaseVersion"
     compile "com.google.firebase:firebase-crash:$rootProject.ext.firebaseVersion"
+
+    compile "com.google.android.gms:play-services-auth:$rootProject.ext.playservicesVersion"
+
+    compile "org.apache.commons:commons-lang3:$rootProject.ext.apachecommonsVersion"
 
     compile project(path: ':LaBuenaServices', configuration: 'android-endpoints')
 

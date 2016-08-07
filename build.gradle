@@ -27,7 +27,11 @@ ext {
 
     daggerVersion = '2.5'
     eventbusVersion = '3.0.0'
-    firebaseVersion = '9.4.0'
+    firebaseVersion = '9.0.0'
+
+    apachecommonsVersion = '3.4'
+
+    playservicesVersion = '9.0.0'
 
     findBugsLibraryVersion = '1.3.9'
 

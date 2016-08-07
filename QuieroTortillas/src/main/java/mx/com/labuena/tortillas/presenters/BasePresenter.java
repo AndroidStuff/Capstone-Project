@@ -7,7 +7,7 @@ import org.greenrobot.eventbus.EventBus;
  */
 
 public class BasePresenter {
-    private final EventBus eventBus;
+    protected final EventBus eventBus;
 
     public BasePresenter(EventBus eventBus) {
         this.eventBus = eventBus;

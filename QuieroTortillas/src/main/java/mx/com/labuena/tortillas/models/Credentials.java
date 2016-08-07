@@ -1,5 +1,8 @@
 package mx.com.labuena.tortillas.models;
 
+
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * Created by clerks on 8/6/16.
  */
@@ -19,5 +22,9 @@ public class Credentials {
 
     public String getPassword() {
         return password;
+    }
+
+    public boolean isValid() {
+        return StringUtils.isNoneBlank(email) && StringUtils.isNoneBlank(password);
     }
 }
