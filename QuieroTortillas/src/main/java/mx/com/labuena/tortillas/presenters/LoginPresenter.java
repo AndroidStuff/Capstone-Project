@@ -22,6 +22,8 @@ import javax.inject.Inject;
 import mx.com.labuena.tortillas.events.InvalidInputCredentialsEvent;
 import mx.com.labuena.tortillas.events.ReplaceFragmentEvent;
 import mx.com.labuena.tortillas.models.Credentials;
+import mx.com.labuena.tortillas.views.fragments.ClientRegistrationFragment;
+import mx.com.labuena.tortillas.views.fragments.ForgotPasswordFragment;
 import mx.com.labuena.tortillas.views.fragments.TortillasRequestorFragment;
 
 /**
@@ -114,5 +116,13 @@ public class LoginPresenter extends BasePresenter {
 
                     }
                 });
+    }
+
+    public void navigateToForgotPassword() {
+        eventBus.post(new ReplaceFragmentEvent(new ForgotPasswordFragment(), true));
+    }
+
+    public void navigateToRegisterUser() {
+        eventBus.post(new ReplaceFragmentEvent(new ClientRegistrationFragment(), true));
     }
 }

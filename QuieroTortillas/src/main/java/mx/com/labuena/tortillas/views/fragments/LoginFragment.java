@@ -56,6 +56,7 @@ public class LoginFragment extends BaseFragment {
     private GoogleApiClient googleApiClient;
     private GoogleSignInOptions googleSignInOptions;
     private TextView addUserTextView;
+    private TextView forgotPasswordTextView;
 
     @Override
     protected int getLayoutId() {
@@ -87,25 +88,26 @@ public class LoginFragment extends BaseFragment {
         super.initView(rootView);
         userEmailEditText = (EditText) rootView.findViewById(R.id.emailEditText);
         userPasswordEditText = (EditText) rootView.findViewById(R.id.passwordEditText);
-        addUserTextView = (TextView) rootView.findViewById(R.id.registrationTextView);
+        forgotPasswordTextView = (TextView) rootView.findViewById(R.id.forgotPasswordTextView);
+        addUserTextView = (TextView) rootView.findViewById(R.id.registerTextView);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         loadControlEvents(rootView);
     }
 
     private void loadControlEvents(View rootView) {
-        SpannableTextUtils.addTextWithSpannableString(addUserTextView, "Forgot password?",
-                "Register here.", Color.BLUE, new SpannableTextUtils.ClickableLinkCallback() {
-                    @Override
-                    public void onClick() {
-                        eventBus.post(new ReplaceFragmentEvent(new ForgotPasswordFragment(), true));
-                    }
-                }, new SpannableTextUtils.ClickableLinkCallback() {
-                    @Override
-                    public void onClick() {
-                        eventBus.post(new ReplaceFragmentEvent(new ClientRegistrationFragment(), true));
-                    }
-                });
+        forgotPasswordTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginPresenter.navigateToForgotPassword();
+            }
+        });
 
+        addUserTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginPresenter.navigateToRegisterUser();
+            }
+        });
 
         Button loginButton = (Button) rootView.findViewById(R.id.loginButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
