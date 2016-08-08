@@ -1,11 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/contactImageView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp" />
 
     <TextView
+        android:id="@+id/welcomeTextView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Request tortillas."/>
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/contactImageView"
+        android:text="Welcome Clemente"
+        android:gravity="center_horizontal"/>
 
-</LinearLayout>
+
+    <Button
+        android:id="@+id/increaseAmountButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/contactImageView"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/amount_operator"
+        android:textSize="40dp"
+        android:textStyle="bold"
+        android:text="+" />
+
+    <TextView
+        android:id="@+id/amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/increaseAmountButton"
+        android:layout_centerHorizontal="true"
+        android:textSize="172dp"
+        android:text="3" />
+
+    <Button
+        android:id="@+id/decreaseAmountButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/amount"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/amount_operator"
+        android:textSize="40dp"
+        android:textStyle="bold"
+        android:text="-" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/share_fab"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:fabSize="normal"
+        app:elevation="@dimen/fab_margin"
+        app:pressedTranslationZ="12dp"
+        android:src="@drawable/ic_send_white"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>
