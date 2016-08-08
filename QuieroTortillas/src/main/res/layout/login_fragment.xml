@@ -54,6 +54,8 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:orientation="horizontal"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
             android:gravity="center_horizontal">
 
             <TextView
@@ -61,8 +63,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:gravity="center_horizontal"
-                android:paddingBottom="5dp"
-                android:paddingTop="5dp"
                 android:textStyle="bold"
                 android:text="Forgot Password?"/>
 
@@ -71,8 +71,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:gravity="center_horizontal"
-                android:paddingBottom="5dp"
-                android:paddingTop="5dp"
                 android:textStyle="bold"
                 android:text=" | Register here."/>
         </LinearLayout>

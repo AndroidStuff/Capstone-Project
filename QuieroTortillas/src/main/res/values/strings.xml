@@ -15,9 +15,9 @@
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
     <string name="hint_name">Fullname</string>
-    <string name="btn_login">SIGN IN</string>
+    <string name="btn_login">Sign in</string>
     <string name="btn_link_to_register">Not a member? Register here!</string>
-    <string name="gmail_login">SIGN IN</string>
+    <string name="gmail_login">Sign in</string>
     <string name="facebook_login">Login with facebook</string>
 
     <string name="btn_link_to_login">Already registered. Login Me!</string>
