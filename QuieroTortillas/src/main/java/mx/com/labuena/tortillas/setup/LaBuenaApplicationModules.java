@@ -2,6 +2,7 @@ package mx.com.labuena.tortillas.setup;
 
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.design.BuildConfig;
 
 import org.greenrobot.eventbus.EventBus;
@@ -30,6 +31,12 @@ public class LaBuenaApplicationModules {
     public EventBus providesEventBus() {
         return EventBus.builder().throwSubscriberException(BuildConfig.DEBUG)
                 .logSubscriberExceptions(true).throwSubscriberException(true).build();
+    }
+
+    @Provides
+    @Singleton
+    public final SharedPreferences providesSharedPreferences() {
+        return PreferenceManager.getDefaultSharedPreferences(application);
     }
 
     @Provides
