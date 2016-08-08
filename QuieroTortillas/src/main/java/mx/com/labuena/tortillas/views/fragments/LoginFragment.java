@@ -1,12 +1,14 @@
 package mx.com.labuena.tortillas.views.fragments;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -31,6 +33,7 @@ import mx.com.labuena.tortillas.events.SuccessfulAuthenticationEvent;
 import mx.com.labuena.tortillas.models.Credentials;
 import mx.com.labuena.tortillas.presenters.LoginPresenter;
 import mx.com.labuena.tortillas.setup.LaBuenaModules;
+import mx.com.labuena.tortillas.utils.SpannableTextUtils;
 
 /**
  * Created by clerks on 8/6/16.
@@ -52,6 +55,7 @@ public class LoginFragment extends BaseFragment {
     private ProgressBar progressBar;
     private GoogleApiClient googleApiClient;
     private GoogleSignInOptions googleSignInOptions;
+    private TextView addUserTextView;
 
     @Override
     protected int getLayoutId() {
@@ -83,11 +87,26 @@ public class LoginFragment extends BaseFragment {
         super.initView(rootView);
         userEmailEditText = (EditText) rootView.findViewById(R.id.emailEditText);
         userPasswordEditText = (EditText) rootView.findViewById(R.id.passwordEditText);
+        addUserTextView = (TextView) rootView.findViewById(R.id.registrationTextView);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         loadControlEvents(rootView);
     }
 
     private void loadControlEvents(View rootView) {
+        SpannableTextUtils.addTextWithSpannableString(addUserTextView, "Forgot password?",
+                "Register here.", Color.BLUE, new SpannableTextUtils.ClickableLinkCallback() {
+                    @Override
+                    public void onClick() {
+                        eventBus.post(new ReplaceFragmentEvent(new ForgotPasswordFragment(), true));
+                    }
+                }, new SpannableTextUtils.ClickableLinkCallback() {
+                    @Override
+                    public void onClick() {
+                        eventBus.post(new ReplaceFragmentEvent(new ClientRegistrationFragment(), true));
+                    }
+                });
+
+
         Button loginButton = (Button) rootView.findViewById(R.id.loginButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override

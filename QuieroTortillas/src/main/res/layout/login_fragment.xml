@@ -51,13 +51,13 @@
             android:textColor="@android:color/black" />
 
         <TextView
+            android:id="@+id/registrationTextView"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center_horizontal"
             android:paddingBottom="5dp"
             android:paddingTop="5dp"
-            android:textStyle="bold"
-            android:text="Forgot password? | Register here."/>
+            android:textStyle="bold"/>
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/gmailSigninButton"
