@@ -13,9 +13,9 @@ import javax.inject.Inject;
 
 import mx.com.labuena.tortillas.R;
 import mx.com.labuena.tortillas.events.ReplaceFragmentEvent;
-
 import mx.com.labuena.tortillas.setup.LaBuenaApplication;
 import mx.com.labuena.tortillas.setup.LaBuenaModules;
+import mx.com.labuena.tortillas.utils.GooglePlayServicesUtil;
 import mx.com.labuena.tortillas.views.fragments.LoginFragment;
 
 /**
@@ -37,9 +37,13 @@ public class HomeActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
-        if (savedInstanceState==null) {
+        if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, new LoginFragment()).commit();
+        }
+
+        if (!GooglePlayServicesUtil.isGooglePlayServicesAvailable(this)) {
+            GooglePlayServicesUtil.requestGooglePlayServices(this);
         }
     }
 
@@ -48,6 +52,10 @@ public class HomeActivity extends AppCompatActivity {
         super.onResume();
         if (!eventBus.isRegistered(this))
             eventBus.register(this);
+
+        if (!GooglePlayServicesUtil.isGooglePlayServicesAvailable(this)) {
+            GooglePlayServicesUtil.requestGooglePlayServices(this);
+        }
     }
 
     @Override

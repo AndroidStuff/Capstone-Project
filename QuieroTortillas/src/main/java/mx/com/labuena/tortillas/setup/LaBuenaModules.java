@@ -3,6 +3,7 @@ package mx.com.labuena.tortillas.setup;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import mx.com.labuena.tortillas.services.ClientInstanceIdService;
 import mx.com.labuena.tortillas.views.activities.HomeActivity;
 import mx.com.labuena.tortillas.views.fragments.LoginFragment;
 
@@ -14,4 +15,6 @@ import mx.com.labuena.tortillas.views.fragments.LoginFragment;
 public interface LaBuenaModules {
     void inject(HomeActivity homeActivity);
     void inject(LoginFragment loginFragment);
+
+    void inject(ClientInstanceIdService clientInstanceIdService);
 }

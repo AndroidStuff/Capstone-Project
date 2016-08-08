@@ -1,6 +1,7 @@
 package mx.com.labuena.tortillas.setup;
 
 import android.app.Application;
+import android.content.SharedPreferences;
 import android.support.design.BuildConfig;
 
 import org.greenrobot.eventbus.EventBus;
@@ -9,6 +10,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import mx.com.labuena.tortillas.models.PreferencesRepository;
+import mx.com.labuena.tortillas.models.SharedPreferencesRepository;
 
 /**
  * Created by clerks on 8/6/16.
@@ -27,5 +30,10 @@ public class LaBuenaApplicationModules {
     public EventBus providesEventBus() {
         return EventBus.builder().throwSubscriberException(BuildConfig.DEBUG)
                 .logSubscriberExceptions(true).throwSubscriberException(true).build();
+    }
+
+    @Provides
+    public PreferencesRepository providesPreferencesRepository(SharedPreferences sharedPreferences) {
+        return new SharedPreferencesRepository(sharedPreferences);
     }
 }
