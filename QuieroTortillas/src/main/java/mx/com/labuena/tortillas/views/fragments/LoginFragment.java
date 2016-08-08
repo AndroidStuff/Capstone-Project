@@ -1,5 +1,6 @@
 package mx.com.labuena.tortillas.views.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -8,6 +9,12 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.greenrobot.eventbus.EventBus;
@@ -30,6 +37,7 @@ import mx.com.labuena.tortillas.setup.LaBuenaModules;
  */
 
 public class LoginFragment extends BaseFragment {
+    private static final int GOOGLE_SIGN_IN_REQUEST_CODE = 23;
     @Inject
     LoginPresenter loginPresenter;
 
@@ -42,6 +50,8 @@ public class LoginFragment extends BaseFragment {
 
     private EditText userPasswordEditText;
     private ProgressBar progressBar;
+    private GoogleApiClient googleApiClient;
+    private GoogleSignInOptions googleSignInOptions;
 
     @Override
     protected int getLayoutId() {
@@ -56,6 +66,16 @@ public class LoginFragment extends BaseFragment {
     @Override
     protected void initFragment(Bundle savedInstanceState) {
         firebaseAuth = FirebaseAuth.getInstance();
+
+        googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.web_client_id))
+                .requestEmail()
+                .build();
+
+        googleApiClient = new GoogleApiClient.Builder(getActivity())
+                .enableAutoManage(getActivity(), loginPresenter.getGoogleClientListener())
+                .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)
+                .build();
     }
 
     @Override
@@ -78,12 +98,14 @@ public class LoginFragment extends BaseFragment {
             }
         });
 
-        Button loginWithGmailButton = (Button) rootView.findViewById(R.id.gmailSigninButton);
+        SignInButton loginWithGmailButton = (SignInButton) rootView.findViewById(R.id.gmailSigninButton);
+        loginWithGmailButton.setSize(SignInButton.SIZE_STANDARD);
+        loginWithGmailButton.setScopes(googleSignInOptions.getScopeArray());
         loginWithGmailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Credentials credentials = getUserInputCredentials();
-                loginPresenter.authenticateUsingGmail(credentials);
+                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+                startActivityForResult(signInIntent, GOOGLE_SIGN_IN_REQUEST_CODE);
             }
         });
 
@@ -95,6 +117,20 @@ public class LoginFragment extends BaseFragment {
                 loginPresenter.authenticateUsingFacebook(credentials);
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GOOGLE_SIGN_IN_REQUEST_CODE) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if (result.isSuccess()) {
+                GoogleSignInAccount account = result.getSignInAccount();
+                loginPresenter.firebaseAuthWithGoogle(getActivity(), firebaseAuth, account);
+            } else {
+
+            }
+        }
     }
 
     @Override

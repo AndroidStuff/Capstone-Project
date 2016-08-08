@@ -15,10 +15,10 @@
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
     <string name="hint_name">Fullname</string>
-    <string name="btn_login">LOGIN</string>
+    <string name="btn_login">SIGN IN</string>
     <string name="btn_link_to_register">Not a member? Register here!</string>
-    <string name="gmail_login">Login with Gmail</string>
-    <string name="facebook_login">Login with Facebook</string>
+    <string name="gmail_login">SIGN IN</string>
+    <string name="facebook_login">Login with facebook</string>
 
     <string name="btn_link_to_login">Already registered. Login Me!</string>
     <string name="title_activity_reset_password">ResetPasswordActivity</string>
@@ -31,5 +31,7 @@
     <string name="btn_remove">Remove</string>
     <string name="btn_sign_out">Sign Out</string>
     <string name="lbl_forgot_password">Forgot password?</string>
-    <string name="forgot_password_msg">Please enter your accounts email address below and click the "reset password" button to receive a reset password email.</string>
+    <string name="forgot_password_msg">Please enter your accounts email address below and click the reset password button to receive a reset password email.</string>
+
+    <string name="web_client_id">269028494679-a06mh94qbqt3qvborhnu3nc7rfem1uo5.apps.googleusercontent.com</string>
 </resources>
