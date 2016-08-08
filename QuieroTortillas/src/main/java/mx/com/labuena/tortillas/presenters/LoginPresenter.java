@@ -22,6 +22,7 @@ import javax.inject.Inject;
 import mx.com.labuena.tortillas.events.InvalidInputCredentialsEvent;
 import mx.com.labuena.tortillas.events.ReplaceFragmentEvent;
 import mx.com.labuena.tortillas.models.Credentials;
+import mx.com.labuena.tortillas.models.User;
 import mx.com.labuena.tortillas.views.fragments.ClientRegistrationFragment;
 import mx.com.labuena.tortillas.views.fragments.ForgotPasswordFragment;
 import mx.com.labuena.tortillas.views.fragments.TortillasRequestorFragment;
@@ -43,10 +44,12 @@ public class LoginPresenter extends BasePresenter {
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (isUserAuthenticated(user)) {
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                    eventBus.post(new ReplaceFragmentEvent(new TortillasRequestorFragment(), false));
+                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                if (isUserAuthenticated(firebaseUser)) {
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + firebaseUser.getUid());
+                    User user = new User(firebaseUser.getUid(), firebaseUser.getEmail(), firebaseUser.getDisplayName(), firebaseUser.getPhotoUrl());
+                    Log.d(TAG, "User:" + user);
+                    eventBus.post(new ReplaceFragmentEvent(TortillasRequestorFragment.newInstance(user), false));
                 } else {
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                 }

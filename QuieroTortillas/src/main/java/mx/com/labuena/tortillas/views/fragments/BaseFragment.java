@@ -39,7 +39,6 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected void initFragment(Bundle savedInstanceState) {
-
     }
 
     protected void loadFragmentArguments() {
