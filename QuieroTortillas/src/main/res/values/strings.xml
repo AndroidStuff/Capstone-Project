@@ -46,4 +46,5 @@
     <string name="delivery_message">Delivering to %s</string>
     <string name="tortillas_amount_format">%d kg</string>
     <string name="name">Name</string>
+    <string name="duplicate_user">Email already register to an user.</string>
 </resources>

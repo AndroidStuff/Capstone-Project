@@ -18,9 +18,12 @@ import javax.inject.Inject;
 import mx.com.labuena.tortillas.R;
 import mx.com.labuena.tortillas.events.FailureAuthenticationEvent;
 import mx.com.labuena.tortillas.events.InvalidInputCredentialsEvent;
+import mx.com.labuena.tortillas.events.UserAlreadyRegisterEvent;
 import mx.com.labuena.tortillas.models.Credentials;
 import mx.com.labuena.tortillas.presenters.ClientRegistrationPresenter;
 import mx.com.labuena.tortillas.setup.LaBuenaModules;
+
+import static mx.com.labuena.tortillas.R.id.nameEditText;
 
 /**
  * Created by clerks on 8/7/16.
@@ -37,6 +40,7 @@ public class ClientRegistrationFragment extends BaseFragment {
     private EditText userEmailEditText;
     private EditText userPasswordEditText;
     private ProgressBar progressBar;
+    private EditText userNameEditText;
 
     @Override
     protected int getLayoutId() {
@@ -55,6 +59,7 @@ public class ClientRegistrationFragment extends BaseFragment {
 
     @Override
     protected void initView(View rootView) {
+        userNameEditText = (EditText) rootView.findViewById(nameEditText);
         userEmailEditText = (EditText) rootView.findViewById(R.id.emailEditText);
         userPasswordEditText = (EditText) rootView.findViewById(R.id.passwordEditText);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
@@ -114,6 +119,12 @@ public class ClientRegistrationFragment extends BaseFragment {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUserAlreadyRegisterEvent(UserAlreadyRegisterEvent event) {
+        progressBar.setVisibility(View.GONE);
+        Toast.makeText(getActivity(), getString(R.string.duplicate_user), Toast.LENGTH_LONG).show();
+    }
+
     private void loadControlEvents(View rootView) {
         View newUserButton = rootView.findViewById(R.id.signUpButton);
         newUserButton.setOnClickListener(new View.OnClickListener() {
@@ -121,7 +132,8 @@ public class ClientRegistrationFragment extends BaseFragment {
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);
                 Credentials credentials = getUserInputCredentials();
-                clientRegistrationPresenter.createUser(getActivity(), firebaseAuth, credentials);
+                String name = userNameEditText.getText().toString();
+                clientRegistrationPresenter.createUser(getActivity(), firebaseAuth, credentials, name);
             }
         });
     }
