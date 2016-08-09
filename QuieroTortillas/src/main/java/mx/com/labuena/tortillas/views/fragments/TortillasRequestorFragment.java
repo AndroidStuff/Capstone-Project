@@ -1,8 +1,12 @@
 package mx.com.labuena.tortillas.views.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -198,6 +202,11 @@ public class TortillasRequestorFragment extends BaseFragment {
     }
 
     private void displayTortillasAmount() {
-        tortillasAmontTextview.setText(String.format("%d", tortillasRequest.getAmount()));
+        String formattedAmount = String.format("%d kg", tortillasRequest.getAmount());
+        SpannableString spannableString = new SpannableString(formattedAmount);
+        int measureUnitStart = formattedAmount.length() - 3;
+        spannableString.setSpan(new RelativeSizeSpan(0.2f), measureUnitStart, formattedAmount.length(), 0);
+        spannableString.setSpan(new ForegroundColorSpan(Color.BLACK), measureUnitStart, formattedAmount.length(), 0);
+        tortillasAmontTextview.setText(spannableString);
     }
 }
