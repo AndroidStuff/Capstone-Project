@@ -2,6 +2,7 @@ package mx.com.labuena.tortillas.views.fragments;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -33,11 +34,13 @@ import org.greenrobot.eventbus.ThreadMode;
 import javax.inject.Inject;
 
 import mx.com.labuena.tortillas.R;
+import mx.com.labuena.tortillas.events.AddressReceivedEvent;
 import mx.com.labuena.tortillas.events.TortillasRequestChangedEvent;
 import mx.com.labuena.tortillas.models.DeviceLocation;
 import mx.com.labuena.tortillas.models.TortillasRequest;
 import mx.com.labuena.tortillas.models.User;
 import mx.com.labuena.tortillas.presenters.TortillasRequestorPresenter;
+import mx.com.labuena.tortillas.services.FetchAddressIntentService;
 import mx.com.labuena.tortillas.setup.LaBuenaModules;
 
 /**
@@ -69,6 +72,7 @@ public class TortillasRequestorFragment extends BaseFragment implements GoogleAp
 
     private GoogleApiClient googleApiClient;
     private Location lastLocation;
+    private TextView locationDeliveryTextView;
 
     @TargetApi(Build.VERSION_CODES.M)
     @Override
@@ -83,6 +87,8 @@ public class TortillasRequestorFragment extends BaseFragment implements GoogleAp
         if (lastLocation != null) {
             tortillasRequest.setDeviceLocation(new DeviceLocation(lastLocation.getLatitude(),
                     lastLocation.getLongitude()));
+
+            startIntentService(lastLocation);
         }
     }
 
@@ -161,6 +167,8 @@ public class TortillasRequestorFragment extends BaseFragment implements GoogleAp
         TextView nameTextView = (TextView) rootView.findViewById(R.id.welcomeTextView);
         nameTextView.setText(String.format("Welcome %s", user.getName()));
 
+        locationDeliveryTextView = (TextView)rootView.findViewById(R.id.locationDeliveryTextView);
+
         tortillasAmontTextview = (TextView) rootView.findViewById(R.id.amountTextview);
         displayTortillasAmount();
 
@@ -199,6 +207,13 @@ public class TortillasRequestorFragment extends BaseFragment implements GoogleAp
         tortillasRequest = event.getTortillasRequest();
         displayTortillasAmount();
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onAddressReceivedEvent(AddressReceivedEvent event) {
+        locationDeliveryTextView.setText(String.format("Delivering to %s", event.getAddress()));
+    }
+
+
 
     private void addEventsToControls(View rootView) {
         Button buttonMoreTortillas = (Button) rootView.findViewById(R.id.increaseAmountButton);
@@ -274,5 +289,11 @@ public class TortillasRequestorFragment extends BaseFragment implements GoogleAp
         spannableString.setSpan(new RelativeSizeSpan(0.2f), measureUnitStart, formattedAmount.length(), 0);
         spannableString.setSpan(new ForegroundColorSpan(Color.BLACK), measureUnitStart, formattedAmount.length(), 0);
         tortillasAmontTextview.setText(spannableString);
+    }
+
+    private void startIntentService(Location location) {
+        Intent intent = new Intent(getActivity(), FetchAddressIntentService.class);
+        intent.putExtra(FetchAddressIntentService.LOCATION_DATA_EXTRA, location);
+        getActivity().startService(intent);
     }
 }

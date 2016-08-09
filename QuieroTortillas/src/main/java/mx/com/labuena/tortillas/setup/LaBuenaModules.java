@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import mx.com.labuena.tortillas.services.ClientInstanceIdService;
+import mx.com.labuena.tortillas.services.FetchAddressIntentService;
 import mx.com.labuena.tortillas.views.activities.HomeActivity;
 import mx.com.labuena.tortillas.views.fragments.LoginFragment;
 import mx.com.labuena.tortillas.views.fragments.TortillasRequestorFragment;
@@ -20,4 +21,6 @@ public interface LaBuenaModules {
     void inject(ClientInstanceIdService clientInstanceIdService);
 
     void inject(TortillasRequestorFragment tortillasRequestorFragment);
+
+    void inject(FetchAddressIntentService fetchAddressIntentService);
 }
