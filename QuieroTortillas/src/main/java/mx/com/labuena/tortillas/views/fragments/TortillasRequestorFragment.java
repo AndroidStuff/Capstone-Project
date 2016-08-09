@@ -1,7 +1,9 @@
 package mx.com.labuena.tortillas.views.fragments;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -29,6 +31,12 @@ import mx.com.labuena.tortillas.setup.LaBuenaModules;
 public class TortillasRequestorFragment extends BaseFragment {
 
     public static final String LOGIN_USER_KEY = "LoginUser";
+    private static final long REP_DELAY = 100;
+
+    private Handler repeatUpdateHandler = new Handler();
+
+    private boolean autoIncrement = false;
+    private boolean autoDecrement = false;
 
     @Inject
     TortillasRequestorPresenter tortillasRequestorPresenter;
@@ -41,6 +49,21 @@ public class TortillasRequestorFragment extends BaseFragment {
     private TextView tortillasAmontTextview;
 
     private TortillasRequest tortillasRequest;
+
+    class UpdateAmount implements Runnable {
+        public void run() {
+            if (autoIncrement) {
+                tortillasRequestorPresenter.increaseOrderAmount(tortillasRequest);
+                repeatUpdateHandler.postDelayed(new UpdateAmount(), REP_DELAY);
+                return;
+            }
+
+            if (autoDecrement) {
+                tortillasRequestorPresenter.decreaseOrderAmount(tortillasRequest);
+                repeatUpdateHandler.postDelayed(new UpdateAmount(), REP_DELAY);
+            }
+        }
+    }
 
     @Override
     protected int getLayoutId() {
@@ -116,11 +139,51 @@ public class TortillasRequestorFragment extends BaseFragment {
             }
         });
 
+        buttonMoreTortillas.setOnLongClickListener(
+                new View.OnLongClickListener() {
+                    public boolean onLongClick(View arg0) {
+                        autoIncrement = true;
+                        repeatUpdateHandler.post(new UpdateAmount());
+                        return false;
+                    }
+                }
+        );
+
+        buttonMoreTortillas.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                if ((event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL)
+                        && autoIncrement) {
+                    autoIncrement = false;
+                }
+                return false;
+            }
+        });
+
         Button buttonLessTortillas = (Button) rootView.findViewById(R.id.decreaseAmountButton);
         buttonLessTortillas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 tortillasRequestorPresenter.decreaseOrderAmount(tortillasRequest);
+            }
+        });
+
+        buttonLessTortillas.setOnLongClickListener(
+                new View.OnLongClickListener() {
+                    public boolean onLongClick(View arg0) {
+                        autoDecrement = true;
+                        repeatUpdateHandler.post(new UpdateAmount());
+                        return false;
+                    }
+                }
+        );
+
+        buttonLessTortillas.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+                if ((event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL)
+                        && autoDecrement) {
+                    autoDecrement = false;
+                }
+                return false;
             }
         });
 
