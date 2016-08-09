@@ -6,6 +6,7 @@ import dagger.Component;
 import mx.com.labuena.tortillas.services.ClientInstanceIdService;
 import mx.com.labuena.tortillas.views.activities.HomeActivity;
 import mx.com.labuena.tortillas.views.fragments.LoginFragment;
+import mx.com.labuena.tortillas.views.fragments.TortillasRequestorFragment;
 
 /**
  * Created by clerks on 8/6/16.
@@ -17,4 +18,6 @@ public interface LaBuenaModules {
     void inject(LoginFragment loginFragment);
 
     void inject(ClientInstanceIdService clientInstanceIdService);
+
+    void inject(TortillasRequestorFragment tortillasRequestorFragment);
 }
