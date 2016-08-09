@@ -21,10 +21,16 @@
             android:textColor="@android:color/white"
             android:textSize="20dp" />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/wrap_96"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="60dp"/>
+
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp">
+            android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/nameEditText"
