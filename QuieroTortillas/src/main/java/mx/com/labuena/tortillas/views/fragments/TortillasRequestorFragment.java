@@ -46,6 +46,8 @@ public class TortillasRequestorFragment extends BaseFragment {
         ImageView userPhoto = (ImageView) rootView.findViewById(R.id.contactImageView);
         Picasso.with(getActivity())
                 .load(user.getPhotoUri())
+                .resize(100, 100)
+                .centerCrop()
                 .into(userPhoto);
 
         TextView nameTextView = (TextView)rootView.findViewById(R.id.welcomeTextView);
