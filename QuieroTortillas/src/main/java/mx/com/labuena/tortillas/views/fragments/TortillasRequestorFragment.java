@@ -1,9 +1,17 @@
 package mx.com.labuena.tortillas.views.fragments;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
@@ -13,6 +21,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
@@ -23,6 +34,7 @@ import javax.inject.Inject;
 
 import mx.com.labuena.tortillas.R;
 import mx.com.labuena.tortillas.events.TortillasRequestChangedEvent;
+import mx.com.labuena.tortillas.models.DeviceLocation;
 import mx.com.labuena.tortillas.models.TortillasRequest;
 import mx.com.labuena.tortillas.models.User;
 import mx.com.labuena.tortillas.presenters.TortillasRequestorPresenter;
@@ -32,10 +44,11 @@ import mx.com.labuena.tortillas.setup.LaBuenaModules;
  * Created by clerks on 8/7/16.
  */
 
-public class TortillasRequestorFragment extends BaseFragment {
+public class TortillasRequestorFragment extends BaseFragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     public static final String LOGIN_USER_KEY = "LoginUser";
     private static final long REP_DELAY = 100;
+    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 23;
 
     private Handler repeatUpdateHandler = new Handler();
 
@@ -53,6 +66,35 @@ public class TortillasRequestorFragment extends BaseFragment {
     private TextView tortillasAmontTextview;
 
     private TortillasRequest tortillasRequest;
+
+    private GoogleApiClient googleApiClient;
+    private Location lastLocation;
+
+    @TargetApi(Build.VERSION_CODES.M)
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            getActivity().requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+            return;
+        }
+        lastLocation = LocationServices.FusedLocationApi.getLastLocation(
+                googleApiClient);
+
+        if (lastLocation != null) {
+            tortillasRequest.setDeviceLocation(new DeviceLocation(lastLocation.getLatitude(),
+                    lastLocation.getLongitude()));
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
 
     class UpdateAmount implements Runnable {
         public void run() {
@@ -77,6 +119,17 @@ public class TortillasRequestorFragment extends BaseFragment {
     @Override
     protected void injectDependencies(LaBuenaModules modules) {
         modules.inject(this);
+    }
+
+    @Override
+    protected void initFragment(Bundle savedInstanceState) {
+        if (googleApiClient == null) {
+            googleApiClient = new GoogleApiClient.Builder(getActivity())
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
     }
 
     public static TortillasRequestorFragment newInstance(User user) {
@@ -115,6 +168,13 @@ public class TortillasRequestorFragment extends BaseFragment {
     }
 
     @Override
+    public void onStart() {
+        googleApiClient.connect();
+        super.onStart();
+
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         if (!eventBus.isRegistered(this))
@@ -126,6 +186,12 @@ public class TortillasRequestorFragment extends BaseFragment {
         super.onPause();
         if (eventBus.isRegistered(this))
             eventBus.unregister(this);
+    }
+
+    @Override
+    public void onStop() {
+        googleApiClient.disconnect();
+        super.onStop();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

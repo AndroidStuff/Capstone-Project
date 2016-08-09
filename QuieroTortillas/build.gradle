@@ -59,6 +59,7 @@ dependencies {
 
     compile "com.google.android.gms:play-services-auth:$rootProject.ext.playservicesVersion"
     compile "com.google.android.gms:play-services-gcm:$rootProject.ext.playservicesVersion"
+    compile "com.google.android.gms:play-services-location:$rootProject.ext.playservicesVersion"
 
     compile "org.apache.commons:commons-lang3:$rootProject.ext.apachecommonsVersion"
 

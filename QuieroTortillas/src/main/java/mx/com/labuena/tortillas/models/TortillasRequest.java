@@ -11,7 +11,7 @@ public class TortillasRequest {
 
     private int amount = DEFAULT_CONSUME;
     private final User user;
-    private Location deviceLocation;
+    private DeviceLocation deviceLocation;
 
     public TortillasRequest(User user) {
         this.user = user;
@@ -29,11 +29,11 @@ public class TortillasRequest {
         return user;
     }
 
-    public Location getDeviceLocation() {
+    public DeviceLocation getDeviceLocation() {
         return deviceLocation;
     }
 
-    public void setDeviceLocation(Location deviceLocation) {
+    public void setDeviceLocation(DeviceLocation deviceLocation) {
         this.deviceLocation = deviceLocation;
     }
 
