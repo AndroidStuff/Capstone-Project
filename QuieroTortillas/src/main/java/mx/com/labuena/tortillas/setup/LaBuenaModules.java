@@ -7,6 +7,7 @@ import mx.com.labuena.tortillas.services.ClientInstanceIdService;
 import mx.com.labuena.tortillas.services.FetchAddressIntentService;
 import mx.com.labuena.tortillas.services.SendTortillasOrderIntentService;
 import mx.com.labuena.tortillas.views.activities.HomeActivity;
+import mx.com.labuena.tortillas.views.fragments.ClientRegistrationFragment;
 import mx.com.labuena.tortillas.views.fragments.LoginFragment;
 import mx.com.labuena.tortillas.views.fragments.TortillasRequestorFragment;
 
@@ -26,4 +27,6 @@ public interface LaBuenaModules {
     void inject(FetchAddressIntentService fetchAddressIntentService);
 
     void inject(SendTortillasOrderIntentService sendTortillasOrderIntentService);
+
+    void inject(ClientRegistrationFragment clientRegistrationFragment);
 }

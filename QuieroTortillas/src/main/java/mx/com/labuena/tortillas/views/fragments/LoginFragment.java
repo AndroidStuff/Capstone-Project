@@ -1,7 +1,6 @@
 package mx.com.labuena.tortillas.views.fragments;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -28,12 +27,9 @@ import javax.inject.Inject;
 import mx.com.labuena.tortillas.R;
 import mx.com.labuena.tortillas.events.FailureAuthenticationEvent;
 import mx.com.labuena.tortillas.events.InvalidInputCredentialsEvent;
-import mx.com.labuena.tortillas.events.ReplaceFragmentEvent;
-import mx.com.labuena.tortillas.events.SuccessfulAuthenticationEvent;
 import mx.com.labuena.tortillas.models.Credentials;
 import mx.com.labuena.tortillas.presenters.LoginPresenter;
 import mx.com.labuena.tortillas.setup.LaBuenaModules;
-import mx.com.labuena.tortillas.utils.SpannableTextUtils;
 
 /**
  * Created by clerks on 8/6/16.
@@ -85,7 +81,6 @@ public class LoginFragment extends BaseFragment {
 
     @Override
     protected void initView(View rootView) {
-        super.initView(rootView);
         userEmailEditText = (EditText) rootView.findViewById(R.id.emailEditText);
         userPasswordEditText = (EditText) rootView.findViewById(R.id.passwordEditText);
         forgotPasswordTextView = (TextView) rootView.findViewById(R.id.forgotPasswordTextView);
@@ -180,11 +175,6 @@ public class LoginFragment extends BaseFragment {
         if (loginPresenter.getmAuthListener() != null) {
             firebaseAuth.removeAuthStateListener(loginPresenter.getmAuthListener());
         }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onSuccessfulAuthenticationEvent(SuccessfulAuthenticationEvent event) {
-        eventBus.postSticky(new ReplaceFragmentEvent(new TortillasRequestorFragment(), false));
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

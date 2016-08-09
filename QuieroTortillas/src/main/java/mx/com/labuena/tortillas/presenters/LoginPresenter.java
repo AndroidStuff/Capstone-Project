@@ -19,6 +19,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 
+import mx.com.labuena.tortillas.events.FailureAuthenticationEvent;
 import mx.com.labuena.tortillas.events.InvalidInputCredentialsEvent;
 import mx.com.labuena.tortillas.events.ReplaceFragmentEvent;
 import mx.com.labuena.tortillas.models.Credentials;
@@ -76,14 +77,14 @@ public class LoginPresenter extends BasePresenter {
         return user != null;
     }
 
-    public void authenticate(final Activity activity, Credentials credentials, FirebaseAuth firebaseAuth) {
+    public void authenticate(final Activity activity, final Credentials credentials, FirebaseAuth firebaseAuth) {
         if (credentials.isValid()) {
             firebaseAuth.signInWithEmailAndPassword(credentials.getEmail(), credentials.getPassword())
                     .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (!task.isSuccessful()) {
-
+                                eventBus.post(new FailureAuthenticationEvent(credentials));
                             }
 
 
