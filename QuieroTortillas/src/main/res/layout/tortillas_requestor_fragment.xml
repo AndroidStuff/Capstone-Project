@@ -52,7 +52,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/amount"
+            android:id="@+id/amountTextview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/increaseAmountButton"
@@ -64,7 +64,7 @@
             android:id="@+id/decreaseAmountButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/amount"
+            android:layout_below="@id/amountTextview"
             android:layout_centerHorizontal="true"
             android:background="@drawable/amount_operator"
             android:text="-"
