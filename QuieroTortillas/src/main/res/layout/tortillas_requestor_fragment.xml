@@ -31,7 +31,6 @@
                 android:id="@+id/welcomeTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Welcome Clemente Morales"
                 android:textSize="16dp" />
 
             <TextView
@@ -55,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:background="@drawable/amount_operator"
-            android:text="+"
+            android:text="@string/lbl_more_tortillas"
             android:textSize="48dp"
             android:textStyle="bold" />
 
@@ -65,7 +64,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/increaseAmountButton"
             android:layout_centerHorizontal="true"
-            android:text="3"
             android:textSize="172dp" />
 
         <Button
@@ -75,7 +73,7 @@
             android:layout_below="@id/amountTextview"
             android:layout_centerHorizontal="true"
             android:background="@drawable/amount_operator"
-            android:text="-"
+            android:text="@string/lbl_less_tortillas"
             android:textSize="48dp"
             android:textStyle="bold" />
     </RelativeLayout>

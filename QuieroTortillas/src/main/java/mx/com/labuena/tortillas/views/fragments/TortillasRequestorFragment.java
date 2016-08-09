@@ -50,12 +50,15 @@ import mx.com.labuena.tortillas.setup.LaBuenaModules;
 public class TortillasRequestorFragment extends BaseFragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     public static final String LOGIN_USER_KEY = "LoginUser";
+    public static final int USER_IMAGE_HEIGHT = 100;
     private static final long REP_DELAY = 100;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 23;
+    public static final int USER_IMAGE_WIDTH = 100;
 
     private Handler repeatUpdateHandler = new Handler();
 
     private boolean autoIncrement = false;
+
     private boolean autoDecrement = false;
 
     @Inject
@@ -71,7 +74,9 @@ public class TortillasRequestorFragment extends BaseFragment implements GoogleAp
     private TortillasRequest tortillasRequest;
 
     private GoogleApiClient googleApiClient;
+
     private Location lastLocation;
+
     private TextView locationDeliveryTextView;
 
     @TargetApi(Build.VERSION_CODES.M)
@@ -160,14 +165,15 @@ public class TortillasRequestorFragment extends BaseFragment implements GoogleAp
         ImageView userPhoto = (ImageView) rootView.findViewById(R.id.contactImageView);
         Picasso.with(getActivity())
                 .load(user.getPhotoUri())
-                .resize(100, 100)
+                .resize(USER_IMAGE_WIDTH, USER_IMAGE_HEIGHT)
                 .centerCrop()
                 .into(userPhoto);
 
         TextView nameTextView = (TextView) rootView.findViewById(R.id.welcomeTextView);
-        nameTextView.setText(String.format("Welcome %s", user.getName()));
+        String welcomeMessage = getString(R.string.welcome_message);
+        nameTextView.setText(String.format(welcomeMessage, user.getName()));
 
-        locationDeliveryTextView = (TextView)rootView.findViewById(R.id.locationDeliveryTextView);
+        locationDeliveryTextView = (TextView) rootView.findViewById(R.id.locationDeliveryTextView);
 
         tortillasAmontTextview = (TextView) rootView.findViewById(R.id.amountTextview);
         displayTortillasAmount();
@@ -210,9 +216,9 @@ public class TortillasRequestorFragment extends BaseFragment implements GoogleAp
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAddressReceivedEvent(AddressReceivedEvent event) {
-        locationDeliveryTextView.setText(String.format("Delivering to %s", event.getAddress()));
+        String deliveryMessage = getString(R.string.delivery_message);
+        locationDeliveryTextView.setText(String.format(deliveryMessage, event.getAddress()));
     }
-
 
 
     private void addEventsToControls(View rootView) {
@@ -283,7 +289,8 @@ public class TortillasRequestorFragment extends BaseFragment implements GoogleAp
     }
 
     private void displayTortillasAmount() {
-        String formattedAmount = String.format("%d kg", tortillasRequest.getAmount());
+        String amountFormat = getString(R.string.tortillas_amount_format);
+        String formattedAmount = String.format(amountFormat, tortillasRequest.getAmount());
         SpannableString spannableString = new SpannableString(formattedAmount);
         int measureUnitStart = formattedAmount.length() - 3;
         spannableString.setSpan(new RelativeSizeSpan(0.2f), measureUnitStart, formattedAmount.length(), 0);

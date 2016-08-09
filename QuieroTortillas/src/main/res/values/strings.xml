@@ -38,4 +38,11 @@
     <string name="invalid_lat_long_used">Invalid latitud, longitud used.</string>
     <string name="no_address_found">We could not find an address with that last saved location</string>
     <string name="fetchingJokesMessage">Sending tortillas request</string>
+    <string name="lbl_register_here">| Register here.</string>
+    <string name="lbl_more_tortillas">+</string>
+    <string name="lbl_less_tortillas">-</string>
+    <string name="lbl_new_client">New Client</string>
+    <string name="welcome_message">Welcome %s</string>
+    <string name="delivery_message">Delivering to %s</string>
+    <string name="tortillas_amount_format">%d kg</string>
 </resources>
