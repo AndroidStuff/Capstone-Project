@@ -38,7 +38,7 @@ public class TortillasRequest {
     }
 
     public boolean isAmountUnderMaxLimit() {
-        return amount <= MAX_AMOUNT;
+        return amount < MAX_AMOUNT;
     }
 
     public void increaseAmount() {
