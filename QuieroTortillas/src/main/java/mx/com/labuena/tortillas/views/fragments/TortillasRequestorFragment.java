@@ -78,6 +78,7 @@ public class TortillasRequestorFragment extends BaseFragment implements GoogleAp
     private Location lastLocation;
 
     private TextView locationDeliveryTextView;
+    private boolean sendingRequest;
 
     @TargetApi(Build.VERSION_CODES.M)
     @Override
@@ -218,6 +219,11 @@ public class TortillasRequestorFragment extends BaseFragment implements GoogleAp
     public void onAddressReceivedEvent(AddressReceivedEvent event) {
         String deliveryMessage = getString(R.string.delivery_message);
         locationDeliveryTextView.setText(String.format(deliveryMessage, event.getAddress()));
+
+        if (sendingRequest) {
+            tortillasRequestorPresenter.requestOrder(tortillasRequest);
+            sendingRequest = false;
+        }
     }
 
 
@@ -283,9 +289,22 @@ public class TortillasRequestorFragment extends BaseFragment implements GoogleAp
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tortillasRequestorPresenter.requestOrder(tortillasRequest);
+                if (lastLocation != null) {
+                    tortillasRequestorPresenter.requestOrder(tortillasRequest);
+                } else {
+                    retrieveLastKnownLocation();
+                }
             }
         });
+    }
+
+    private void retrieveLastKnownLocation() {
+        sendingRequest = true;
+        if (!googleApiClient.isConnected())
+            googleApiClient.connect();
+
+        googleApiClient.disconnect();
+        googleApiClient.connect();
     }
 
     private void displayTortillasAmount() {
