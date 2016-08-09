@@ -15,6 +15,7 @@ public class User implements Parcelable {
     private final String email;
     private final String name;
     private final Uri photoUri;
+    private String fcmToken;
 
     public User(String userId, String email, String name, Uri photoUri) {
         this.userId = userId;
@@ -39,6 +40,10 @@ public class User implements Parcelable {
         return name;
     }
 
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
@@ -56,6 +61,7 @@ public class User implements Parcelable {
         dest.writeString(this.email);
         dest.writeString(this.name);
         dest.writeParcelable(this.photoUri, flags);
+        dest.writeString(this.fcmToken);
     }
 
     protected User(Parcel in) {
@@ -63,6 +69,7 @@ public class User implements Parcelable {
         this.email = in.readString();
         this.name = in.readString();
         this.photoUri = in.readParcelable(Uri.class.getClassLoader());
+        fcmToken = in.readString();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -76,4 +83,8 @@ public class User implements Parcelable {
             return new User[size];
         }
     };
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
+    }
 }
