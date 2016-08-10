@@ -10,6 +10,7 @@ import mx.com.labuena.tortillas.services.SendTortillasOrderIntentService;
 import mx.com.labuena.tortillas.views.activities.HomeActivity;
 import mx.com.labuena.tortillas.views.fragments.ClientRegistrationFragment;
 import mx.com.labuena.tortillas.views.fragments.LoginFragment;
+import mx.com.labuena.tortillas.views.fragments.OrderConfirmationFragment;
 import mx.com.labuena.tortillas.views.fragments.TortillasRequestorFragment;
 
 /**
@@ -32,4 +33,6 @@ public interface LaBuenaModules {
     void inject(ClientRegistrationFragment clientRegistrationFragment);
 
     void inject(ClientRegistrationIntentService clientRegistrationIntentService);
+
+    void inject(OrderConfirmationFragment orderConfirmationFragment);
 }

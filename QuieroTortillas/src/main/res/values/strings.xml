@@ -47,4 +47,8 @@
     <string name="tortillas_amount_format">%d kg</string>
     <string name="name">Name</string>
     <string name="duplicate_user">Email already register to an user.</string>
+    <string name="btn_done">Done</string>
+    <string name="lbl_order_send">We are processing your tortillas order for 7 kg wich will be delivery to Batopilas 58 Hacienda II.</string>
+    <string name="lbl_order_confirmation_title">Thank you for using La Buena!</string>
+    <string name="btn_new_request">New order</string>
 </resources>

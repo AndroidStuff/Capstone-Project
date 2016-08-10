@@ -6,6 +6,8 @@ import android.util.Log;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
 
 import javax.inject.Inject;
@@ -13,11 +15,13 @@ import javax.inject.Inject;
 import mx.com.labuena.services.clients.Clients;
 import mx.com.labuena.services.clients.model.Coordinates;
 import mx.com.labuena.services.clients.model.Order;
+import mx.com.labuena.tortillas.events.ReplaceFragmentEvent;
 import mx.com.labuena.tortillas.models.DeviceLocation;
 import mx.com.labuena.tortillas.models.PreferencesRepository;
 import mx.com.labuena.tortillas.models.TortillasRequest;
 import mx.com.labuena.tortillas.setup.LaBuenaApplication;
 import mx.com.labuena.tortillas.setup.LaBuenaModules;
+import mx.com.labuena.tortillas.views.fragments.OrderConfirmationFragment;
 
 /**
  * Created by moracl6 on 8/9/2016.
@@ -31,6 +35,10 @@ public class SendTortillasOrderIntentService extends EndpointConsumerBaseService
 
     @Inject
     PreferencesRepository preferencesRepository;
+
+    @Inject
+    EventBus eventBus;
+
 
     public SendTortillasOrderIntentService() {
         super(TAG);
@@ -53,6 +61,7 @@ public class SendTortillasOrderIntentService extends EndpointConsumerBaseService
         try {
             clientsService.requestTortillas(buildOrder(tortillasRequest)).execute();
             Log.d(TAG, "The tortillas order has been send.");
+            eventBus.post(new ReplaceFragmentEvent(OrderConfirmationFragment.newInstance(tortillasRequest), false));
         } catch (IOException e) {
             Log.e(TAG, e.getMessage(), e);
         }
