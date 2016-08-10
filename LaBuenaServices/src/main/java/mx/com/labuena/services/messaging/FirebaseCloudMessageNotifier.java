@@ -27,7 +27,7 @@ public class FirebaseCloudMessageNotifier implements MessageNotifier {
     public void sendMessage(Message message) throws InternalServerErrorException {
         try {
 
-            String apiKey = PropertyReader.readProperty("la_buena.properties", "FCM_URL");
+            String apiKey = PropertyReader.readProperty("la_buena.properties", "FCM_SERVER_AUTHORIZATION_KEY");
 
             URL url = new URL("https://fcm.googleapis.com/fcm/send");
 

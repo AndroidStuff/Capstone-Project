@@ -28,6 +28,7 @@ public class ClientMessagingService extends FirebaseMessagingService {
         Log.d(TAG, "FCM Notification Message: " +
                 remoteMessage.getNotification());
         Log.d(TAG, "FCM Data Message: " + remoteMessage.getData());
+        sendNotification(remoteMessage.getData().toString());
 
         if (remoteMessage.getNotification() != null) {
             String body = remoteMessage.getNotification().getBody();
@@ -42,7 +43,7 @@ public class ClientMessagingService extends FirebaseMessagingService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 11, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
-        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_add_alert_white)
                 .setContentTitle("FCM Message")
