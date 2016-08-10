@@ -1,10 +1,12 @@
 package mx.com.labuena.tortillas.services;
 
 import android.app.IntentService;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -18,6 +20,7 @@ import javax.inject.Inject;
 
 import mx.com.labuena.services.clients.Clients;
 import mx.com.labuena.services.clients.model.Client;
+import mx.com.labuena.tortillas.R;
 import mx.com.labuena.tortillas.models.PreferencesRepository;
 import mx.com.labuena.tortillas.models.User;
 import mx.com.labuena.tortillas.setup.LaBuenaApplication;
@@ -33,6 +36,7 @@ public class ClientRegistrationIntentService extends IntentService {
     private static final String PROPERTIES_PATH = "configuration.properties";
     public static final String GC_PROJECT_ID_PROPERTY = "google_cloud_project_id";
     public static final String USER_DATA_EXTRA = "NewUserData";
+    private static final int NEW_CLIENT_NOTIFICATION_ID = 23;
 
     @Inject
     PreferencesRepository sharedPreferencesRepository;
@@ -57,6 +61,14 @@ public class ClientRegistrationIntentService extends IntentService {
             clientsService.save(buildClient(user)).execute();
             sharedPreferencesRepository.save(ClientInstanceIdService.TOKEN_IN_SERVER_KEY, true);
             Log.d(TAG, "Client successfully registered.");
+            NotificationCompat.Builder mBuilder =
+                    new NotificationCompat.Builder(this)
+                            .setSmallIcon(R.drawable.ic_add_alert_white)
+                            .setContentTitle("Welcome " + user.getName())
+                            .setContentText("You have been successfully registered.");
+            NotificationManager mNotificationManager =
+                    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotificationManager.notify(NEW_CLIENT_NOTIFICATION_ID, mBuilder.build());
         } catch (IOException e) {
             Log.e(TAG, e.getMessage(), e);
         }
