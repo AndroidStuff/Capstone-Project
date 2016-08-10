@@ -33,6 +33,8 @@ ext {
 
     playservicesVersion = '9.0.0'
 
+    facebookApkVersion = '4.14.1'
+
     picassoVersion = '2.5.2'
 
     findBugsLibraryVersion = '1.3.9'

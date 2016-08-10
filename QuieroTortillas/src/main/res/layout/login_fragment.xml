@@ -51,8 +51,8 @@
         <Button
             android:id="@+id/loginButton"
             android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="20dip"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:text="@string/btn_login"
             android:background="@color/accent"
             android:textColor="@android:color/black" />
@@ -61,8 +61,8 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:orientation="horizontal"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="10dp"
             android:gravity="center_horizontal">
 
             <TextView
@@ -85,20 +85,13 @@
         <com.google.android.gms.common.SignInButton
             android:id="@+id/gmailSigninButton"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="10dip" />
+            android:layout_height="wrap_content" />
 
-        <Button
+        <com.facebook.login.widget.LoginButton
             android:id="@+id/facebookSigninButton"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            style="@style/facebookLoginButton"
-            android:layout_marginTop="10dip"
-            android:background="#3F51B5"
-            android:text="@string/facebook_login"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="15dp" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"/>
     </LinearLayout>
 
     <ProgressBar

@@ -3,6 +3,7 @@ package mx.com.labuena.tortillas.views.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,6 +11,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -31,11 +39,14 @@ import mx.com.labuena.tortillas.models.Credentials;
 import mx.com.labuena.tortillas.presenters.LoginPresenter;
 import mx.com.labuena.tortillas.setup.LaBuenaModules;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 /**
  * Created by clerks on 8/6/16.
  */
 
 public class LoginFragment extends BaseFragment {
+    private static final String TAG = LoginFragment.class.getSimpleName();
     private static final int GOOGLE_SIGN_IN_REQUEST_CODE = 23;
     @Inject
     LoginPresenter loginPresenter;
@@ -53,6 +64,7 @@ public class LoginFragment extends BaseFragment {
     private GoogleSignInOptions googleSignInOptions;
     private TextView addUserTextView;
     private TextView forgotPasswordTextView;
+    private CallbackManager callbackManager;
 
     @Override
     protected int getLayoutId() {
@@ -77,7 +89,33 @@ public class LoginFragment extends BaseFragment {
                 .enableAutoManage(getActivity(), loginPresenter.getGoogleClientListener())
                 .addApi(Auth.GOOGLE_SIGN_IN_API, googleSignInOptions)
                 .build();
+
+        FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
+
+        String keyHash = FacebookSdk.getApplicationSignature(getApplicationContext());
+        Log.d(TAG, "keyHash "+keyHash);
+
+        callbackManager = CallbackManager.Factory.create();
+        LoginManager.getInstance().registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        Log.d(TAG, "Successfully login in facebook");
+                        loginPresenter.authenticateUsingFacebook(getActivity(), firebaseAuth, loginResult.getAccessToken());
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        Log.d(TAG, "login in facebook canceled");
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        Log.e(TAG, "Exception login in facebook"+exception.getMessage(), exception);
+                    }
+                });
     }
+
 
     @Override
     protected void initView(View rootView) {
@@ -125,14 +163,27 @@ public class LoginFragment extends BaseFragment {
             }
         });
 
-        Button loginWithFacebookButton = (Button) rootView.findViewById(R.id.facebookSigninButton);
-        loginWithFacebookButton.setOnClickListener(new View.OnClickListener() {
+        LoginButton loginWithFacebookButton = (LoginButton) rootView.findViewById(R.id.facebookSigninButton);
+        loginWithFacebookButton.setFragment(this);
+        loginWithFacebookButton.setReadPermissions("email", "public_profile");
+        loginWithFacebookButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
-            public void onClick(View v) {
-                Credentials credentials = getUserInputCredentials();
-                loginPresenter.authenticateUsingFacebook(credentials);
+            public void onSuccess(LoginResult loginResult) {
+                Log.d(TAG, "facebook:onSuccess:" + loginResult);
+                loginPresenter.authenticateUsingFacebook(getActivity(), firebaseAuth, loginResult.getAccessToken());
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d(TAG, "login in facebook canceled");
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                Log.e(TAG, "Exception login in facebook"+exception.getMessage(), exception);
             }
         });
+
     }
 
     @Override
@@ -147,6 +198,8 @@ public class LoginFragment extends BaseFragment {
 
             }
         }
+
+        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
