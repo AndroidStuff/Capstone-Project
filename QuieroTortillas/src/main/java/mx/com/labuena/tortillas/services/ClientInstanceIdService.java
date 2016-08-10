@@ -25,6 +25,7 @@ public class ClientInstanceIdService extends FirebaseInstanceIdService {
 
     @Override
     public void onTokenRefresh() {
+        Log.d(TAG, "onTokenRefresh");
         LaBuenaModules modules = LaBuenaApplication.getObjectGraph(this
                 .getApplicationContext());
         modules.inject(this);

@@ -32,14 +32,17 @@ public class MysqlClientDao extends BaseDao implements ClientDao {
         List<Client> clients = new ArrayList<>();
         Connection connection = connectionProvider.get();
         try {
-            String clientsQuery = "select client.email, client.name from la_buena_db.client client;";
+            String clientsQuery = "select client.id_client, client.email, client.name, " +
+                    "client.cloud_messaging_token from la_buena_db.client client;";
             ResultSet resultSet = connection.prepareStatement(clientsQuery).executeQuery();
 
             while (resultSet.next()) {
+                int cliendId = resultSet.getInt("id_client");
                 String email = resultSet.getString("email");
                 String name = resultSet.getString("name");
+                String token = resultSet.getString("cloud_messaging_token");
 
-                clients.add(new Client(email, name));
+                clients.add(new Client(cliendId, email, name, token));
             }
             resultSet.close();
             closeConnection(connection);

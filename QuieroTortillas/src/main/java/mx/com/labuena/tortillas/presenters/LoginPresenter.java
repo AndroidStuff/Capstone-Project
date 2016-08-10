@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
@@ -80,6 +81,8 @@ public class LoginPresenter extends BasePresenter {
     private void registerUser(User user) {
         boolean tokenInServer = preferencesRepository.read(ClientInstanceIdService.TOKEN_IN_SERVER_KEY, false);
         if (!tokenInServer) {
+            String token = preferencesRepository.read(ClientInstanceIdService.REGISTRATION_TOKEN_KEY, StringUtils.EMPTY);
+            user.setFcmToken(token);
             Intent intent = new Intent(application, ClientRegistrationIntentService.class);
             intent.putExtra(ClientRegistrationIntentService.USER_DATA_EXTRA, user);
             application.startService(intent);

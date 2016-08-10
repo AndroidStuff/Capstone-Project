@@ -25,6 +25,11 @@ public class Client {
         this.clientId = clientId;
     }
 
+    public Client(int clientId , String email, String name, String fcmToken) {
+        this(clientId, email, name);
+        this.fcmToken = fcmToken;
+    }
+
     public String getEmail() {
         return email;
     }
