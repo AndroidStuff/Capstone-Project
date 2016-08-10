@@ -57,11 +57,13 @@ public class MysqlClientDao extends BaseDao implements ClientDao {
             Connection connection = connectionProvider.get();
             try {
 
-                String saveClientLocationQuery = "insert into la_buena_db.client (id_client, email, name) values (0, ?, ?);";
+                String saveClientLocationQuery = "insert into la_buena_db.client " +
+                        "(id_client, email, name, cloud_messaging_token) values (0, ?, ?, ?);";
                 connection.setAutoCommit(false);
                 PreparedStatement preparedStatement = connection.prepareStatement(saveClientLocationQuery);
                 preparedStatement.setString(1, client.getEmail());
                 preparedStatement.setString(2, client.getName());
+                preparedStatement.setString(3, client.getFcmToken());
                 preparedStatement.execute();
                 connection.commit();
             } catch (SQLException e) {

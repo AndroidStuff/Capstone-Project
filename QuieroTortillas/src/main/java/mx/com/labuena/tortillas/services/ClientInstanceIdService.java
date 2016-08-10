@@ -18,7 +18,7 @@ import mx.com.labuena.tortillas.setup.LaBuenaModules;
 public class ClientInstanceIdService extends FirebaseInstanceIdService {
     private static final String TAG = ClientInstanceIdService.class.getSimpleName();
     public static final String REGISTRATION_TOKEN_KEY = "RegistrationToken";
-    public static final String IS_TOKEN_SAVED_IN_SERVER_KEY = "RegistrationTokenSavedInServer";
+    public static final String TOKEN_IN_SERVER_KEY = "RegistrationTokenSavedInServer";
 
     @Inject
     PreferencesRepository preferencesRepository;
@@ -37,6 +37,6 @@ public class ClientInstanceIdService extends FirebaseInstanceIdService {
 
     private void saveRegistrationToken(String refreshedToken) {
         preferencesRepository.save(REGISTRATION_TOKEN_KEY, refreshedToken);
-        preferencesRepository.save(IS_TOKEN_SAVED_IN_SERVER_KEY, false);
+        preferencesRepository.save(TOKEN_IN_SERVER_KEY, false);
     }
 }

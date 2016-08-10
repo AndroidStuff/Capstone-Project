@@ -28,6 +28,12 @@ public class LaBuenaApplicationModules {
 
     @Provides
     @Singleton
+    public final Application providesApplication() {
+        return application;
+    }
+
+    @Provides
+    @Singleton
     public EventBus providesEventBus() {
         return EventBus.builder().throwSubscriberException(BuildConfig.DEBUG)
                 .logSubscriberExceptions(true).throwSubscriberException(true).build();

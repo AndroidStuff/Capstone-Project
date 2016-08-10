@@ -1,6 +1,8 @@
 package mx.com.labuena.tortillas.presenters;
 
 import android.app.Activity;
+import android.app.Application;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -23,7 +25,10 @@ import mx.com.labuena.tortillas.events.FailureAuthenticationEvent;
 import mx.com.labuena.tortillas.events.InvalidInputCredentialsEvent;
 import mx.com.labuena.tortillas.events.ReplaceFragmentEvent;
 import mx.com.labuena.tortillas.models.Credentials;
+import mx.com.labuena.tortillas.models.PreferencesRepository;
 import mx.com.labuena.tortillas.models.User;
+import mx.com.labuena.tortillas.services.ClientInstanceIdService;
+import mx.com.labuena.tortillas.services.ClientRegistrationIntentService;
 import mx.com.labuena.tortillas.views.fragments.ClientRegistrationFragment;
 import mx.com.labuena.tortillas.views.fragments.ForgotPasswordFragment;
 import mx.com.labuena.tortillas.views.fragments.TortillasRequestorFragment;
@@ -36,11 +41,17 @@ public class LoginPresenter extends BasePresenter {
     private static final String TAG = LoginPresenter.class.getSimpleName();
     private final FirebaseAuth.AuthStateListener mAuthListener;
     private final GoogleApiClient.OnConnectionFailedListener googleClientListener;
+    private final Application application;
+
+    PreferencesRepository preferencesRepository;
 
 
     @Inject
-    public LoginPresenter(final EventBus eventBus) {
+    public LoginPresenter(final EventBus eventBus, PreferencesRepository preferencesRepository, Application application) {
         super(eventBus);
+
+        this.preferencesRepository = preferencesRepository;
+        this.application = application;
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -50,6 +61,7 @@ public class LoginPresenter extends BasePresenter {
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + firebaseUser.getUid());
                     User user = new User(firebaseUser.getUid(), firebaseUser.getEmail(), firebaseUser.getDisplayName(), firebaseUser.getPhotoUrl());
                     Log.d(TAG, "User:" + user);
+                    registerUser(user);
                     eventBus.post(new ReplaceFragmentEvent(TortillasRequestorFragment.newInstance(user), false));
                 } else {
                     Log.d(TAG, "onAuthStateChanged:signed_out");
@@ -63,6 +75,15 @@ public class LoginPresenter extends BasePresenter {
 
             }
         };
+    }
+
+    private void registerUser(User user) {
+        boolean tokenInServer = preferencesRepository.read(ClientInstanceIdService.TOKEN_IN_SERVER_KEY, false);
+        if (!tokenInServer) {
+            Intent intent = new Intent(application, ClientRegistrationIntentService.class);
+            intent.putExtra(ClientRegistrationIntentService.USER_DATA_EXTRA, user);
+            application.startService(intent);
+        }
     }
 
     public FirebaseAuth.AuthStateListener getmAuthListener() {

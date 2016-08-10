@@ -7,18 +7,20 @@ import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.inject.Inject;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import mx.com.labuena.services.models.ClientDao;
-import mx.com.labuena.services.models.OrderDao;
 import mx.com.labuena.services.messaging.Message;
 import mx.com.labuena.services.messaging.MessageNotifier;
 import mx.com.labuena.services.messaging.MessageWithSingleReceiver;
-import mx.com.labuena.services.responses.ClientsResponse;
 import mx.com.labuena.services.models.BikeDriverSelector;
 import mx.com.labuena.services.models.Biker;
 import mx.com.labuena.services.models.Client;
+import mx.com.labuena.services.models.ClientDao;
 import mx.com.labuena.services.models.Order;
+import mx.com.labuena.services.models.OrderDao;
 import mx.com.labuena.services.models.OrderNotification;
+import mx.com.labuena.services.responses.ClientsResponse;
 
 
 /**
@@ -34,6 +36,8 @@ import mx.com.labuena.services.models.OrderNotification;
         )
 )
 public class ClientsEndpoint {
+    private static final Logger log = Logger.getLogger(ClientsEndpoint.class.getName());
+
     @Inject
     private ClientDao clientDao;
 
@@ -49,6 +53,7 @@ public class ClientsEndpoint {
     @ApiMethod(name = "save",
             httpMethod = ApiMethod.HttpMethod.POST)
     public void save(Client client) throws InternalServerErrorException {
+        log.log(Level.INFO, "Saving client " + client);
         clientDao.save(client);
     }
 

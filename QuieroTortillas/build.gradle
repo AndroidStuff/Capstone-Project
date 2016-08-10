@@ -68,7 +68,6 @@ dependencies {
     compile project(path: ':LaBuenaServices', configuration: 'android-endpoints')
 
 
-
     androidTestCompile "org.hamcrest:hamcrest-library:$rootProject.ext.hamcrestVersion"
 
     // Android Testing Support Library's runner and rules

@@ -41,7 +41,7 @@ public class SendTortillasOrderIntentService extends IntentService {
     }
 
     private void loadFcmToken(TortillasRequest tortillasRequest) {
-        boolean clientTokenSaved = preferencesRepository.read(ClientInstanceIdService.IS_TOKEN_SAVED_IN_SERVER_KEY, false);
+        boolean clientTokenSaved = preferencesRepository.read(ClientInstanceIdService.TOKEN_IN_SERVER_KEY, false);
         if (!clientTokenSaved) {
             String fcmToken = preferencesRepository.read(ClientInstanceIdService.REGISTRATION_TOKEN_KEY, StringUtils.EMPTY);
             tortillasRequest.getUser().setFcmToken(fcmToken);
