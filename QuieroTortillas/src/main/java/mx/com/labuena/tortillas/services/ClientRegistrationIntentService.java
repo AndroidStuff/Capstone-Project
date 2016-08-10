@@ -1,11 +1,8 @@
 package mx.com.labuena.tortillas.services;
 
-import android.app.IntentService;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetManager;
-import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -13,8 +10,6 @@ import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 
 import javax.inject.Inject;
 
@@ -30,11 +25,8 @@ import mx.com.labuena.tortillas.setup.LaBuenaModules;
  * Created by clerks on 8/9/16.
  */
 
-public class ClientRegistrationIntentService extends IntentService {
+public class ClientRegistrationIntentService extends EndpointConsumerBaseService {
     private static final String TAG = ClientRegistrationIntentService.class.getSimpleName();
-    private static final String URL_FORMAT = "https://%s.appspot.com/_ah/api/";
-    private static final String PROPERTIES_PATH = "configuration.properties";
-    public static final String GC_PROJECT_ID_PROPERTY = "google_cloud_project_id";
     public static final String USER_DATA_EXTRA = "NewUserData";
     private static final int NEW_CLIENT_NOTIFICATION_ID = 23;
 
@@ -80,36 +72,5 @@ public class ClientRegistrationIntentService extends IntentService {
         client.setEmail(user.getEmail());
         client.setFcmToken(user.getFcmToken());
         return client;
-    }
-
-    private String getRootUrl() {
-        return String.format(URL_FORMAT, getProjectId());
-    }
-
-    @NonNull
-    private String getProjectId() {
-        Properties properties = getProperties();
-        return properties.getProperty(GC_PROJECT_ID_PROPERTY);
-    }
-
-    private Properties getProperties() {
-        Properties properties = new Properties();
-
-        try {
-            AssetManager assetManager = this.getAssets();
-            InputStream inputStream = assetManager.open(PROPERTIES_PATH);
-            if (inputStream != null) {
-                properties.load(inputStream);
-                inputStream.close();
-            }
-        } catch (IOException e) {
-            Log.e(TAG, e.getMessage(), e);
-        }
-
-        return properties;
-    }
-
-    public static String getApplicationName(Context context) {
-        return context.getApplicationInfo().loadLabel(context.getPackageManager()).toString();
     }
 }

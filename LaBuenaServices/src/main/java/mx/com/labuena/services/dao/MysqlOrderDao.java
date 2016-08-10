@@ -38,8 +38,8 @@ public class MysqlOrderDao extends BaseDao implements OrderDao {
                 connection.setAutoCommit(false);
                 PreparedStatement preparedStatement = connection.prepareStatement(saveLocationQuery,
                         Statement.RETURN_GENERATED_KEYS);
-                preparedStatement.setBigDecimal(1, coordinates.getLatitude());
-                preparedStatement.setBigDecimal(2, coordinates.getLongitude());
+                preparedStatement.setDouble(1, coordinates.getLatitude());
+                preparedStatement.setDouble(2, coordinates.getLongitude());
 
                 int affectedRows = preparedStatement.executeUpdate();
 

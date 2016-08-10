@@ -4,9 +4,9 @@ import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.appengine.repackaged.org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -40,10 +40,12 @@ public class FirebaseCloudMessageNotifier implements MessageNotifier {
 
             conn.setDoOutput(true);
 
-            DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream());
+            OutputStreamWriter dataOutputStream = new OutputStreamWriter(conn.getOutputStream());
 
             ObjectMapper mapper = new ObjectMapper();
-            mapper.writeValue(dataOutputStream, message);
+            String bodyPayLoad = mapper.writeValueAsString(message);
+
+            dataOutputStream.write(bodyPayLoad);
 
             // send request
             dataOutputStream.flush();

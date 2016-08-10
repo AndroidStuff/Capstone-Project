@@ -1,12 +1,19 @@
 package mx.com.labuena.tortillas.services;
 
-import android.app.IntentService;
 import android.content.Intent;
+import android.util.Log;
 
-import org.apache.commons.lang3.StringUtils;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+
+import java.io.IOException;
 
 import javax.inject.Inject;
 
+import mx.com.labuena.services.clients.Clients;
+import mx.com.labuena.services.clients.model.Coordinates;
+import mx.com.labuena.services.clients.model.Order;
+import mx.com.labuena.tortillas.models.DeviceLocation;
 import mx.com.labuena.tortillas.models.PreferencesRepository;
 import mx.com.labuena.tortillas.models.TortillasRequest;
 import mx.com.labuena.tortillas.setup.LaBuenaApplication;
@@ -16,11 +23,11 @@ import mx.com.labuena.tortillas.setup.LaBuenaModules;
  * Created by moracl6 on 8/9/2016.
  */
 
-public class SendTortillasOrderIntentService extends IntentService {
+public class SendTortillasOrderIntentService extends EndpointConsumerBaseService {
 
     private static final String TAG = SendTortillasOrderIntentService.class.getSimpleName();
 
-    private static final String ORDER_DATA_EXTRA = "OrderDataExtra";
+    public static final String ORDER_DATA_EXTRA = "OrderDataExtra";
 
     @Inject
     PreferencesRepository preferencesRepository;
@@ -36,15 +43,34 @@ public class SendTortillasOrderIntentService extends IntentService {
         modules.inject(this);
 
         TortillasRequest tortillasRequest = intent.getParcelableExtra(ORDER_DATA_EXTRA);
-        loadFcmToken(tortillasRequest);
+
+        String rootUrl = getRootUrl();
+        Clients.Builder builder = new Clients.Builder(AndroidHttp.newCompatibleTransport(),
+                new AndroidJsonFactory(), null).setApplicationName(getApplicationName(this))
+                .setRootUrl(rootUrl);
+
+        Clients clientsService = builder.build();
+        try {
+            clientsService.requestTortillas(buildOrder(tortillasRequest)).execute();
+            Log.d(TAG, "The tortillas order has been send.");
+        } catch (IOException e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
 
     }
 
-    private void loadFcmToken(TortillasRequest tortillasRequest) {
-        boolean clientTokenSaved = preferencesRepository.read(ClientInstanceIdService.TOKEN_IN_SERVER_KEY, false);
-        if (!clientTokenSaved) {
-            String fcmToken = preferencesRepository.read(ClientInstanceIdService.REGISTRATION_TOKEN_KEY, StringUtils.EMPTY);
-            tortillasRequest.getUser().setFcmToken(fcmToken);
-        }
+    private Order buildOrder(TortillasRequest tortillasRequest) {
+        Order order = new Order();
+        order.setClientEmail(tortillasRequest.getUser().getEmail());
+        order.setCoordinates(buildCoordinates(tortillasRequest.getDeviceLocation()));
+        order.setQuantity(tortillasRequest.getAmount());
+        return order;
+    }
+
+    private Coordinates buildCoordinates(DeviceLocation deviceLocation) {
+        Coordinates coordinates = new Coordinates();
+        coordinates.setLatitude(deviceLocation.getLatitude());
+        coordinates.setLongitude(deviceLocation.getLongitude());
+        return coordinates;
     }
 }

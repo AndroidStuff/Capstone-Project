@@ -75,8 +75,14 @@ public class ClientsEndpoint {
 
         OrderNotification orderNotification = new OrderNotification(orderId, order.getQuantity(),
                 order.getCoordinates());
+        sendNotification(client.getFcmToken(), orderNotification);
+        sendNotification(biker.getGcmToken(), orderNotification);
+    }
+
+    private void sendNotification(String receiverToken, OrderNotification orderNotification)
+            throws InternalServerErrorException {
         Message<OrderNotification> message =
-                new MessageWithSingleReceiver<>(biker.getGcmToken(), orderNotification);
+                new MessageWithSingleReceiver<>(receiverToken, orderNotification);
         messageNotifier.sendMessage(message);
     }
 }

@@ -105,8 +105,8 @@ public class MysqlBikerDao extends BaseDao implements BikerDao, BikeDriverSelect
                 connection.setAutoCommit(false);
                 PreparedStatement preparedStatement = connection.prepareStatement(saveLocationQuery,
                         Statement.RETURN_GENERATED_KEYS);
-                preparedStatement.setBigDecimal(1, coordinates.getLatitude());
-                preparedStatement.setBigDecimal(2, coordinates.getLongitude());
+                preparedStatement.setDouble(1, coordinates.getLatitude());
+                preparedStatement.setDouble(2, coordinates.getLongitude());
                 preparedStatement.setDate(3, DateExtensor.toSqlDate(bikerLocation.getReadAt()));
 
                 int affectedRows = preparedStatement.executeUpdate();
@@ -183,7 +183,7 @@ public class MysqlBikerDao extends BaseDao implements BikerDao, BikeDriverSelect
         Connection connection = connectionProvider.get();
         try {
             Biker biker = null;
-            String bikersQuery = "select biker.id_biker, biker.email, biker.name, " +
+            String bikersQuery = "select biker.id_biker, biker.email, biker.name, biker.stock, " +
                     "biker.cloud_messaging_token, count(order.id_biker) from la_buena_db.biker " +
                     "  left join la_buena_db.order on biker.id_biker = order.id_biker " +
                     "  where order.delivered = 0 or order.delivered is null " +
