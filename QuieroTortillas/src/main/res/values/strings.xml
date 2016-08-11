@@ -56,4 +56,6 @@
     <string name="confirm_order_message">Do you want to send an order for %d kg?</string>
     <string name="email_address_required">Enter email address!</string>
     <string name="password_required">Enter password!</string>
+    <string name="reset_password_email_sent">An email has been sent to %s with the instructions to reset the password</string>
+    <string name="error_resetting_password">Error trying to send reset password email</string>
 </resources>

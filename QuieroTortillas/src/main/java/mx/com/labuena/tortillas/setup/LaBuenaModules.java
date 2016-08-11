@@ -10,6 +10,7 @@ import mx.com.labuena.tortillas.services.SendTortillasOrderIntentService;
 import mx.com.labuena.tortillas.views.activities.HomeActivity;
 import mx.com.labuena.tortillas.views.dialogs.ConfirmationDialogFragment;
 import mx.com.labuena.tortillas.views.fragments.ClientRegistrationFragment;
+import mx.com.labuena.tortillas.views.fragments.ForgotPasswordFragment;
 import mx.com.labuena.tortillas.views.fragments.LoginFragment;
 import mx.com.labuena.tortillas.views.fragments.OrderConfirmationFragment;
 import mx.com.labuena.tortillas.views.fragments.TortillasRequestorFragment;
@@ -38,4 +39,6 @@ public interface LaBuenaModules {
     void inject(OrderConfirmationFragment orderConfirmationFragment);
 
     void inject(ConfirmationDialogFragment confirmationDialogFragment);
+
+    void inject(ForgotPasswordFragment forgotPasswordFragment);
 }
