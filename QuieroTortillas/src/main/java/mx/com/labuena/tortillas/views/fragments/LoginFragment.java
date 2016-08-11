@@ -235,12 +235,12 @@ public class LoginFragment extends BaseFragment {
         progressBar.setVisibility(View.GONE);
         Credentials credenttials = event.getCredentials();
         if (TextUtils.isEmpty(credenttials.getEmail())) {
-            Toast.makeText(getActivity(), "Enter email address!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getString(R.string.email_address_required), Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (TextUtils.isEmpty(credenttials.getPassword())) {
-            Toast.makeText(getActivity(), "Enter password!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), getString(R.string.password_required), Toast.LENGTH_SHORT).show();
         }
     }
 
