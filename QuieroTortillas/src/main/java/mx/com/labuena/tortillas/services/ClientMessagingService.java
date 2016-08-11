@@ -21,6 +21,7 @@ import mx.com.labuena.tortillas.views.activities.HomeActivity;
 
 public class ClientMessagingService extends FirebaseMessagingService {
     private static final String TAG = ClientMessagingService.class.getSimpleName();
+    public static final int NOTIFICATION_ID = 10;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -46,8 +47,8 @@ public class ClientMessagingService extends FirebaseMessagingService {
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_add_alert_white)
-                .setContentTitle("FCM Message")
-                .setContentText(messageBody)
+                .setContentTitle(getString(R.string.app_name))
+                .setContentText(getString(R.string.order_notitication))
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
@@ -55,6 +56,6 @@ public class ClientMessagingService extends FirebaseMessagingService {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
     }
 }
