@@ -27,6 +27,7 @@ import javax.inject.Inject;
 import mx.com.labuena.tortillas.events.FailureAuthenticationEvent;
 import mx.com.labuena.tortillas.events.InvalidInputCredentialsEvent;
 import mx.com.labuena.tortillas.events.ReplaceFragmentEvent;
+import mx.com.labuena.tortillas.models.Action;
 import mx.com.labuena.tortillas.models.Credentials;
 import mx.com.labuena.tortillas.models.PreferencesRepository;
 import mx.com.labuena.tortillas.models.User;
@@ -42,11 +43,13 @@ import mx.com.labuena.tortillas.views.fragments.TortillasRequestorFragment;
 
 public class LoginPresenter extends BasePresenter {
     private static final String TAG = LoginPresenter.class.getSimpleName();
-    private final FirebaseAuth.AuthStateListener mAuthListener;
+    private final FirebaseAuth.AuthStateListener authListener;
     private final GoogleApiClient.OnConnectionFailedListener googleClientListener;
     private final Application application;
 
     PreferencesRepository preferencesRepository;
+
+    private Action nextActionAfterAuthenticate;
 
 
     @Inject
@@ -56,16 +59,14 @@ public class LoginPresenter extends BasePresenter {
         this.preferencesRepository = preferencesRepository;
         this.application = application;
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
+        authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                 if (isUserAuthenticated(firebaseUser)) {
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + firebaseUser.getUid());
-                    User user = new User(firebaseUser.getUid(), firebaseUser.getEmail(), firebaseUser.getDisplayName(), firebaseUser.getPhotoUrl());
-                    Log.d(TAG, "User:" + user);
-                    registerUser(user);
-                    eventBus.post(new ReplaceFragmentEvent(TortillasRequestorFragment.newInstance(user), false));
+                    if (nextActionAfterAuthenticate != null)
+                        nextActionAfterAuthenticate.execute(firebaseUser);
+
                 } else {
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
@@ -80,19 +81,8 @@ public class LoginPresenter extends BasePresenter {
         };
     }
 
-    private void registerUser(User user) {
-        boolean tokenInServer = preferencesRepository.read(ClientInstanceIdService.TOKEN_IN_SERVER_KEY, false);
-        if (!tokenInServer) {
-            String token = preferencesRepository.read(ClientInstanceIdService.REGISTRATION_TOKEN_KEY, StringUtils.EMPTY);
-            user.setFcmToken(token);
-            Intent intent = new Intent(application, ClientRegistrationIntentService.class);
-            intent.putExtra(ClientRegistrationIntentService.USER_DATA_EXTRA, user);
-            application.startService(intent);
-        }
-    }
-
-    public FirebaseAuth.AuthStateListener getmAuthListener() {
-        return mAuthListener;
+    public FirebaseAuth.AuthStateListener getAuthListener() {
+        return authListener;
     }
 
     public GoogleApiClient.OnConnectionFailedListener getGoogleClientListener() {
@@ -104,6 +94,8 @@ public class LoginPresenter extends BasePresenter {
     }
 
     public void authenticate(final Activity activity, final Credentials credentials, FirebaseAuth firebaseAuth) {
+        setNextActionAfterAuthenticate();
+
         if (credentials.isValid()) {
             firebaseAuth.signInWithEmailAndPassword(credentials.getEmail(), credentials.getPassword())
                     .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
@@ -121,11 +113,9 @@ public class LoginPresenter extends BasePresenter {
         }
     }
 
-    public void authenticateUsingGmail(Credentials credentials) {
-
-    }
-
     public void authenticateUsingFacebook(final Activity activity, FirebaseAuth firebaseAuth, AccessToken token) {
+        setNextActionAfterAuthenticate();
+
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
@@ -142,6 +132,8 @@ public class LoginPresenter extends BasePresenter {
     }
 
     public void firebaseAuthWithGoogle(final Activity activity, FirebaseAuth firebaseAuth, GoogleSignInAccount account) {
+        setNextActionAfterAuthenticate();
+
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
@@ -160,11 +152,40 @@ public class LoginPresenter extends BasePresenter {
                 });
     }
 
+    private void setNextActionAfterAuthenticate() {
+        nextActionAfterAuthenticate = new Action() {
+            @Override
+            public void execute(Object... params) {
+                navigateToTortillasRequestor((FirebaseUser) params[0]);
+            }
+        };
+    }
+
     public void navigateToForgotPassword() {
         eventBus.post(new ReplaceFragmentEvent(new ForgotPasswordFragment(), true));
     }
 
     public void navigateToRegisterUser() {
         eventBus.post(new ReplaceFragmentEvent(new ClientRegistrationFragment(), true));
+    }
+
+    private void navigateToTortillasRequestor(FirebaseUser firebaseUser) {
+        nextActionAfterAuthenticate = null;
+        Log.d(TAG, "onAuthStateChanged:signed_in:" + firebaseUser.getUid());
+        User user = new User(firebaseUser.getUid(), firebaseUser.getEmail(), firebaseUser.getDisplayName(), firebaseUser.getPhotoUrl());
+        Log.d(TAG, "User:" + user);
+        registerUser(user);
+        eventBus.post(new ReplaceFragmentEvent(TortillasRequestorFragment.newInstance(user), false));
+    }
+
+    private void registerUser(User user) {
+        boolean tokenInServer = preferencesRepository.read(ClientInstanceIdService.TOKEN_IN_SERVER_KEY, false);
+        if (!tokenInServer) {
+            String token = preferencesRepository.read(ClientInstanceIdService.REGISTRATION_TOKEN_KEY, StringUtils.EMPTY);
+            user.setFcmToken(token);
+            Intent intent = new Intent(application, ClientRegistrationIntentService.class);
+            intent.putExtra(ClientRegistrationIntentService.USER_DATA_EXTRA, user);
+            application.startService(intent);
+        }
     }
 }

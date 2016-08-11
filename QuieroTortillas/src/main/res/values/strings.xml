@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Quiero Tortillas</string>
-
+    <string name="facebook_app_id"></string>
     <string name="action_sign_in_short">Register</string>
     <string name="email">Email</string>
     <string name="minimum_password">Password too short, enter minimum 6 characters!</string>
@@ -51,11 +51,10 @@
     <string name="lbl_order_send">We are processing your tortillas order for 7 kg wich will be delivery to Batopilas 58 Hacienda II.</string>
     <string name="lbl_order_confirmation_title">Thank you for using La Buena!</string>
     <string name="btn_new_request">New order</string>
-
-    <string name="facebook_app_id"></string>
     <string name="confirm_order_message">Do you want to send an order for %d kg?</string>
     <string name="email_address_required">Enter email address!</string>
     <string name="password_required">Enter password!</string>
     <string name="reset_password_email_sent">An email has been sent to %s with the instructions to reset the password</string>
     <string name="error_resetting_password">Error trying to send reset password email</string>
+    <string name="user_name_required">Enter user name</string>
 </resources>

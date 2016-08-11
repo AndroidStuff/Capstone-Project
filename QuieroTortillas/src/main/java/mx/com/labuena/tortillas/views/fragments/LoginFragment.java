@@ -205,7 +205,7 @@ public class LoginFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        firebaseAuth.addAuthStateListener(loginPresenter.getmAuthListener());
+        firebaseAuth.addAuthStateListener(loginPresenter.getAuthListener());
     }
 
     @Override
@@ -225,8 +225,8 @@ public class LoginFragment extends BaseFragment {
     @Override
     public void onStop() {
         super.onStop();
-        if (loginPresenter.getmAuthListener() != null) {
-            firebaseAuth.removeAuthStateListener(loginPresenter.getmAuthListener());
+        if (loginPresenter.getAuthListener() != null) {
+            firebaseAuth.removeAuthStateListener(loginPresenter.getAuthListener());
         }
     }
 

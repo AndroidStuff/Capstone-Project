@@ -16,10 +16,10 @@ import org.greenrobot.eventbus.ThreadMode;
 import javax.inject.Inject;
 
 import mx.com.labuena.tortillas.R;
-import mx.com.labuena.tortillas.events.FailureAuthenticationEvent;
-import mx.com.labuena.tortillas.events.InvalidInputCredentialsEvent;
+import mx.com.labuena.tortillas.events.InvalidInputClientEvent;
+import mx.com.labuena.tortillas.events.RegistrationFailureEvent;
 import mx.com.labuena.tortillas.events.UserAlreadyRegisterEvent;
-import mx.com.labuena.tortillas.models.Credentials;
+import mx.com.labuena.tortillas.models.Client;
 import mx.com.labuena.tortillas.presenters.ClientRegistrationPresenter;
 import mx.com.labuena.tortillas.setup.LaBuenaModules;
 
@@ -95,25 +95,34 @@ public class ClientRegistrationFragment extends BaseFragment {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onInvalidInputCredentialsEvent(InvalidInputCredentialsEvent event) {
+    public void onInvalidInputClientEvent(InvalidInputClientEvent event) {
         progressBar.setVisibility(View.GONE);
-        Credentials credenttials = event.getCredentials();
-        if (TextUtils.isEmpty(credenttials.getEmail())) {
-            Toast.makeText(getActivity(), "Enter email address!", Toast.LENGTH_SHORT).show();
+        Client client = event.getClient();
+        if (TextUtils.isEmpty(client.getName())) {
+            userNameEditText.setError(getString(R.string.user_name_required));
+            userNameEditText.requestFocus();
             return;
         }
 
-        if (TextUtils.isEmpty(credenttials.getPassword())) {
-            Toast.makeText(getActivity(), "Enter password!", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(client.getEmail())) {
+            userEmailEditText.setError(getString(R.string.email_address_required));
+            userEmailEditText.requestFocus();
+            return;
+        }
+
+        if (TextUtils.isEmpty(client.getPassword())) {
+            userPasswordEditText.setError(getString(R.string.password_required));
+            userPasswordEditText.requestFocus();
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onFailureAuthenticationEvent(FailureAuthenticationEvent event) {
+    public void onRegistrationFailureEvent(RegistrationFailureEvent event) {
         progressBar.setVisibility(View.GONE);
-        Credentials credentials = event.getCredentials();
-        if (credentials.getPassword().length() < 6) {
+        Client client = event.getClient();
+        if (client.getPassword().length() < 6) {
             userEmailEditText.setError(getString(R.string.minimum_password));
+            userEmailEditText.requestFocus();
         } else {
             Toast.makeText(getActivity(), getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
         }
@@ -131,15 +140,15 @@ public class ClientRegistrationFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);
-                Credentials credentials = getUserInputCredentials();
-                String name = userNameEditText.getText().toString();
-                clientRegistrationPresenter.createUser(getActivity(), firebaseAuth, credentials, name);
+                Client client = getUserInput();
+                clientRegistrationPresenter.createUser(getActivity(), firebaseAuth, client);
             }
         });
     }
 
-    public Credentials getUserInputCredentials() {
-        return new Credentials(userEmailEditText.getText().toString(),
+    public Client getUserInput() {
+        String name = userNameEditText.getText().toString();
+        return new Client(name, userEmailEditText.getText().toString(),
                 userPasswordEditText.getText().toString());
     }
 }
