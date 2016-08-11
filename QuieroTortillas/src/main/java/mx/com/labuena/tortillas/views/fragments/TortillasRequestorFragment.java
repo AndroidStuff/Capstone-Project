@@ -35,13 +35,17 @@ import javax.inject.Inject;
 
 import mx.com.labuena.tortillas.R;
 import mx.com.labuena.tortillas.events.AddressReceivedEvent;
+import mx.com.labuena.tortillas.events.ConfirmationAcceptedEvent;
+import mx.com.labuena.tortillas.events.ConfirmationCanceledEvent;
 import mx.com.labuena.tortillas.events.TortillasRequestChangedEvent;
 import mx.com.labuena.tortillas.models.DeviceLocation;
+import mx.com.labuena.tortillas.models.DialogData;
 import mx.com.labuena.tortillas.models.TortillasRequest;
 import mx.com.labuena.tortillas.models.User;
 import mx.com.labuena.tortillas.presenters.TortillasRequestorPresenter;
 import mx.com.labuena.tortillas.services.FetchAddressIntentService;
 import mx.com.labuena.tortillas.setup.LaBuenaModules;
+import mx.com.labuena.tortillas.views.dialogs.ConfirmationDialogFragment;
 
 /**
  * Created by clerks on 8/7/16.
@@ -54,6 +58,7 @@ public class TortillasRequestorFragment extends BaseFragment implements GoogleAp
     private static final long REP_DELAY = 100;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 23;
     public static final int USER_IMAGE_WIDTH = 100;
+    private static final String CONFIRMATION_DIALOG_TAG = "ConfirmOrderRequest";
 
     private Handler repeatUpdateHandler = new Handler();
 
@@ -79,6 +84,7 @@ public class TortillasRequestorFragment extends BaseFragment implements GoogleAp
 
     private TextView locationDeliveryTextView;
     private boolean sendingRequest;
+    private ConfirmationDialogFragment dialog;
 
     @TargetApi(Build.VERSION_CODES.M)
     @Override
@@ -221,9 +227,18 @@ public class TortillasRequestorFragment extends BaseFragment implements GoogleAp
         locationDeliveryTextView.setText(String.format(deliveryMessage, event.getAddress()));
 
         if (sendingRequest) {
-            tortillasRequestorPresenter.requestOrder(tortillasRequest);
             sendingRequest = false;
+            confirmOrder();
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onConfirmationAcceptedEvent(ConfirmationAcceptedEvent event) {
+        tortillasRequestorPresenter.requestOrder(tortillasRequest);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onConfirmationCanceledEvent(ConfirmationCanceledEvent event) {
     }
 
 
@@ -290,12 +305,17 @@ public class TortillasRequestorFragment extends BaseFragment implements GoogleAp
             @Override
             public void onClick(View v) {
                 if (lastLocation != null) {
-                    tortillasRequestorPresenter.requestOrder(tortillasRequest);
+                    confirmOrder();
                 } else {
                     retrieveLastKnownLocation();
                 }
             }
         });
+    }
+
+    private void confirmOrder() {
+        dialog = ConfirmationDialogFragment.newInstance(buildDialogData());
+        dialog.show(getActivity().getSupportFragmentManager(), CONFIRMATION_DIALOG_TAG);
     }
 
     private void retrieveLastKnownLocation() {
@@ -321,5 +341,10 @@ public class TortillasRequestorFragment extends BaseFragment implements GoogleAp
         Intent intent = new Intent(getActivity(), FetchAddressIntentService.class);
         intent.putExtra(FetchAddressIntentService.LOCATION_DATA_EXTRA, location);
         getActivity().startService(intent);
+    }
+
+    private DialogData buildDialogData() {
+        String message = String.format(getString(R.string.confirm_order_message), tortillasRequest.getAmount());
+        return new DialogData(R.string.app_name, message, true, android.R.drawable.ic_dialog_info);
     }
 }

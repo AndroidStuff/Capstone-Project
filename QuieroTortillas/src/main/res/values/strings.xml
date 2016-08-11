@@ -53,4 +53,5 @@
     <string name="btn_new_request">New order</string>
 
     <string name="facebook_app_id"></string>
+    <string name="confirm_order_message">Do you want to send an order for %d kg?</string>
 </resources>

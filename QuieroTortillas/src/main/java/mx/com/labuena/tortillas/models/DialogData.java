@@ -15,9 +15,9 @@ public class DialogData implements Parcelable {
     private int resourceTitleId;
 
     /**
-     * Id of the message resource to use in the Dialog.
+     * Message to use in the Dialog.
      */
-    private int resourceMessageId;
+    private String message;
 
     /**
      * If the dialog is cancelable.
@@ -33,15 +33,15 @@ public class DialogData implements Parcelable {
      * Allows to create an instance of this class with the data for the dialog.
      *
      * @param resourceTitleId   Id of the title resource to use in the Dialog.
-     * @param resourceMessageId Id of the message resource to use in the Dialog.
+     * @param message           Message to use in the Dialog.
      * @param cancelable        Allows to set the dialog as cancelable.
      * @param resourceIconId    Id of the icon resource to use in the Dialog.
      */
     public DialogData(int resourceTitleId,
-                      int resourceMessageId, boolean cancelable,
+                      String message, boolean cancelable,
                       int resourceIconId) {
         this.resourceTitleId = resourceTitleId;
-        this.resourceMessageId = resourceMessageId;
+        this.message = message;
         this.cancelable = cancelable;
         this.resourceIconId = resourceIconId;
     }
@@ -54,7 +54,7 @@ public class DialogData implements Parcelable {
      */
     private DialogData(Parcel source) {
         this.resourceTitleId = source.readInt();
-        this.resourceMessageId = source.readInt();
+        this.message = source.readString();
         this.cancelable = (source.readByte() == 1);
         this.resourceIconId = source.readInt();
     }
@@ -82,7 +82,7 @@ public class DialogData implements Parcelable {
     @Override
     public void writeToParcel(Parcel destino, int flags) {
         destino.writeInt(this.resourceTitleId);
-        destino.writeInt(this.resourceMessageId);
+        destino.writeString(this.message);
         destino.writeByte((byte) (this.cancelable ? 1 : 0));
         destino.writeInt(this.resourceIconId);
     }
@@ -96,11 +96,11 @@ public class DialogData implements Parcelable {
     }
 
     /**
-     * Allows to get the Id of the message resource to use in the Dialog.
-     * @return Id of the message resource to use in the Dialog.
+     * Allows to get the message to use in the Dialog.
+     * @return Message to use in the Dialog.
      */
-    public int getResourceMessageId() {
-        return resourceMessageId;
+    public String getMessage() {
+        return message;
     }
 
     /**

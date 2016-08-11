@@ -41,8 +41,7 @@ public class IndeterminateProgressDialog extends DialogFragment {
                 getResources().getText(
                         dialogData.getResourceTitleId()))
                 .setMessage(
-                        getResources().getText(
-                                dialogData.getResourceMessageId()))
+                        dialogData.getMessage())
                 .setCancelable(dialogData.isCancelable())
                 .setIcon(dialogData.getResourceIconId())
                 .setView(progressBar);

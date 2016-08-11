@@ -8,6 +8,7 @@ import mx.com.labuena.tortillas.services.FetchAddressIntentService;
 import mx.com.labuena.tortillas.services.ClientRegistrationIntentService;
 import mx.com.labuena.tortillas.services.SendTortillasOrderIntentService;
 import mx.com.labuena.tortillas.views.activities.HomeActivity;
+import mx.com.labuena.tortillas.views.dialogs.ConfirmationDialogFragment;
 import mx.com.labuena.tortillas.views.fragments.ClientRegistrationFragment;
 import mx.com.labuena.tortillas.views.fragments.LoginFragment;
 import mx.com.labuena.tortillas.views.fragments.OrderConfirmationFragment;
@@ -35,4 +36,6 @@ public interface LaBuenaModules {
     void inject(ClientRegistrationIntentService clientRegistrationIntentService);
 
     void inject(OrderConfirmationFragment orderConfirmationFragment);
+
+    void inject(ConfirmationDialogFragment confirmationDialogFragment);
 }
