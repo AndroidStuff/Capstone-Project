@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">Bike driver</string>
+    <string name="app_name">Bike Driver</string>
+    <string name="web_client_id">269028494679-a06mh94qbqt3qvborhnu3nc7rfem1uo5.apps.googleusercontent.com</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="btn_login">Sign in</string>
+    <string name="email_address_required">Enter email address!</string>
+    <string name="password_required">Enter password!</string>
 </resources>
