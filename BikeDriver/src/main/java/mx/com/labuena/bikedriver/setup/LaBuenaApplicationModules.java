@@ -11,6 +11,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import mx.com.labuena.bikedriver.models.PreferencesRepository;
+import mx.com.labuena.bikedriver.models.SharedPreferencesRepository;
 
 /**
  * Created by clerks on 8/6/16.
@@ -41,5 +43,10 @@ public class LaBuenaApplicationModules {
     @Singleton
     public final SharedPreferences providesSharedPreferences() {
         return PreferenceManager.getDefaultSharedPreferences(application);
+    }
+
+    @Provides
+    public PreferencesRepository providesPreferencesRepository(SharedPreferences sharedPreferences) {
+        return new SharedPreferencesRepository(sharedPreferences);
     }
 }
