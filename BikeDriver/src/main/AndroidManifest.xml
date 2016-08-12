@@ -17,5 +17,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:authorities="mx.com.labuena.bikedriver"
+            android:name=".data.BikeDriverProvider"></provider>
         </application>
 </manifest>
