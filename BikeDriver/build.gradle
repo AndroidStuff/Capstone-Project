@@ -41,9 +41,20 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     compile 'com.android.support:multidex:1.0.0'
     compile "com.android.support:design:$rootProject.supportLibraryVersion"
+
+    compile "com.google.firebase:firebase-core:$rootProject.ext.firebaseVersion"
+    compile "com.google.firebase:firebase-auth:$rootProject.ext.firebaseVersion"
+    compile "com.google.firebase:firebase-messaging:$rootProject.ext.firebaseVersion"
+    compile "com.google.firebase:firebase-crash:$rootProject.ext.firebaseVersion"
+
+    compile "com.google.android.gms:play-services-location:$rootProject.ext.playservicesVersion"
+
+    compile "org.apache.commons:commons-lang3:$rootProject.ext.apachecommonsVersion"
+
+    compile project(path: ':LaBuenaServices', configuration: 'android-endpoints')
 
     androidTestCompile "org.hamcrest:hamcrest-library:$rootProject.ext.hamcrestVersion"
     androidTestCompile "org.mockito:mockito-core:1.+"
