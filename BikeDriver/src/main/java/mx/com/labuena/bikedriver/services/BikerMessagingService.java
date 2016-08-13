@@ -44,7 +44,7 @@ public class BikerMessagingService extends FirebaseMessagingService {
         Log.d(TAG, "FCM Data Message: " + remoteMessage.getData());
 
         String message = remoteMessage.getData().toString();
-        Order order = OrderConverter.toTransferObject(message);
+        mx.com.labuena.bikedriver.models.Order order = OrderConverter.toTransferObject(message);
 
         String rootUrl = EndpointUtil.getRootUrl(this);
         Bikers.Builder builder = new Bikers.Builder(AndroidHttp.newCompatibleTransport(),

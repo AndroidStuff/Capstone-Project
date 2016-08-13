@@ -42,7 +42,7 @@ public final class OrderConverter {
         return values;
     }
 
-    public static Order toTransferObject(String message) {
-        return new Gson().fromJson(message, Order.class);
+    public static mx.com.labuena.bikedriver.models.Order toTransferObject(String message) {
+        return new Gson().fromJson(message, mx.com.labuena.bikedriver.models.Order.class);
     }
 }

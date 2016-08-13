@@ -1,7 +1,9 @@
 package mx.com.labuena.bikedriver.views.fragments;
 
-import android.support.v4.app.Fragment;
+import android.os.Bundle;
+import android.view.View;
 
+import mx.com.labuena.bikedriver.R;
 import mx.com.labuena.bikedriver.models.BikeDriver;
 
 /**
@@ -9,12 +11,26 @@ import mx.com.labuena.bikedriver.models.BikeDriver;
  */
 
 public class OrdersToDeliverFragment extends BaseFragment {
+
+    public static final String BIKE_DRIVER_KEY = "bikeDriver";
+
     @Override
     protected int getLayoutId() {
-        return 0;
+        return R.layout.orders_to_deliver_fragment;
     }
 
-    public static Fragment newInstance(BikeDriver bikeDriver) {
-        return null;
+    @Override
+    protected void initView(View rootView) {
+        View toolbar = getActivity().findViewById(R.id.toolbar);
+        toolbar.setVisibility(View.VISIBLE);
+    }
+
+    public static OrdersToDeliverFragment newInstance(BikeDriver bikeDriver) {
+
+        Bundle args = new Bundle();
+        args.putParcelable(BIKE_DRIVER_KEY, bikeDriver);
+        OrdersToDeliverFragment fragment = new OrdersToDeliverFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 }

@@ -6,8 +6,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
-        android:allowBackup="true"
         android:name=".setup.LaBuenaApplication"
+        android:allowBackup="true"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
@@ -32,8 +32,12 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name=".services.BikerUpdateIntentService"
+            android:exported="false" />
+
         <provider
-            android:authorities="mx.com.labuena.bikedriver"
-            android:name=".data.BikeDriverProvider"></provider>
-        </application>
+            android:name=".data.BikeDriverProvider"
+            android:authorities="mx.com.labuena.bikedriver"></provider>
+    </application>
 </manifest>

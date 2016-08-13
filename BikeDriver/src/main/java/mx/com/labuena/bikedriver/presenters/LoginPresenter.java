@@ -96,12 +96,12 @@ public class LoginPresenter extends BasePresenter {
         nextActionAfterAuthenticate = new Action() {
             @Override
             public void execute(Object... params) {
-                navigateToTortillasRequestor((FirebaseUser) params[0]);
+                navigateToOrdersDeliveryFragment((FirebaseUser) params[0]);
             }
         };
     }
 
-    private void navigateToTortillasRequestor(FirebaseUser firebaseUser) {
+    private void navigateToOrdersDeliveryFragment(FirebaseUser firebaseUser) {
         nextActionAfterAuthenticate = null;
         Log.d(TAG, "onAuthStateChanged:signed_in:" + firebaseUser.getUid());
         BikeDriver bikeDriver = new BikeDriver(firebaseUser.getEmail(), firebaseUser.getDisplayName());
