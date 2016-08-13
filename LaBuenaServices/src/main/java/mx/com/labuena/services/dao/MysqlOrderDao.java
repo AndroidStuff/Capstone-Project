@@ -8,6 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -93,6 +95,39 @@ public class MysqlOrderDao extends BaseDao implements OrderDao {
                 closeConnection(connection);
             }
         } catch (SQLException e) {
+            log.log(Level.SEVERE, e.getMessage(), e);
+            throw new InternalServerErrorException(e);
+        }
+    }
+
+    @Override
+    public List<Order> findByBikerEmail(String bikerEmail) throws InternalServerErrorException {
+        List<Order> orders = new ArrayList<>();
+        Connection connection = connectionProvider.get();
+        try {
+            String ordersQuery = "select order.id_order, client.email, client.name, coordinates.latitude, " +
+                    "coordinates.longitude, order.quantity from la_buena_db.order " +
+                    "join la_buena_db.client on order.id_client = client.id_client " +
+                    "join la_buena_db.location on order.id_location = location.id_location " +
+                    "join la_buena_db.biker on order.id_biker = location.id_biker and biker.email = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(ordersQuery);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int orderId = resultSet.getInt("id_order");
+                String email = resultSet.getString("email");
+                String name = resultSet.getString("name");
+                double latitude = resultSet.getDouble("latitude");
+                double longitude = resultSet.getDouble("longitude");
+                int quantity = resultSet.getInt("quantity");
+
+                orders.add(new Order(orderId, email, name, new Coordinates(latitude, longitude), quantity));
+            }
+            resultSet.close();
+            closeConnection(connection);
+            return orders;
+        } catch (SQLException e) {
+            closeConnection(connection);
             log.log(Level.SEVERE, e.getMessage(), e);
             throw new InternalServerErrorException(e);
         }

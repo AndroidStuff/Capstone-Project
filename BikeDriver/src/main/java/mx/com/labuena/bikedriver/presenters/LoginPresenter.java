@@ -24,7 +24,7 @@ import mx.com.labuena.bikedriver.models.Action;
 import mx.com.labuena.bikedriver.models.BikeDriver;
 import mx.com.labuena.bikedriver.models.Credentials;
 import mx.com.labuena.bikedriver.models.PreferencesRepository;
-import mx.com.labuena.bikedriver.services.BikerUpdateUntentService;
+import mx.com.labuena.bikedriver.services.BikerUpdateIntentService;
 import mx.com.labuena.bikedriver.services.BikerInstanceIdService;
 import mx.com.labuena.bikedriver.views.fragments.OrdersToDeliverFragment;
 
@@ -115,8 +115,8 @@ public class LoginPresenter extends BasePresenter {
         if (!tokenInServer) {
             String token = preferencesRepository.read(BikerInstanceIdService.REGISTRATION_TOKEN_KEY, StringUtils.EMPTY);
             bikeDriver.setFcmToken(token);
-            Intent intent = new Intent(application, BikerUpdateUntentService.class);
-            intent.putExtra(BikerUpdateUntentService.BIKER_DATA_EXTRA, bikeDriver);
+            Intent intent = new Intent(application, BikerUpdateIntentService.class);
+            intent.putExtra(BikerUpdateIntentService.BIKER_DATA_EXTRA, bikeDriver);
             application.startService(intent);
         }
     }

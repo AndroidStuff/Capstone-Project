@@ -5,10 +5,12 @@ package mx.com.labuena.services.models;
  */
 public class Order {
     private String clientEmail;
+    private String clientName;
     private int quantity;
     private int bikerId;
     private int clientId;
     private Coordinates coordinates;
+    private int orderId;
 
     public Order(String clientEmail, int quantity) {
         this.clientEmail = clientEmail;
@@ -16,6 +18,14 @@ public class Order {
     }
 
     public Order() {
+    }
+
+    public Order(int orderId, String email, String name, Coordinates coordinates, int quantity) {
+        this.orderId = orderId;
+        this.clientEmail = email;
+        this.clientName = name;
+        this.coordinates = coordinates;
+        this.quantity = quantity;
     }
 
     public String getClientEmail() {
@@ -56,5 +66,21 @@ public class Order {
 
     public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
     }
 }

@@ -2,7 +2,7 @@ package mx.com.labuena.services.models;
 
 import com.google.api.server.spi.response.InternalServerErrorException;
 
-import mx.com.labuena.services.models.Order;
+import java.util.List;
 
 /**
  * Created by moracl6 on 8/4/2016.
@@ -10,4 +10,5 @@ import mx.com.labuena.services.models.Order;
 
 public interface OrderDao {
     int save(Order order) throws InternalServerErrorException;
+    List<Order> findByBikerEmail(String bikerEmail) throws InternalServerErrorException;
 }
