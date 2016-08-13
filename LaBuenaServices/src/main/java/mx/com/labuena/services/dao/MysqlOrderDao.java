@@ -101,7 +101,7 @@ public class MysqlOrderDao extends BaseDao implements OrderDao {
     }
 
     @Override
-    public List<Order> findByBikerEmail(String bikerEmail) throws InternalServerErrorException {
+    public List<Order> findByBikerId(int bikerId) throws InternalServerErrorException {
         List<Order> orders = new ArrayList<>();
         Connection connection = connectionProvider.get();
         try {
@@ -109,10 +109,10 @@ public class MysqlOrderDao extends BaseDao implements OrderDao {
                     "coordinates.longitude, order.quantity from la_buena_db.order " +
                     "join la_buena_db.client on order.id_client = client.id_client " +
                     "join la_buena_db.location coordinates on order.id_location = coordinates.id_location " +
-                    "join la_buena_db.biker on order.id_biker = biker.id_biker and biker.email = ? " +
+                    "join la_buena_db.biker on order.id_biker = biker.id_biker and biker.id_biker = ? " +
                     "where order.delivered = 0;";
             PreparedStatement preparedStatement = connection.prepareStatement(ordersQuery);
-            preparedStatement.setString(1, bikerEmail);
+            preparedStatement.setInt(1, bikerId);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {

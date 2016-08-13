@@ -65,8 +65,8 @@ public class BikersEndpoint {
 
     @ApiMethod(name = "ordersToDeliver",
             httpMethod = ApiMethod.HttpMethod.GET)
-    public OrdersResponse getOrdersToDeliver(@Named("email") String email) throws InternalServerErrorException {
-        List<Order> orders = orderDao.findByBikerEmail(email);
+    public OrdersResponse getOrdersToDeliver(@Named("bikerId") int bikerId) throws InternalServerErrorException {
+        List<Order> orders = orderDao.findByBikerId(bikerId);
         return new OrdersResponse(orders);
     }
 }

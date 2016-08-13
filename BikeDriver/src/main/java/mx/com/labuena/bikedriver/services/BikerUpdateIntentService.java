@@ -1,5 +1,6 @@
 package mx.com.labuena.bikedriver.services;
 
+import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
@@ -14,14 +15,17 @@ import mx.com.labuena.bikedriver.models.BikeDriver;
 import mx.com.labuena.bikedriver.models.PreferencesRepository;
 import mx.com.labuena.bikedriver.setup.LaBuenaApplication;
 import mx.com.labuena.bikedriver.setup.LaBuenaModules;
+import mx.com.labuena.bikedriver.utils.EndpointUtil;
 import mx.com.labuena.services.bikers.Bikers;
 import mx.com.labuena.services.bikers.model.Biker;
+
+import static mx.com.labuena.bikedriver.utils.EndpointUtil.getApplicationName;
 
 /**
  * Created by moracl6 on 8/12/2016.
  */
 
-public class BikerUpdateIntentService extends EndpointConsumerBaseService {
+public class BikerUpdateIntentService extends IntentService {
     private static final String TAG = BikerUpdateIntentService.class.getSimpleName();
     public static final String BIKER_DATA_EXTRA = "BikerExtraData";
 
@@ -39,7 +43,7 @@ public class BikerUpdateIntentService extends EndpointConsumerBaseService {
         modules.inject(this);
 
         BikeDriver bikeDriver = intent.getParcelableExtra(BIKER_DATA_EXTRA);
-        String rootUrl = getRootUrl();
+        String rootUrl = EndpointUtil.getRootUrl(this);
         Bikers.Builder builder = new Bikers.Builder(AndroidHttp.newCompatibleTransport(),
                 new AndroidJsonFactory(), null).setApplicationName(getApplicationName(this))
                 .setRootUrl(rootUrl);
