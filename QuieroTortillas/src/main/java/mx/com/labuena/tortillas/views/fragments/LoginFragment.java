@@ -233,14 +233,16 @@ public class LoginFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onInvalidInputCredentialsEvent(InvalidInputCredentialsEvent event) {
         progressBar.setVisibility(View.GONE);
-        Credentials credenttials = event.getCredentials();
-        if (TextUtils.isEmpty(credenttials.getEmail())) {
-            Toast.makeText(getActivity(), getString(R.string.email_address_required), Toast.LENGTH_SHORT).show();
+        Credentials credentials = event.getCredentials();
+        if (TextUtils.isEmpty(credentials.getEmail())) {
+            userEmailEditText.setError(getString(R.string.email_address_required));
+            userEmailEditText.requestFocus();
             return;
         }
 
-        if (TextUtils.isEmpty(credenttials.getPassword())) {
-            Toast.makeText(getActivity(), getString(R.string.password_required), Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(credentials.getPassword())) {
+            userPasswordEditText.setError(getString(R.string.password_required));
+            userPasswordEditText.requestFocus();
         }
     }
 
