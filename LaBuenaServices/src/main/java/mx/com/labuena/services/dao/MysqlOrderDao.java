@@ -108,8 +108,8 @@ public class MysqlOrderDao extends BaseDao implements OrderDao {
             String ordersQuery = "select order.id_order, client.email, client.name, coordinates.latitude, " +
                     "coordinates.longitude, order.quantity from la_buena_db.order " +
                     "join la_buena_db.client on order.id_client = client.id_client " +
-                    "join la_buena_db.location on order.id_location = location.id_location " +
-                    "join la_buena_db.biker on order.id_biker = location.id_biker and biker.email = ? " +
+                    "join la_buena_db.location coordinates on order.id_location = coordinates.id_location " +
+                    "join la_buena_db.biker on order.id_biker = biker.id_biker and biker.email = ? " +
                     "where order.delivered = 0;";
             PreparedStatement preparedStatement = connection.prepareStatement(ordersQuery);
             preparedStatement.setString(1, bikerEmail);
