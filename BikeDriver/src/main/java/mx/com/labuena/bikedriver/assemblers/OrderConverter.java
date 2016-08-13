@@ -2,8 +2,12 @@ package mx.com.labuena.bikedriver.assemblers;
 
 import android.content.ContentValues;
 
+import com.google.gson.Gson;
+
 import java.util.List;
 
+import mx.com.labuena.bikedriver.data.BikeDriverContracts;
+import mx.com.labuena.services.bikers.model.Coordinates;
 import mx.com.labuena.services.bikers.model.Order;
 
 /**
@@ -15,10 +19,30 @@ public final class OrderConverter {
     }
 
     public static ContentValues[] toContentValues(List<Order> orders) {
-        return new ContentValues[0];
+        ContentValues[] values = new ContentValues[orders.size()];
+        int index = 0;
+        for (Order order :
+                orders) {
+            values[index] = toContentValues(order);
+            index++;
+        }
+
+        return values;
+    }
+
+    public static ContentValues toContentValues(Order order) {
+        ContentValues values = new ContentValues();
+        Coordinates coordinates = order.getCoordinates();
+        values.put(BikeDriverContracts.OrderEntry.ID, order.getOrderId());
+        values.put(BikeDriverContracts.OrderEntry.CLIENT_EMAIL_COLUMN, order.getClientEmail());
+        values.put(BikeDriverContracts.OrderEntry.CLIENT_NAME_COLUMN, order.getClientName());
+        values.put(BikeDriverContracts.OrderEntry.LATITUDE_COLUMN, coordinates.getLatitude());
+        values.put(BikeDriverContracts.OrderEntry.LONGITUDE_COLUMN, coordinates.getLongitude());
+        values.put(BikeDriverContracts.OrderEntry.QUANTITY_COLUMN, order.getQuantity());
+        return values;
     }
 
     public static Order toTransferObject(String message) {
-        return null;
+        return new Gson().fromJson(message, Order.class);
     }
 }

@@ -19,7 +19,6 @@ import mx.com.labuena.services.models.Client;
 import mx.com.labuena.services.models.ClientDao;
 import mx.com.labuena.services.models.Order;
 import mx.com.labuena.services.models.OrderDao;
-import mx.com.labuena.services.models.OrderNotification;
 import mx.com.labuena.services.responses.ClientsResponse;
 
 
@@ -72,17 +71,15 @@ public class ClientsEndpoint {
         order.setClientId(client.getClientId());
         order.setBikerId(biker.getBikerId());
         int orderId = orderDao.save(order);
-
-        OrderNotification orderNotification = new OrderNotification(orderId, order.getQuantity(),
-                order.getCoordinates());
-        sendNotification(client.getFcmToken(), orderNotification);
-        sendNotification(biker.getGcmToken(), orderNotification);
+        order.setOrderId(orderId);
+        sendNotification(client.getFcmToken(), order);
+        sendNotification(biker.getGcmToken(), order);
     }
 
-    private void sendNotification(String receiverToken, OrderNotification orderNotification)
+    private void sendNotification(String receiverToken, Order order)
             throws InternalServerErrorException {
-        Message<OrderNotification> message =
-                new MessageWithSingleReceiver<>(receiverToken, orderNotification);
+        Message<Order> message =
+                new MessageWithSingleReceiver<>(receiverToken, order);
         messageNotifier.sendMessage(message);
     }
 }

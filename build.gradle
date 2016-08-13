@@ -31,6 +31,8 @@ ext {
 
     apachecommonsVersion = '3.4'
 
+    gsonVersion = '2.7'
+
     playservicesVersion = '9.0.0'
 
     facebookApkVersion = '4.14.1'

@@ -61,6 +61,8 @@ dependencies {
 
     compile "org.apache.commons:commons-lang3:$rootProject.ext.apachecommonsVersion"
 
+    compile "com.google.code.gson:gson:$rootProject.ext.gsonVersion"
+
     compile project(path: ':LaBuenaServices', configuration: 'android-endpoints')
 
     androidTestCompile "org.hamcrest:hamcrest-library:$rootProject.ext.hamcrestVersion"
