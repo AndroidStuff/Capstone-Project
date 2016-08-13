@@ -50,6 +50,12 @@ public class BikersEndpoint {
         bikerDao.saveLocation(biker);
     }
 
+    @ApiMethod(name = "updateToken",
+            httpMethod = ApiMethod.HttpMethod.POST)
+    public void updateToken(Biker biker) throws InternalServerErrorException {
+        bikerDao.updateToken(biker);
+    }
+
     @ApiMethod(name = "getAll",
             httpMethod = ApiMethod.HttpMethod.GET)
     public BikersResponse getAll() throws InternalServerErrorException {
@@ -57,7 +63,7 @@ public class BikersEndpoint {
         return new BikersResponse(bikers);
     }
 
-    @ApiMethod(name = "orders",
+    @ApiMethod(name = "ordersToDeliver",
             httpMethod = ApiMethod.HttpMethod.GET)
     public OrdersResponse getOrdersToDeliver(@Named("email") String email) throws InternalServerErrorException {
         List<Order> orders = orderDao.findByBikerEmail(email);

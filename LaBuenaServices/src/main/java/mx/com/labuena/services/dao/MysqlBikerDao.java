@@ -150,6 +150,33 @@ public class MysqlBikerDao extends BaseDao implements BikerDao, BikeDriverSelect
         }
     }
 
+    @Override
+    public void updateToken(Biker biker) throws InternalServerErrorException {
+        try {
+            Connection connection = connectionProvider.get();
+            try {
+                String saveBikerQuery = "update la_buena_db.biker set cloud_messaging_token = ? " +
+                        "where email = ?;";
+                connection.setAutoCommit(false);
+                PreparedStatement preparedStatement = connection.prepareStatement(saveBikerQuery);
+                preparedStatement.setString(1, biker.getGcmToken());
+                preparedStatement.setString(2, biker.getEmail());
+                preparedStatement.execute();
+                connection.commit();
+            } catch (SQLException e) {
+                connection.rollback();
+                log.log(Level.SEVERE, e.getMessage(), e);
+                throw new InternalServerErrorException(e);
+            } finally {
+                connection.setAutoCommit(true);
+                closeConnection(connection);
+            }
+        } catch (SQLException e) {
+            log.log(Level.SEVERE, e.getMessage(), e);
+            throw new InternalServerErrorException(e);
+        }
+    }
+
 
     public int getBikerIdByEmail(Connection conn, String email) throws InternalServerErrorException {
         int bikerId = -1;

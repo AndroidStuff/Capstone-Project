@@ -14,4 +14,6 @@ public interface BikerDao {
     void save(Biker biker) throws InternalServerErrorException;
 
     void saveLocation(Biker biker) throws InternalServerErrorException;
+
+    void updateToken(Biker biker) throws InternalServerErrorException;
 }
