@@ -8,9 +8,21 @@ public class Order {
     private int quantity;
     private int orderId;
     private String clientEmail;
+    private String clientName;
     private int bikerId;
     private int clientId;
     private Coordinate coordinates;
+
+    public Order() {
+    }
+
+    public Order(int orderId, String clientEmail, String clientName, Coordinate coordinates, int quantity) {
+        this.orderId = orderId;
+        this.clientEmail = clientEmail;
+        this.clientName = clientName;
+        this.coordinates = coordinates;
+        this.quantity = quantity;
+    }
 
     public int getQuantity() {
         return quantity;
@@ -58,5 +70,13 @@ public class Order {
 
     public void setCoordinates(Coordinate coordinates) {
         this.coordinates = coordinates;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 }

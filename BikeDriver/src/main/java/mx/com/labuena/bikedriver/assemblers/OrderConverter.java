@@ -1,12 +1,14 @@
 package mx.com.labuena.bikedriver.assemblers;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 
 import com.google.gson.Gson;
 
 import java.util.List;
 
 import mx.com.labuena.bikedriver.data.BikeDriverContracts;
+import mx.com.labuena.bikedriver.models.Coordinate;
 import mx.com.labuena.services.bikers.model.Coordinates;
 import mx.com.labuena.services.bikers.model.Order;
 
@@ -44,5 +46,19 @@ public final class OrderConverter {
 
     public static mx.com.labuena.bikedriver.models.Order toTransferObject(String message) {
         return new Gson().fromJson(message, mx.com.labuena.bikedriver.models.Order.class);
+    }
+
+    public static mx.com.labuena.bikedriver.models.Order toModel(Cursor cursor) {
+        int orderId = cursor.getInt(0);
+        String clientEmail = cursor.getString(1);
+        String clientName = cursor.getString(2);
+
+        double latitude = cursor.getDouble(3);
+        double logitude = cursor.getDouble(4);
+
+        Coordinate coordinates = new Coordinate(latitude, logitude);
+        int quantity = cursor.getInt(5);
+
+        return new mx.com.labuena.bikedriver.models.Order(orderId, clientEmail, clientName, coordinates, quantity);
     }
 }
