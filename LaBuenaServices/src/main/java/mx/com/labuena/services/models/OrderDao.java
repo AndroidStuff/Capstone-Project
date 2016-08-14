@@ -10,5 +10,8 @@ import java.util.List;
 
 public interface OrderDao {
     int save(Order order) throws InternalServerErrorException;
+
     List<Order> findByBikerId(int bikerId) throws InternalServerErrorException;
+
+    void updateOrder(Order order) throws InternalServerErrorException;
 }

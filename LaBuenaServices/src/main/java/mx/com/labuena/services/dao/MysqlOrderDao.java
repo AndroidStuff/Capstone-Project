@@ -134,4 +134,30 @@ public class MysqlOrderDao extends BaseDao implements OrderDao {
             throw new InternalServerErrorException(e);
         }
     }
+
+    @Override
+    public void updateOrder(Order order) throws InternalServerErrorException {
+        try {
+            Connection connection = connectionProvider.get();
+            try {
+                String saveBikerQuery = "update la_buena_db.order set delivered = 1 " +
+                        "where id_order = ?;";
+                connection.setAutoCommit(false);
+                PreparedStatement preparedStatement = connection.prepareStatement(saveBikerQuery);
+                preparedStatement.setInt(1, order.getOrderId());
+                preparedStatement.execute();
+                connection.commit();
+            } catch (SQLException e) {
+                connection.rollback();
+                log.log(Level.SEVERE, e.getMessage(), e);
+                throw new InternalServerErrorException(e);
+            } finally {
+                connection.setAutoCommit(true);
+                closeConnection(connection);
+            }
+        } catch (SQLException e) {
+            log.log(Level.SEVERE, e.getMessage(), e);
+            throw new InternalServerErrorException(e);
+        }
+    }
 }

@@ -50,10 +50,16 @@ public class BikersEndpoint {
         bikerDao.saveLocation(biker);
     }
 
-    @ApiMethod(name = "updateToken",
+    @ApiMethod(name = "updateToken", path = "updateToken",
             httpMethod = ApiMethod.HttpMethod.POST)
     public void updateToken(Biker biker) throws InternalServerErrorException {
         bikerDao.updateToken(biker);
+    }
+
+    @ApiMethod(name = "updateOrder", path = "updateOrder",
+            httpMethod = ApiMethod.HttpMethod.POST)
+    public void updateOrder(Order order) throws InternalServerErrorException {
+        orderDao.updateOrder(order);
     }
 
     @ApiMethod(name = "getAll",
