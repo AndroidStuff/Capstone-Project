@@ -65,7 +65,11 @@ public class BikerMessagingService extends FirebaseMessagingService {
     }
 
     private void insertOrders(List<Order> orders) {
-        getApplicationContext().getContentResolver().bulkInsert(BikeDriverContracts.OrderEntry.CONTENT_URI,
+        getApplicationContext().getContentResolver().delete(BikeDriverContracts
+                .OrderEntry.CONTENT_URI, null, null);
+
+        getApplicationContext().getContentResolver().bulkInsert(
+                BikeDriverContracts.OrderEntry.CONTENT_URI,
                 OrderConverter.toContentValues(orders));
     }
 
