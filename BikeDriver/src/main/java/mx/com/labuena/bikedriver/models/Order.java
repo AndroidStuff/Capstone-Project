@@ -1,5 +1,7 @@
 package mx.com.labuena.bikedriver.models;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * Created by clerks on 8/13/16.
  */
@@ -78,5 +80,10 @@ public class Order {
 
     public void setClientName(String clientName) {
         this.clientName = clientName;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

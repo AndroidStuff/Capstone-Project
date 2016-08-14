@@ -2,14 +2,18 @@ package mx.com.labuena.bikedriver.views.fragments;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.View;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -33,6 +37,7 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
 
     public static final String BIKE_DRIVER_KEY = "bikeDriver";
     private static final int URL_LOADER = 23;
+    private static final String TAG = OrdersToDeliverFragment.class.getSimpleName();
     private GoogleMap googleMap;
     private List<Order> orders = new ArrayList<>();
 
@@ -42,13 +47,16 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
     }
 
     @Override
-    protected void initView(View rootView) {
+    protected void initView(View rootView, Bundle savedInstanceState) {
         View toolbar = getActivity().findViewById(R.id.toolbar);
         toolbar.setVisibility(View.VISIBLE);
+    }
 
-        SupportMapFragment mapFragment =
-                (SupportMapFragment)  getFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        SupportMapFragment mapsFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        mapsFragment.getMapAsync(this);
     }
 
     public static OrdersToDeliverFragment newInstance(BikeDriver bikeDriver) {
@@ -71,13 +79,15 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
                 BikeDriverContracts.OrderEntry.QUANTITY_COLUMN
         };
 
-        return new CursorLoader(getActivity(),
+        CursorLoader cursorLoader = new CursorLoader(getActivity(),
                 BikeDriverContracts.OrderEntry.CONTENT_URI
                 , projection, null, null, null);
+        return cursorLoader;
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
+        cursor.setNotificationUri(getActivity().getContentResolver(), BikeDriverContracts.OrderEntry.CONTENT_URI);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             orders.add(OrderConverter.toModel(cursor));
@@ -105,15 +115,26 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
     }
 
     private void displayMarkers() {
+        Coordinate coordinates = null;
+
         for (Order order :
                 orders) {
-            Coordinate coordinates = order.getCoordinates();
+            coordinates = order.getCoordinates();
             String snipped = String.format("%d kg", order.getQuantity());
             Marker marker = googleMap.addMarker(new MarkerOptions()
                     .position(new LatLng(coordinates.getLatitude(), coordinates.getLongitude()))
                     .title(order.getClientName())
                     .snippet(snipped));
 
+            Log.d(TAG, "Displaying marker for order " + order);
+        }
+
+        if (coordinates != null) {
+            CameraPosition cameraPosition = new CameraPosition.Builder()
+                    .target(new LatLng(coordinates.getLatitude(), coordinates.getLongitude()))
+                    .zoom(12).build();
+            googleMap.animateCamera(CameraUpdateFactory
+                    .newCameraPosition(cameraPosition));
         }
     }
 }

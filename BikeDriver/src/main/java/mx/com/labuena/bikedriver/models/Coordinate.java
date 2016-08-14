@@ -1,5 +1,7 @@
 package mx.com.labuena.bikedriver.models;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * Created by clerks on 8/13/16.
  */
@@ -30,5 +32,10 @@ public class Coordinate {
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

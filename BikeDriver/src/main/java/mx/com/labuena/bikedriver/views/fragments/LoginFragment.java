@@ -21,6 +21,7 @@ import mx.com.labuena.bikedriver.events.InvalidInputCredentialsEvent;
 import mx.com.labuena.bikedriver.models.Credentials;
 import mx.com.labuena.bikedriver.presenters.LoginPresenter;
 import mx.com.labuena.bikedriver.setup.LaBuenaModules;
+import mx.com.labuena.bikedriver.utils.InputMethodManagerExtensor;
 
 /**
  * Created by moracl6 on 8/12/2016.
@@ -56,7 +57,7 @@ public class LoginFragment extends BaseFragment {
     }
 
     @Override
-    protected void initView(View rootView) {
+    protected void initView(View rootView, Bundle savedInstanceState) {
         userEmailEditText = (EditText) rootView.findViewById(R.id.emailEditText);
         userPasswordEditText = (EditText) rootView.findViewById(R.id.passwordEditText);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
@@ -68,6 +69,7 @@ public class LoginFragment extends BaseFragment {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                InputMethodManagerExtensor.hideKeyBoard(getActivity());
                 progressBar.setVisibility(View.VISIBLE);
                 Credentials credentials = getUserInputCredentials();
                 loginPresenter.authenticate(getActivity(), credentials, firebaseAuth);
