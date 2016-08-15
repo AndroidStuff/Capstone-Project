@@ -1,6 +1,8 @@
 package mx.com.labuena.bikedriver.views.fragments;
 
+import android.content.Intent;
 import android.database.Cursor;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
@@ -8,6 +10,7 @@ import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -18,15 +21,26 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.apache.commons.lang3.StringUtils;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.WeakHashMap;
+
+import javax.inject.Inject;
 
 import mx.com.labuena.bikedriver.R;
 import mx.com.labuena.bikedriver.assemblers.OrderConverter;
 import mx.com.labuena.bikedriver.data.BikeDriverContracts;
+import mx.com.labuena.bikedriver.events.AddressReceivedEvent;
 import mx.com.labuena.bikedriver.models.BikeDriver;
 import mx.com.labuena.bikedriver.models.Coordinate;
 import mx.com.labuena.bikedriver.models.Order;
+import mx.com.labuena.bikedriver.services.FetchAddressIntentService;
+import mx.com.labuena.bikedriver.setup.LaBuenaModules;
 
 /**
  * Created by moracl6 on 8/12/2016.
@@ -38,8 +52,16 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
     public static final String BIKE_DRIVER_KEY = "bikeDriver";
     private static final int URL_LOADER = 23;
     private static final String TAG = OrdersToDeliverFragment.class.getSimpleName();
+    public static final String TORTILLAS_AMOUNT_FORMAT_KG = "%d kg";
     private GoogleMap googleMap;
     private List<Order> orders = new ArrayList<>();
+    WeakHashMap<Marker, Order> markerOrderMap = new WeakHashMap<>();
+    private TextView tortillasAmountTextView;
+    private TextView clientNameTextView;
+    private TextView clientAddressTextView;
+
+    @Inject
+    EventBus eventBus;
 
     @Override
     protected int getLayoutId() {
@@ -47,9 +69,15 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
     }
 
     @Override
+    protected void injectDependencies(LaBuenaModules modules) {
+        modules.inject(this);
+    }
+
+    @Override
     protected void initView(View rootView, Bundle savedInstanceState) {
-        View toolbar = getActivity().findViewById(R.id.toolbar);
-        toolbar.setVisibility(View.VISIBLE);
+        clientNameTextView = (TextView) rootView.findViewById(R.id.nameTextView);
+        clientAddressTextView = (TextView) rootView.findViewById(R.id.addressTextView);
+        tortillasAmountTextView = (TextView) rootView.findViewById(R.id.amountTextView);
     }
 
     @Override
@@ -66,6 +94,25 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
         OrdersToDeliverFragment fragment = new OrdersToDeliverFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!eventBus.isRegistered(this))
+            eventBus.register(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (eventBus.isRegistered(this))
+            eventBus.unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onAddressReceivedEvent(AddressReceivedEvent event) {
+        clientAddressTextView.setText(event.getAddress());
     }
 
     @Override
@@ -99,11 +146,17 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-
+        orders.clear();
+        markerOrderMap.clear();
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
+        if (markerOrderMap.containsKey(marker)) {
+            Order order = markerOrderMap.get(marker);
+            displayOrder(order);
+        }
+
         return false;
     }
 
@@ -115,26 +168,50 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
     }
 
     private void displayMarkers() {
+        Order lastOrder = null;
         Coordinate coordinates = null;
 
         for (Order order :
                 orders) {
+            lastOrder = order;
             coordinates = order.getCoordinates();
-            String snipped = String.format("%d kg", order.getQuantity());
+            String snipped = String.format(TORTILLAS_AMOUNT_FORMAT_KG, order.getQuantity());
             Marker marker = googleMap.addMarker(new MarkerOptions()
                     .position(new LatLng(coordinates.getLatitude(), coordinates.getLongitude()))
                     .title(order.getClientName())
                     .snippet(snipped));
+            marker.showInfoWindow();
+            markerOrderMap.put(marker, order);
 
             Log.d(TAG, "Displaying marker for order " + order);
         }
 
-        if (coordinates != null) {
+        if (lastOrder != null) {
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(new LatLng(coordinates.getLatitude(), coordinates.getLongitude()))
                     .zoom(12).build();
             googleMap.animateCamera(CameraUpdateFactory
                     .newCameraPosition(cameraPosition));
+
+            displayOrder(lastOrder);
+
         }
+    }
+
+    private void displayOrder(Order order) {
+        String snipped = String.format(TORTILLAS_AMOUNT_FORMAT_KG, order.getQuantity());
+        clientNameTextView.setText(order.getClientName());
+        tortillasAmountTextView.setText(snipped);
+        Coordinate coordinate = order.getCoordinates();
+        Location location = new Location(StringUtils.EMPTY);
+        location.setLatitude(coordinate.getLatitude());
+        location.setLongitude(coordinate.getLongitude());
+        startIntentService(location);
+    }
+
+    private void startIntentService(Location location) {
+        Intent intent = new Intent(getActivity(), FetchAddressIntentService.class);
+        intent.putExtra(FetchAddressIntentService.LOCATION_DATA_EXTRA, location);
+        getActivity().startService(intent);
     }
 }

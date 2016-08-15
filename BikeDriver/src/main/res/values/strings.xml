@@ -9,4 +9,7 @@
     <string name="order_notitication">New order to deliver received</string>
     <string name="minimum_password">Password too short, enter minimum 6 characters!</string>
     <string name="auth_failed">Authentication failed, check your email and password or register to get access.</string>
+    <string name="service_not_available">The service is not available</string>
+    <string name="no_address_found">We could not find an address with that last saved location</string>
+    <string name="invalid_lat_long_used">Invalid latitude, longitude used.</string>
 </resources>

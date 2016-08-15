@@ -46,6 +46,10 @@
             android:name=".services.BikerUpdateIntentService"
             android:exported="false" />
 
+        <service
+            android:name=".services.FetchAddressIntentService"
+            android:exported="false" />
+
         <provider
             android:name=".data.BikeDriverProvider"
             android:authorities="mx.com.labuena.bikedriver"></provider>

@@ -35,7 +35,7 @@
 
     <string name="web_client_id">269028494679-a06mh94qbqt3qvborhnu3nc7rfem1uo5.apps.googleusercontent.com</string>
     <string name="service_not_available">The service is not available</string>
-    <string name="invalid_lat_long_used">Invalid latitud, longitud used.</string>
+    <string name="invalid_lat_long_used">Invalid latitude, longitude used.</string>
     <string name="no_address_found">We could not find an address with that last saved location</string>
     <string name="fetchingJokesMessage">Sending tortillas request</string>
     <string name="lbl_register_here">| Register here.</string>
