@@ -8,7 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
@@ -27,8 +28,9 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.WeakHashMap;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -55,7 +57,7 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
     public static final String TORTILLAS_AMOUNT_FORMAT_KG = "%d kg";
     private GoogleMap googleMap;
     private List<Order> orders = new ArrayList<>();
-    WeakHashMap<Marker, Order> markerOrderMap = new WeakHashMap<>();
+    Map<String, Order> markerOrderMap = new HashMap<>();
     private TextView tortillasAmountTextView;
     private TextView clientNameTextView;
     private TextView clientAddressTextView;
@@ -78,6 +80,9 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
         clientNameTextView = (TextView) rootView.findViewById(R.id.nameTextView);
         clientAddressTextView = (TextView) rootView.findViewById(R.id.addressTextView);
         tortillasAmountTextView = (TextView) rootView.findViewById(R.id.amountTextView);
+
+        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbarApp);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
     }
 
     @Override
@@ -152,8 +157,8 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        if (markerOrderMap.containsKey(marker)) {
-            Order order = markerOrderMap.get(marker);
+        if (markerOrderMap.containsKey(marker.getId())) {
+            Order order = markerOrderMap.get(marker.getId());
             displayOrder(order);
         }
 
@@ -181,9 +186,7 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
                     .title(order.getClientName())
                     .snippet(snipped));
             marker.showInfoWindow();
-            markerOrderMap.put(marker, order);
-
-            Log.d(TAG, "Displaying marker for order " + order);
+            markerOrderMap.put(marker.getId(), order);
         }
 
         if (lastOrder != null) {
