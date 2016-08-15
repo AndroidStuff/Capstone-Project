@@ -95,6 +95,8 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
         deliverOrderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cleanOrderDetails();
+
                 if (currentMarker != null)
                     currentMarker.remove();
 
@@ -237,6 +239,12 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
         location.setLatitude(coordinate.getLatitude());
         location.setLongitude(coordinate.getLongitude());
         startIntentService(location);
+    }
+
+    private void cleanOrderDetails() {
+        clientNameTextView.setText(StringUtils.EMPTY);
+        tortillasAmountTextView.setText(StringUtils.EMPTY);
+        clientAddressTextView.setText(StringUtils.EMPTY);
     }
 
     private void deleteOrder(Order order) {
