@@ -213,7 +213,7 @@ public class MysqlBikerDao extends BaseDao implements BikerDao, BikeDriverSelect
             String bikersQuery = "select biker.id_biker, biker.email, biker.name, biker.stock, " +
                     "biker.cloud_messaging_token, count(order.id_biker) from la_buena_db.biker " +
                     "  left join la_buena_db.order on biker.id_biker = order.id_biker " +
-                    "  where order.delivered = 0 or order.delivered is null " +
+                    "  and order.delivered = 0 or order.delivered is null " +
                     "  group by biker.id_biker\n" +
                     "  order by count(order.id_biker);";
             ResultSet resultSet = connection.prepareStatement(bikersQuery).executeQuery();
