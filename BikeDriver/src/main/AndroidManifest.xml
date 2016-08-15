@@ -55,7 +55,7 @@
             android:exported="false" />
 
         <service
-            android:name=".services.BikerLocationUpdateService"
+            android:name=".services.BikerLocationUpdateJobService"
             android:exported="false" />
 
         <provider

@@ -40,8 +40,8 @@ import static mx.com.labuena.bikedriver.utils.EndpointUtil.getApplicationName;
  * Created by moracl6 on 8/15/2016.
  */
 
-public class BikerLocationUpdateService extends JobService {
-    private static final String TAG = BikerLocationUpdateService.class.getSimpleName();
+public class BikerLocationUpdateJobService extends JobService {
+    private static final String TAG = BikerLocationUpdateJobService.class.getSimpleName();
     public static final int TWO_MINUTEST_DELAY_MILLIS = 120000;
 
     /**
@@ -86,7 +86,7 @@ public class BikerLocationUpdateService extends JobService {
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
-                if (ActivityCompat.checkSelfPermission(BikerLocationUpdateService.this,
+                if (ActivityCompat.checkSelfPermission(BikerLocationUpdateJobService.this,
                         Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }

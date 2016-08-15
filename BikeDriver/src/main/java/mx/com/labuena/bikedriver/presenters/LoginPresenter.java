@@ -31,7 +31,7 @@ import mx.com.labuena.bikedriver.models.BikeDriver;
 import mx.com.labuena.bikedriver.models.Credentials;
 import mx.com.labuena.bikedriver.models.PreferencesRepository;
 import mx.com.labuena.bikedriver.services.BikerInstanceIdService;
-import mx.com.labuena.bikedriver.services.BikerLocationUpdateService;
+import mx.com.labuena.bikedriver.services.BikerLocationUpdateJobService;
 import mx.com.labuena.bikedriver.services.BikerUpdateIntentService;
 import mx.com.labuena.bikedriver.views.fragments.OrdersToDeliverFragment;
 
@@ -128,9 +128,9 @@ public class LoginPresenter extends BasePresenter {
     }
 
     private void startLocationUpdatesService() {
-        ComponentName serviceComponent = new ComponentName(application, BikerLocationUpdateService.class);
+        ComponentName serviceComponent = new ComponentName(application, BikerLocationUpdateJobService.class);
         JobInfo.Builder builder = new JobInfo.Builder(LOCATION_UPDATE_JOB_ID, serviceComponent);
-        builder.setPeriodic(TimeUnit.MINUTES.toMillis(BikerLocationUpdateService.LOCATION_UPDATE_PERIOD));
+        builder.setPeriodic(TimeUnit.MINUTES.toMillis(BikerLocationUpdateJobService.LOCATION_UPDATE_PERIOD));
         builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED);
         builder.setRequiresCharging(false);
         JobScheduler jobScheduler = (JobScheduler) application.getSystemService(Context.JOB_SCHEDULER_SERVICE);

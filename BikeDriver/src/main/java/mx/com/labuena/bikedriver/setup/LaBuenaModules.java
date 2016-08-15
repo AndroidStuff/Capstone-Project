@@ -4,7 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import mx.com.labuena.bikedriver.services.BikerInstanceIdService;
-import mx.com.labuena.bikedriver.services.BikerLocationUpdateService;
+import mx.com.labuena.bikedriver.services.BikerLocationUpdateJobService;
 import mx.com.labuena.bikedriver.services.BikerUpdateIntentService;
 import mx.com.labuena.bikedriver.services.FetchAddressIntentService;
 import mx.com.labuena.bikedriver.views.activities.HomeActivity;
@@ -29,5 +29,5 @@ public interface LaBuenaModules {
 
     void inject(OrdersToDeliverFragment ordersToDeliverFragment);
 
-    void inject(BikerLocationUpdateService bikerLocationUpdateService);
+    void inject(BikerLocationUpdateJobService bikerLocationUpdateJobService);
 }
