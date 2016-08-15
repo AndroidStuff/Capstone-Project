@@ -84,6 +84,7 @@ public class BikerLocationUpdateJobService extends JobService {
             return false;
         }
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         HandlerThread handlerThread = new HandlerThread(LOCATION_UPDATES_HANDLER);
         handlerThread.start();
         final Handler handler = new Handler(handlerThread.getLooper());
@@ -94,8 +95,10 @@ public class BikerLocationUpdateJobService extends JobService {
                     return;
                 }
 
-                sendLocationUpdateToServer(locationHelper.getCurrentBestLocation());
-                locationManager.removeUpdates(locationListener);
+                if (locationHelper.getCurrentBestLocation() != null) {
+                    sendLocationUpdateToServer(locationHelper.getCurrentBestLocation());
+                    locationManager.removeUpdates(locationListener);
+                }
             }
         }, TWO_MINUTEST_DELAY_MILLIS);
 
