@@ -68,6 +68,7 @@ public class ClientsEndpoint {
     public void requestTortillas(Order order) throws InternalServerErrorException {
         Client client = clientDao.findByEmail(order.getClientEmail());
         Biker biker = bikeDriverSelector.selectDriver(order.getCoordinates());
+        log.log(Level.INFO, String.format("Selected biker %s to deliver order %s", biker, order));
         order.setClientId(client.getClientId());
         order.setBikerId(biker.getBikerId());
         int orderId = orderDao.save(order);

@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -42,7 +43,10 @@ import mx.com.labuena.bikedriver.models.BikeDriver;
 import mx.com.labuena.bikedriver.models.Coordinate;
 import mx.com.labuena.bikedriver.models.Order;
 import mx.com.labuena.bikedriver.services.FetchAddressIntentService;
+import mx.com.labuena.bikedriver.services.OrderUpdateIntentService;
 import mx.com.labuena.bikedriver.setup.LaBuenaModules;
+
+import static mx.com.labuena.bikedriver.R.id.orderDeliveredActionButton;
 
 /**
  * Created by moracl6 on 8/12/2016.
@@ -65,6 +69,8 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
     @Inject
     EventBus eventBus;
 
+    private Order currentOrder;
+
     @Override
     protected int getLayoutId() {
         return R.layout.orders_to_deliver_fragment;
@@ -80,6 +86,15 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
         clientNameTextView = (TextView) rootView.findViewById(R.id.nameTextView);
         clientAddressTextView = (TextView) rootView.findViewById(R.id.addressTextView);
         tortillasAmountTextView = (TextView) rootView.findViewById(R.id.amountTextView);
+
+        FloatingActionButton deliverOrderButton = (FloatingActionButton) rootView.findViewById(orderDeliveredActionButton);
+        deliverOrderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentOrder != null)
+                    deleteOrder(currentOrder);
+            }
+        });
 
         Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbarApp);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -158,8 +173,8 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
     @Override
     public boolean onMarkerClick(Marker marker) {
         if (markerOrderMap.containsKey(marker.getId())) {
-            Order order = markerOrderMap.get(marker.getId());
-            displayOrder(order);
+            currentOrder = markerOrderMap.get(marker.getId());
+            displayOrder(currentOrder);
         }
 
         return false;
@@ -173,6 +188,9 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
     }
 
     private void displayMarkers() {
+        markerOrderMap.clear();
+        googleMap.clear();
+
         Order lastOrder = null;
         Coordinate coordinates = null;
 
@@ -210,6 +228,12 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
         location.setLatitude(coordinate.getLatitude());
         location.setLongitude(coordinate.getLongitude());
         startIntentService(location);
+    }
+
+    private void deleteOrder(Order order) {
+        Intent intent = new Intent(getActivity(), OrderUpdateIntentService.class);
+        intent.putExtra(OrderUpdateIntentService.ORDER_DATA_EXTRA, order);
+        getActivity().startService(intent);
     }
 
     private void startIntentService(Location location) {

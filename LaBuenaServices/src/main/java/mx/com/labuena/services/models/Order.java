@@ -1,5 +1,7 @@
 package mx.com.labuena.services.models;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * Created by moracl6 on 8/1/2016.
  */
@@ -82,5 +84,10 @@ public class Order {
 
     public void setOrderId(int orderId) {
         this.orderId = orderId;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }
