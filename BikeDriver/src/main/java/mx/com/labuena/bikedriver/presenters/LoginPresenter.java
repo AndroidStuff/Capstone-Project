@@ -107,7 +107,7 @@ public class LoginPresenter extends BasePresenter {
         };
     }
 
-    private void navigateToOrdersDeliveryFragment(FirebaseUser firebaseUser) {
+    public void navigateToOrdersDeliveryFragment(FirebaseUser firebaseUser) {
         nextActionAfterAuthenticate = null;
         Log.d(TAG, "onAuthStateChanged:signed_in:" + firebaseUser.getUid());
         BikeDriver bikeDriver = new BikeDriver(firebaseUser.getEmail(), firebaseUser.getDisplayName());

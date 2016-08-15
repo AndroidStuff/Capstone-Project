@@ -1,6 +1,7 @@
 package mx.com.labuena.bikedriver.services;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
@@ -74,7 +75,17 @@ public class BikerMessagingService extends FirebaseMessagingService {
 
     private void sendNotification() {
         Intent intent = new Intent(this, HomeActivity.class);
+        intent.putExtra(HomeActivity.NAVIGATE_TO_PENDING_ORDERS_EXTRA, true);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        PendingIntent actionPendingIntent =
+                PendingIntent.getActivity(this, 0, intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+        NotificationCompat.Action action =
+                new NotificationCompat.Action.Builder(R.drawable.ic_directions_white,
+                        getString(R.string.open_order), actionPendingIntent)
+                        .build();
+
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
@@ -82,6 +93,7 @@ public class BikerMessagingService extends FirebaseMessagingService {
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(getString(R.string.order_notitication))
                 .setAutoCancel(true)
+                .extend(new NotificationCompat.WearableExtender().addAction(action))
                 .setSound(defaultSoundUri);
 
         NotificationManager notificationManager =

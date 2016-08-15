@@ -10,6 +10,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.HandlerThread;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
@@ -48,6 +49,7 @@ public class BikerLocationUpdateJobService extends JobService {
      * Location update period. Value in minutes
      */
     public static final int LOCATION_UPDATE_PERIOD = 10;
+    public static final String LOCATION_UPDATES_HANDLER = "LocationUpdatesHandler";
 
     @Inject
     PreferencesRepository preferencesRepository;
@@ -82,8 +84,9 @@ public class BikerLocationUpdateJobService extends JobService {
             return false;
         }
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
-
-        final Handler handler = new Handler();
+        HandlerThread handlerThread = new HandlerThread(LOCATION_UPDATES_HANDLER);
+        handlerThread.start();
+        final Handler handler = new Handler(handlerThread.getLooper());
         handler.postDelayed(new Runnable() {
             public void run() {
                 if (ActivityCompat.checkSelfPermission(BikerLocationUpdateJobService.this,
@@ -92,7 +95,6 @@ public class BikerLocationUpdateJobService extends JobService {
                 }
 
                 sendLocationUpdateToServer(locationHelper.getCurrentBestLocation());
-
                 locationManager.removeUpdates(locationListener);
             }
         }, TWO_MINUTEST_DELAY_MILLIS);

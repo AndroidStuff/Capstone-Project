@@ -46,6 +46,7 @@ import mx.com.labuena.bikedriver.services.FetchAddressIntentService;
 import mx.com.labuena.bikedriver.services.OrderUpdateIntentService;
 import mx.com.labuena.bikedriver.setup.LaBuenaModules;
 
+import static mx.com.labuena.bikedriver.R.id.map;
 import static mx.com.labuena.bikedriver.R.id.orderDeliveredActionButton;
 
 /**
@@ -70,6 +71,9 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
     EventBus eventBus;
 
     private Order currentOrder;
+    private SupportMapFragment mapsFragment;
+
+    private Marker currentMarker;
 
     @Override
     protected int getLayoutId() {
@@ -91,6 +95,9 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
         deliverOrderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (currentMarker != null)
+                    currentMarker.remove();
+
                 if (currentOrder != null)
                     deleteOrder(currentOrder);
             }
@@ -103,7 +110,7 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        SupportMapFragment mapsFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        mapsFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(map);
         mapsFragment.getMapAsync(this);
     }
 
@@ -156,6 +163,7 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         cursor.setNotificationUri(getActivity().getContentResolver(), BikeDriverContracts.OrderEntry.CONTENT_URI);
         cursor.moveToFirst();
+        orders.clear();
         while (!cursor.isAfterLast()) {
             orders.add(OrderConverter.toModel(cursor));
             cursor.moveToNext();
@@ -173,6 +181,7 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
     @Override
     public boolean onMarkerClick(Marker marker) {
         if (markerOrderMap.containsKey(marker.getId())) {
+            currentMarker = marker;
             currentOrder = markerOrderMap.get(marker.getId());
             displayOrder(currentOrder);
         }
@@ -199,12 +208,12 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
             lastOrder = order;
             coordinates = order.getCoordinates();
             String snipped = String.format(TORTILLAS_AMOUNT_FORMAT_KG, order.getQuantity());
-            Marker marker = googleMap.addMarker(new MarkerOptions()
+            currentMarker = googleMap.addMarker(new MarkerOptions()
                     .position(new LatLng(coordinates.getLatitude(), coordinates.getLongitude()))
                     .title(order.getClientName())
                     .snippet(snipped));
-            marker.showInfoWindow();
-            markerOrderMap.put(marker.getId(), order);
+            currentMarker.showInfoWindow();
+            markerOrderMap.put(currentMarker.getId(), order);
         }
 
         if (lastOrder != null) {

@@ -1,5 +1,6 @@
 package mx.com.labuena.bikedriver.views.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -7,7 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -22,6 +25,7 @@ import mx.com.labuena.bikedriver.models.Credentials;
 import mx.com.labuena.bikedriver.presenters.LoginPresenter;
 import mx.com.labuena.bikedriver.setup.LaBuenaModules;
 import mx.com.labuena.bikedriver.utils.InputMethodManagerExtensor;
+import mx.com.labuena.bikedriver.views.activities.HomeActivity;
 
 /**
  * Created by moracl6 on 8/12/2016.
@@ -89,6 +93,18 @@ public class LoginFragment extends BaseFragment {
         super.onResume();
         if (!eventBus.isRegistered(this))
             eventBus.register(this);
+
+        Intent intent = getActivity().getIntent();
+        if (navigateDifferentFragment(intent) && userLogged()) {
+            FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+            loginPresenter.navigateToOrdersDeliveryFragment(currentUser);
+        }
+    }
+
+    private boolean userLogged() {
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+
+        return currentUser != null;
     }
 
     @Override
@@ -136,5 +152,9 @@ public class LoginFragment extends BaseFragment {
     public Credentials getUserInputCredentials() {
         return new Credentials(userEmailEditText.getText().toString(),
                 userPasswordEditText.getText().toString());
+    }
+
+    private boolean navigateDifferentFragment(Intent intent) {
+        return intent != null && intent.getBooleanExtra(HomeActivity.NAVIGATE_TO_PENDING_ORDERS_EXTRA, false);
     }
 }

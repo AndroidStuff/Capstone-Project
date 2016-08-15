@@ -23,6 +23,7 @@ import mx.com.labuena.bikedriver.views.fragments.LoginFragment;
  */
 
 public class HomeActivity extends AppCompatActivity {
+    public static final String NAVIGATE_TO_PENDING_ORDERS_EXTRA = "navigateToPendingOrders";
     @Inject
     EventBus eventBus;
 
@@ -35,7 +36,7 @@ public class HomeActivity extends AppCompatActivity {
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
-
+        
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, new LoginFragment()).commit();

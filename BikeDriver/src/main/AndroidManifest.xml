@@ -56,7 +56,8 @@
 
         <service
             android:name=".services.BikerLocationUpdateJobService"
-            android:exported="false" />
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:exported="true" />
 
         <provider
             android:name=".data.BikeDriverProvider"
