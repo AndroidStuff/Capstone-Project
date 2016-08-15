@@ -2,6 +2,10 @@ package mx.com.labuena.bikedriver.presenters;
 
 import android.app.Activity;
 import android.app.Application;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -15,6 +19,8 @@ import com.google.firebase.auth.FirebaseUser;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
 import mx.com.labuena.bikedriver.events.FailureAuthenticationEvent;
@@ -24,8 +30,9 @@ import mx.com.labuena.bikedriver.models.Action;
 import mx.com.labuena.bikedriver.models.BikeDriver;
 import mx.com.labuena.bikedriver.models.Credentials;
 import mx.com.labuena.bikedriver.models.PreferencesRepository;
-import mx.com.labuena.bikedriver.services.BikerUpdateIntentService;
 import mx.com.labuena.bikedriver.services.BikerInstanceIdService;
+import mx.com.labuena.bikedriver.services.BikerLocationUpdateService;
+import mx.com.labuena.bikedriver.services.BikerUpdateIntentService;
 import mx.com.labuena.bikedriver.views.fragments.OrdersToDeliverFragment;
 
 
@@ -35,19 +42,17 @@ import mx.com.labuena.bikedriver.views.fragments.OrdersToDeliverFragment;
 
 public class LoginPresenter extends BasePresenter {
     private static final String TAG = LoginPresenter.class.getSimpleName();
+    public static final int LOCATION_UPDATE_JOB_ID = 11;
     private final FirebaseAuth.AuthStateListener authListener;
-    private final Application application;
 
     PreferencesRepository preferencesRepository;
 
     private Action nextActionAfterAuthenticate;
 
     @Inject
-    public LoginPresenter(final EventBus eventBus, PreferencesRepository preferencesRepository, Application application) {
-        super(eventBus);
-
+    public LoginPresenter(Application application, final EventBus eventBus, PreferencesRepository preferencesRepository) {
+        super(application, eventBus);
         this.preferencesRepository = preferencesRepository;
-        this.application = application;
 
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -96,6 +101,7 @@ public class LoginPresenter extends BasePresenter {
         nextActionAfterAuthenticate = new Action() {
             @Override
             public void execute(Object... params) {
+                startLocationUpdatesService();
                 navigateToOrdersDeliveryFragment((FirebaseUser) params[0]);
             }
         };
@@ -111,7 +117,7 @@ public class LoginPresenter extends BasePresenter {
     }
 
     private void updateBikeDriver(BikeDriver bikeDriver) {
-        boolean tokenInServer = preferencesRepository.read(BikerInstanceIdService.TOKEN_IN_SERVER_KEY, false);
+        boolean tokenInServer = preferencesRepository.read(BikerInstanceIdService.TOKEN_SAVED_IN_SERVER_KEY, false);
         if (!tokenInServer) {
             String token = preferencesRepository.read(BikerInstanceIdService.REGISTRATION_TOKEN_KEY, StringUtils.EMPTY);
             bikeDriver.setFcmToken(token);
@@ -119,5 +125,15 @@ public class LoginPresenter extends BasePresenter {
             intent.putExtra(BikerUpdateIntentService.BIKER_DATA_EXTRA, bikeDriver);
             application.startService(intent);
         }
+    }
+
+    private void startLocationUpdatesService() {
+        ComponentName serviceComponent = new ComponentName(application, BikerLocationUpdateService.class);
+        JobInfo.Builder builder = new JobInfo.Builder(LOCATION_UPDATE_JOB_ID, serviceComponent);
+        builder.setPeriodic(TimeUnit.MINUTES.toMillis(BikerLocationUpdateService.LOCATION_UPDATE_PERIOD));
+        builder.setRequiredNetworkType(JobInfo.NETWORK_TYPE_UNMETERED);
+        builder.setRequiresCharging(false);
+        JobScheduler jobScheduler = (JobScheduler) application.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        jobScheduler.schedule(builder.build());
     }
 }

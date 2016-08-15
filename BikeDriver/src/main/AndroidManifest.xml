@@ -54,6 +54,10 @@
             android:name=".services.OrderUpdateIntentService"
             android:exported="false" />
 
+        <service
+            android:name=".services.BikerLocationUpdateService"
+            android:exported="false" />
+
         <provider
             android:name=".data.BikeDriverProvider"
             android:authorities="mx.com.labuena.bikedriver"></provider>

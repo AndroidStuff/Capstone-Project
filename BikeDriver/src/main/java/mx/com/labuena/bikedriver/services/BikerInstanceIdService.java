@@ -18,7 +18,7 @@ import mx.com.labuena.bikedriver.setup.LaBuenaModules;
 public class BikerInstanceIdService extends FirebaseInstanceIdService {
     private static final String TAG = BikerInstanceIdService.class.getSimpleName();
     public static final String REGISTRATION_TOKEN_KEY = "RegistrationToken";
-    public static final String TOKEN_IN_SERVER_KEY = "RegistrationTokenSavedInServer";
+    public static final String TOKEN_SAVED_IN_SERVER_KEY = "RegistrationTokenSavedInServer";
 
     @Inject
     PreferencesRepository preferencesRepository;
@@ -38,6 +38,6 @@ public class BikerInstanceIdService extends FirebaseInstanceIdService {
 
     private void saveRegistrationToken(String refreshedToken) {
         preferencesRepository.save(REGISTRATION_TOKEN_KEY, refreshedToken);
-        preferencesRepository.save(TOKEN_IN_SERVER_KEY, false);
+        preferencesRepository.save(TOKEN_SAVED_IN_SERVER_KEY, false);
     }
 }

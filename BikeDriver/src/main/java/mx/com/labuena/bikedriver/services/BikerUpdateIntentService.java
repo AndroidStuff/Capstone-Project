@@ -28,6 +28,7 @@ import static mx.com.labuena.bikedriver.utils.EndpointUtil.getApplicationName;
 public class BikerUpdateIntentService extends IntentService {
     private static final String TAG = BikerUpdateIntentService.class.getSimpleName();
     public static final String BIKER_DATA_EXTRA = "BikerExtraData";
+    public static final String BIKER_EMAIL_KEY = "BikerEmail";
 
     @Inject
     PreferencesRepository sharedPreferencesRepository;
@@ -50,8 +51,9 @@ public class BikerUpdateIntentService extends IntentService {
 
         Bikers bikersService = builder.build();
         try {
+            sharedPreferencesRepository.save(BikerUpdateIntentService.BIKER_EMAIL_KEY, bikeDriver.getEmail());
             bikersService.updateToken(buildBiker(bikeDriver)).execute();
-            sharedPreferencesRepository.save(BikerInstanceIdService.TOKEN_IN_SERVER_KEY, true);
+            sharedPreferencesRepository.save(BikerInstanceIdService.TOKEN_SAVED_IN_SERVER_KEY, true);
             Log.d(TAG, "Bike driver token successfully updated.");
         } catch (IOException e) {
             Log.e(TAG, e.getMessage(), e);
