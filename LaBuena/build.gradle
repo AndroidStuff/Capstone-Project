@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.3"
 
     defaultConfig {
-	applicationId "mx.com.labuena"
+	applicationId "mx.com.labuena.branch"
         minSdkVersion 21
         targetSdkVersion 23
         versionCode 1
@@ -22,7 +22,6 @@ android {
         }
 
         debug {
-            applicationIdSuffix ".debug"
         }
     }
 
