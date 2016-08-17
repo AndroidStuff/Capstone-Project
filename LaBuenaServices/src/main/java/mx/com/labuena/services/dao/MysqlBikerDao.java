@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,7 +38,13 @@ public class MysqlBikerDao extends BaseDao implements BikerDao, BikeDriverSelect
         List<Biker> bikers = new ArrayList<>();
         Connection connection = connectionProvider.get();
         try {
-            String bikersQuery = "select name, email, phone, stock from la_buena_db.biker";
+            String bikersQuery = "select name, email, phone, stock, location.latitude, location.longitude, location.created_at" +
+                    "from la_buena_db.biker " +
+                    "join (select biker.id_biker, max(biker_location.id_location) as id_location " +
+                        "from la_buena_db.biker join biker_location " +
+                        "on biker.id_biker = biker_location.id_biker group by biker.id_biker) latest_location " +
+                    "on biker.id_biker = latest_location.id_biker " +
+                    "join location on latest_location.id_location = location.id_location;";
             ResultSet rs = connection.prepareStatement(bikersQuery).executeQuery();
 
             while (rs.next()) {
@@ -45,7 +52,14 @@ public class MysqlBikerDao extends BaseDao implements BikerDao, BikeDriverSelect
                 String phone = rs.getString("phone");
                 String name = rs.getString("name");
                 int stock = rs.getInt("stock");
-                bikers.add(new Biker(name, email, phone, stock));
+                Biker biker = new Biker(name, email, phone, stock);
+                Date readAt = rs.getDate("created_at");
+                double latitude = rs.getDouble("latitude");
+                double longitude = rs.getDouble("longitude");
+                BikerLocation bikerLocation = new BikerLocation(readAt,
+                        new Coordinates(latitude, longitude));
+                biker.setBikerLocation(bikerLocation);
+                bikers.add(biker);
             }
             rs.close();
             closeConnection(connection);
