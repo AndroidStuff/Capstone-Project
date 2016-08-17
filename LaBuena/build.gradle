@@ -98,3 +98,5 @@ configurations.compile.dependencies.each { compileDependency ->
         configurations.androidTestCompile.exclude module: "${compileDependency.getName()}"
     }
 }
+
+apply plugin: 'com.google.gms.google-services'
