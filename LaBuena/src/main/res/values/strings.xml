@@ -5,4 +5,13 @@
     <string name="lbl_external_stock">External Stock</string>
     <string name="lbl_orders_to_deliver">Orders to deliver</string>
     <string name="amount_metric_unit">kg</string>
+	
+	<string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="btn_login">Sign in</string>
+    <string name="email_address_required">Enter email address!</string>
+    <string name="password_required">Enter password!</string>
+	<string name="minimum_password">Password too short, enter minimum 6 characters!</string>
+    <string name="auth_failed">Authentication failed, check your email and password or register to get access.</string>
+    <string name="service_not_available">The service is not available</string>
 </resources>

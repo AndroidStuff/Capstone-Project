@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_motorcycle_white" />
+            android:src="@drawable/ic_store_white" />
 
 
         <android.support.design.widget.TextInputLayout
