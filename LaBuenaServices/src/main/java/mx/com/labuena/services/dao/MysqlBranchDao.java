@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 
 import mx.com.labuena.services.models.Branch;
 import mx.com.labuena.services.models.BranchDao;
+import mx.com.labuena.services.models.Stock;
 
 /**
  * Created by moracl6 on 8/2/2016.
@@ -73,6 +74,42 @@ public class MysqlBranchDao extends BaseDao implements BranchDao {
                 closeConnection(connection);
             }
         } catch (SQLException e) {
+            log.log(Level.SEVERE, e.getMessage(), e);
+            throw new InternalServerErrorException(e);
+        }
+    }
+
+    @Override
+    public Stock getStock() throws InternalServerErrorException {
+        Stock stock = new Stock();
+        Connection connection = connectionProvider.get();
+        try {
+            String bikersStockQuery = "select sum(stock) from la_buena_db.biker;";
+            ResultSet bikersStockResultSet = connection.prepareStatement(bikersStockQuery).executeQuery();
+
+            int bikersStock = 0;
+
+            while (bikersStockResultSet.next()) {
+                bikersStock = bikersStockResultSet.getInt(1);
+            }
+            bikersStockResultSet.close();
+            stock.setExternalStock(bikersStock);
+
+            String ordersToDeliverQuery = "select sum(quantity) from la_buena_db.order where delivered = 0;";
+            ResultSet ordersToDeliverResultSet = connection.prepareStatement(ordersToDeliverQuery).executeQuery();
+
+            int ordersToDeliver = 0;
+
+            while (bikersStockResultSet.next()) {
+                ordersToDeliver = ordersToDeliverResultSet.getInt(1);
+            }
+            ordersToDeliverResultSet.close();
+
+            stock.setOrdersToDeliver(ordersToDeliver);
+            closeConnection(connection);
+            return stock;
+        } catch (SQLException e) {
+            closeConnection(connection);
             log.log(Level.SEVERE, e.getMessage(), e);
             throw new InternalServerErrorException(e);
         }

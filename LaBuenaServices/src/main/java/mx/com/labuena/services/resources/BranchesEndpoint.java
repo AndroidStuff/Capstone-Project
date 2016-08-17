@@ -6,13 +6,13 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.InternalServerErrorException;
 import com.google.inject.Inject;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
-import mx.com.labuena.services.models.BranchDao;
-import mx.com.labuena.services.responses.BranchesResponse;
 import mx.com.labuena.services.models.Branch;
+import mx.com.labuena.services.models.BranchDao;
+import mx.com.labuena.services.models.Stock;
+import mx.com.labuena.services.responses.BranchesResponse;
 
 /**
  * Created by moracl6 on 8/2/2016.
@@ -40,8 +40,15 @@ public class BranchesEndpoint {
 
     @ApiMethod(name = "getAll",
             httpMethod = ApiMethod.HttpMethod.GET)
-    public BranchesResponse getAll() throws InternalServerErrorException, SQLException {
+    public BranchesResponse getAll() throws InternalServerErrorException {
         List<Branch> branches = branchDao.getAll();
         return new BranchesResponse(branches);
     }
+
+    @ApiMethod(name = "getStock", path = "getStock",
+            httpMethod = ApiMethod.HttpMethod.GET)
+    public Stock getStock() throws InternalServerErrorException {
+        return branchDao.getStock();
+    }
+
 }
