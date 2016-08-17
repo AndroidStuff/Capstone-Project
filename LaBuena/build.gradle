@@ -44,6 +44,8 @@ dependencies {
     compile 'com.android.support:multidex:1.0.0'
     compile "com.android.support:design:$rootProject.supportLibraryVersion"
 
+    compile project(path: ':LaBuenaServices', configuration: 'android-endpoints')
+
     androidTestCompile "org.hamcrest:hamcrest-library:$rootProject.ext.hamcrestVersion"
     androidTestCompile "org.mockito:mockito-core:1.+"
     androidTestCompile 'com.google.dexmaker:dexmaker:1.2'

@@ -4,4 +4,5 @@
     <string name="lb_metric_unit">kg</string>
     <string name="lbl_external_stock">External Stock</string>
     <string name="lbl_orders_to_deliver">Orders to deliver</string>
+    <string name="amount_metric_unit">kg</string>
 </resources>

@@ -100,7 +100,7 @@ public class MysqlBranchDao extends BaseDao implements BranchDao {
 
             int ordersToDeliver = 0;
 
-            while (bikersStockResultSet.next()) {
+            while (ordersToDeliverResultSet.next()) {
                 ordersToDeliver = ordersToDeliverResultSet.getInt(1);
             }
             ordersToDeliverResultSet.close();
