@@ -28,4 +28,6 @@
     <string name="lbl_forgot_password">Forgot password?</string>
     <string name="forgot_password_msg">Please enter your accounts email address below and click the reset password button to receive a reset password email.</string>
     <string name="btn_reset_password">Reset Password</string>
+    <string name="reset_password_email_sent">An email has been sent to %s with the instructions to reset the password</string>
+    <string name="error_resetting_password">Error trying to send reset password email</string>
 </resources>
