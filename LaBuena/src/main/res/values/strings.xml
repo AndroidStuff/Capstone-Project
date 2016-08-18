@@ -25,4 +25,7 @@
     <string name="duplicate_biker">Email already register.</string>
     <string name="biker_added_notification_title">New biker added</string>
     <string name="biker_added_notification_content">" successfully registered"</string>
+    <string name="lbl_forgot_password">Forgot password?</string>
+    <string name="forgot_password_msg">Please enter your accounts email address below and click the reset password button to receive a reset password email.</string>
+    <string name="btn_reset_password">Reset Password</string>
 </resources>
