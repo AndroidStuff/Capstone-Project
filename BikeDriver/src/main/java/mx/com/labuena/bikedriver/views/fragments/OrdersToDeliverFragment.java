@@ -46,9 +46,6 @@ import mx.com.labuena.bikedriver.services.FetchAddressIntentService;
 import mx.com.labuena.bikedriver.services.OrderUpdateIntentService;
 import mx.com.labuena.bikedriver.setup.LaBuenaModules;
 
-import static mx.com.labuena.bikedriver.R.id.map;
-import static mx.com.labuena.bikedriver.R.id.orderDeliveredActionButton;
-
 /**
  * Created by moracl6 on 8/12/2016.
  */
@@ -91,7 +88,7 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
         clientAddressTextView = (TextView) rootView.findViewById(R.id.addressTextView);
         tortillasAmountTextView = (TextView) rootView.findViewById(R.id.amountTextView);
 
-        FloatingActionButton deliverOrderButton = (FloatingActionButton) rootView.findViewById(orderDeliveredActionButton);
+        FloatingActionButton deliverOrderButton = (FloatingActionButton) rootView.findViewById(R.id.orderDeliveredActionButton);
         deliverOrderButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,7 +109,7 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mapsFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(map);
+        mapsFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapsFragment.getMapAsync(this);
     }
 

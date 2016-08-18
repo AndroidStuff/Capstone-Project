@@ -23,6 +23,10 @@
             android:name=".services.StockWidgetService"
             android:exported="false"></service>
 
+        <service android:name=".services.FetchAddressIntentService" android:exported="false"></service>
+
+        <service android:name=".services.FindBikersService" android:exported="false"></service>
+
         <receiver android:name=".views.providers.StockWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
