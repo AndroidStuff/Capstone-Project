@@ -75,7 +75,7 @@ public class BikersFragment extends BaseFragment implements GoogleMap.OnMarkerCl
     }
 
     @Override
-    protected void initView(View rootView, Bundle savedInstanceState) {
+    protected void initView(View rootView) {
         bikerNameTextView = (TextView) rootView.findViewById(R.id.nameTextView);
         bikerPhoneTextView = (TextView) rootView.findViewById(R.id.phoneTextView);
         bikerStockTextView = (TextView) rootView.findViewById(R.id.stockTextView);

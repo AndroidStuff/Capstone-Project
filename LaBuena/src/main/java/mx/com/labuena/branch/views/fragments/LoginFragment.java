@@ -59,7 +59,7 @@ public class LoginFragment extends BaseFragment {
     }
 
     @Override
-    protected void initView(View rootView, Bundle savedInstanceState) {
+    protected void initView(View rootView) {
         userEmailEditText = (EditText) rootView.findViewById(R.id.emailEditText);
         userPasswordEditText = (EditText) rootView.findViewById(R.id.passwordEditText);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);

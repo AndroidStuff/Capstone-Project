@@ -30,11 +30,11 @@ public abstract class BaseFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(getLayoutId(), container, false);
-        initView(rootView, savedInstanceState);
+        initView(rootView);
         return rootView;
     }
 
-    protected void initView(View rootView, Bundle savedInstanceState) {
+    protected void initView(View rootView) {
 
     }
 

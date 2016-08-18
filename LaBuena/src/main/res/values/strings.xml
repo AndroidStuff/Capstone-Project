@@ -18,4 +18,11 @@
     <string name="invalid_lat_long_used">Invalid latitude, longitude used.</string>
     <string name="tortillas_to_deliver_format">%d kg to deliver</string>
     <string name="map_snipped_format">%d kg</string>
+    <string name="lbl_new_biker">New Biker</string>
+    <string name="hint_name">Name</string>
+    <string name="action_register">Register</string>
+    <string name="user_name_required">Enter biker name</string>
+    <string name="duplicate_biker">Email already register.</string>
+    <string name="biker_added_notification_title">New biker added</string>
+    <string name="biker_added_notification_content">" successfully registered"</string>
 </resources>
