@@ -192,6 +192,31 @@ public class MysqlBikerDao extends BaseDao implements BikerDao, BikeDriverSelect
         }
     }
 
+    @Override
+    public boolean isEmailFromBiker(String email) throws InternalServerErrorException {
+        Connection connection = connectionProvider.get();
+        try {
+            String bikersQuery = "select count(*) as count from la_buena_db.biker where biker.email = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(bikersQuery);
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            boolean emailFromBiker = false;
+
+            while (resultSet.next()) {
+                int count = resultSet.getInt("count");
+                emailFromBiker = count > 0;
+            }
+            resultSet.close();
+            closeConnection(connection);
+            return emailFromBiker;
+        } catch (SQLException e) {
+            closeConnection(connection);
+            log.log(Level.SEVERE, e.getMessage(), e);
+            throw new InternalServerErrorException(e);
+        }
+    }
+
 
     public int getBikerIdByEmail(Connection conn, String email) throws InternalServerErrorException {
         int bikerId = -1;

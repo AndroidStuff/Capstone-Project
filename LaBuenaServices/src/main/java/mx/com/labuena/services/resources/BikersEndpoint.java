@@ -20,6 +20,7 @@ import mx.com.labuena.services.models.BikerDao;
 import mx.com.labuena.services.models.Order;
 import mx.com.labuena.services.models.OrderDao;
 import mx.com.labuena.services.responses.BikersResponse;
+import mx.com.labuena.services.responses.EmailValidationResponse;
 import mx.com.labuena.services.responses.OrdersResponse;
 
 @Api(
@@ -74,5 +75,11 @@ public class BikersEndpoint {
     public OrdersResponse getOrdersToDeliver(@Named("bikerId") int bikerId) throws InternalServerErrorException {
         List<Order> orders = orderDao.findByBikerId(bikerId);
         return new OrdersResponse(orders);
+    }
+
+    @ApiMethod(name = "emailFromBiker",path = "emailFromBiker",
+            httpMethod = ApiMethod.HttpMethod.GET)
+    public EmailValidationResponse emailFromBiker(@Named("email") String email) throws InternalServerErrorException {
+        return new EmailValidationResponse(bikerDao.isEmailFromBiker(email));
     }
 }

@@ -10,6 +10,10 @@ import java.util.List;
 
 public interface BranchDao {
     List<Branch> getAll() throws InternalServerErrorException;
+
     void save(Branch branch) throws InternalServerErrorException;
+
     Stock getStock() throws InternalServerErrorException;
+
+    boolean isEmailFromBranch(String email) throws InternalServerErrorException;
 }

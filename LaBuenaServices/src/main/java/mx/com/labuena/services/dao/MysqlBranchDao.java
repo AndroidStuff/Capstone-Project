@@ -114,4 +114,29 @@ public class MysqlBranchDao extends BaseDao implements BranchDao {
             throw new InternalServerErrorException(e);
         }
     }
+
+    @Override
+    public boolean isEmailFromBranch(String email) throws InternalServerErrorException {
+        Connection connection = connectionProvider.get();
+        try {
+            String branchesQuery = "select count(*) as count from la_buena_db.branch where branch.email = ?;";
+            PreparedStatement preparedStatement = connection.prepareStatement(branchesQuery);
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            boolean emailFromBranch = false;
+
+            while (resultSet.next()) {
+                int count = resultSet.getInt("count");
+                emailFromBranch = count > 0;
+            }
+            resultSet.close();
+            closeConnection(connection);
+            return emailFromBranch;
+        } catch (SQLException e) {
+            closeConnection(connection);
+            log.log(Level.SEVERE, e.getMessage(), e);
+            throw new InternalServerErrorException(e);
+        }
+    }
 }
