@@ -1,5 +1,6 @@
 package mx.com.labuena.branch.views.fragments;
 
+import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -76,10 +77,15 @@ public class BikersFragment extends BaseFragment implements GoogleMap.OnMarkerCl
 
     @Override
     protected void initView(View rootView) {
+        Typeface robotoTypeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Regular.ttf");
         bikerNameTextView = (TextView) rootView.findViewById(R.id.nameTextView);
+        bikerNameTextView.setTypeface(robotoTypeFace);
         bikerPhoneTextView = (TextView) rootView.findViewById(R.id.phoneTextView);
+        bikerPhoneTextView.setTypeface(robotoTypeFace);
         bikerStockTextView = (TextView) rootView.findViewById(R.id.stockTextView);
+        bikerStockTextView.setTypeface(robotoTypeFace);
         bikerAddressTextView = (TextView) rootView.findViewById(R.id.addressTextView);
+        bikerAddressTextView.setTypeface(robotoTypeFace);
 
         Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbarApp);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);

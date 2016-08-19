@@ -2,6 +2,7 @@ package mx.com.labuena.bikedriver.views.fragments;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -84,9 +85,13 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
 
     @Override
     protected void initView(View rootView, Bundle savedInstanceState) {
+        Typeface robotoTypeFace = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Roboto-Regular.ttf");
         clientNameTextView = (TextView) rootView.findViewById(R.id.nameTextView);
+        clientNameTextView.setTypeface(robotoTypeFace);
         clientAddressTextView = (TextView) rootView.findViewById(R.id.addressTextView);
+        clientAddressTextView.setTypeface(robotoTypeFace);
         tortillasAmountTextView = (TextView) rootView.findViewById(R.id.amountTextView);
+        tortillasAmountTextView.setTypeface(robotoTypeFace);
 
         FloatingActionButton deliverOrderButton = (FloatingActionButton) rootView.findViewById(R.id.orderDeliveredActionButton);
         deliverOrderButton.setOnClickListener(new View.OnClickListener() {
