@@ -161,6 +161,7 @@ public class BikersFragment extends BaseFragment implements GoogleMap.OnMarkerCl
 
         Coordinates coordinates = null;
         Biker lastBiker = null;
+        Marker currentMarker = null;
 
         for (Biker biker :
                 bikers) {
@@ -168,7 +169,7 @@ public class BikersFragment extends BaseFragment implements GoogleMap.OnMarkerCl
             BikerLocation lastLocation = biker.getBikerLocation();
             coordinates = lastLocation.getCoordinates();
             String snipped = String.format(getString(R.string.map_snipped_format), biker.getLastStock());
-            Marker currentMarker = googleMap.addMarker(new MarkerOptions()
+            currentMarker = googleMap.addMarker(new MarkerOptions()
                     .position(new LatLng(coordinates.getLatitude(), coordinates.getLongitude()))
                     .title(biker.getName())
                     .snippet(snipped));
@@ -181,7 +182,6 @@ public class BikersFragment extends BaseFragment implements GoogleMap.OnMarkerCl
                     .zoom(12).build();
             googleMap.animateCamera(CameraUpdateFactory
                     .newCameraPosition(cameraPosition));
-
             displayBiker(lastBiker);
 
         }
