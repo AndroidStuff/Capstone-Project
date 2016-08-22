@@ -18,6 +18,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import javax.inject.Inject;
 
 import mx.com.labuena.branch.R;
+import mx.com.labuena.branch.events.EmailNotFromBranchEvent;
 import mx.com.labuena.branch.events.FailureAuthenticationEvent;
 import mx.com.labuena.branch.events.InvalidInputCredentialsEvent;
 import mx.com.labuena.branch.models.Credentials;
@@ -139,6 +140,12 @@ public class LoginFragment extends BaseFragment {
         } else {
             Toast.makeText(getActivity(), getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEmailNotFromBranchEvent(EmailNotFromBranchEvent event) {
+        progressBar.setVisibility(View.GONE);
+        Toast.makeText(getActivity(), getString(R.string.email_not_from_branch), Toast.LENGTH_LONG).show();
     }
 
     public Credentials getUserInputCredentials() {
