@@ -13,4 +13,5 @@
     <string name="no_address_found">We could not find an address with that last saved location</string>
     <string name="invalid_lat_long_used">Invalid latitude, longitude used.</string>
     <string name="open_order">Go to address!</string>
+    <string name="email_not_from_biker">Invalid bike driver email</string>
 </resources>

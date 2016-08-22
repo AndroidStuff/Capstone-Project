@@ -21,6 +21,7 @@ import javax.inject.Inject;
 import mx.com.labuena.bikedriver.R;
 import mx.com.labuena.bikedriver.events.FailureAuthenticationEvent;
 import mx.com.labuena.bikedriver.events.InvalidInputCredentialsEvent;
+import mx.com.labuena.bikedriver.events.NotBikerEmailEvent;
 import mx.com.labuena.bikedriver.models.Credentials;
 import mx.com.labuena.bikedriver.presenters.LoginPresenter;
 import mx.com.labuena.bikedriver.setup.LaBuenaModules;
@@ -147,6 +148,11 @@ public class LoginFragment extends BaseFragment {
         } else {
             Toast.makeText(getActivity(), getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNotBikerEmailEvent(NotBikerEmailEvent event) {
+        Toast.makeText(getActivity(), getString(R.string.email_not_from_biker), Toast.LENGTH_LONG).show();
     }
 
     public Credentials getUserInputCredentials() {

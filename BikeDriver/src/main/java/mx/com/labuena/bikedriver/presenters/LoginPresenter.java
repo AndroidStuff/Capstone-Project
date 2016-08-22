@@ -7,11 +7,15 @@ import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,12 +23,14 @@ import com.google.firebase.auth.FirebaseUser;
 import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import mx.com.labuena.bikedriver.events.FailureAuthenticationEvent;
 import mx.com.labuena.bikedriver.events.InvalidInputCredentialsEvent;
+import mx.com.labuena.bikedriver.events.NotBikerEmailEvent;
 import mx.com.labuena.bikedriver.events.ReplaceFragmentEvent;
 import mx.com.labuena.bikedriver.models.Action;
 import mx.com.labuena.bikedriver.models.BikeDriver;
@@ -33,7 +39,12 @@ import mx.com.labuena.bikedriver.models.PreferencesRepository;
 import mx.com.labuena.bikedriver.services.BikerInstanceIdService;
 import mx.com.labuena.bikedriver.services.BikerLocationUpdateJobService;
 import mx.com.labuena.bikedriver.services.BikerUpdateIntentService;
+import mx.com.labuena.bikedriver.utils.EndpointUtil;
 import mx.com.labuena.bikedriver.views.fragments.OrdersToDeliverFragment;
+import mx.com.labuena.services.bikers.Bikers;
+import mx.com.labuena.services.bikers.model.EmailValidationResponse;
+
+import static mx.com.labuena.bikedriver.utils.EndpointUtil.getApplicationName;
 
 
 /**
@@ -42,6 +53,7 @@ import mx.com.labuena.bikedriver.views.fragments.OrdersToDeliverFragment;
 
 public class LoginPresenter extends BasePresenter {
     private static final String TAG = LoginPresenter.class.getSimpleName();
+    public static final String USER_VALIDATION_HANDLER = "UserValidationHandler";
     public static final int LOCATION_UPDATE_JOB_ID = 11;
     private final FirebaseAuth.AuthStateListener authListener;
 
@@ -101,10 +113,45 @@ public class LoginPresenter extends BasePresenter {
         nextActionAfterAuthenticate = new Action() {
             @Override
             public void execute(Object... params) {
-                startLocationUpdatesService();
-                navigateToOrdersDeliveryFragment((FirebaseUser) params[0]);
+                FirebaseUser user = (FirebaseUser) params[0];
+                validateUser(user);
             }
         };
+    }
+
+    private void validateUser(final FirebaseUser user) {
+        HandlerThread handlerThread = new HandlerThread(USER_VALIDATION_HANDLER);
+        handlerThread.start();
+        final Handler handler = new Handler(handlerThread.getLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (emailFromBiker(user.getEmail())) {
+                    startLocationUpdatesService();
+                    navigateToOrdersDeliveryFragment(user);
+                } else {
+                    eventBus.post(new NotBikerEmailEvent());
+                }
+            }
+        });
+    }
+
+    private boolean emailFromBiker(String email) {
+        String rootUrl = EndpointUtil.getRootUrl(application);
+        Bikers.Builder builder = new Bikers.Builder(AndroidHttp.newCompatibleTransport(),
+                new AndroidJsonFactory(), null).setApplicationName(getApplicationName(application))
+                .setRootUrl(rootUrl);
+
+        Bikers bikersService = builder.build();
+        try {
+
+            EmailValidationResponse bikerEmailValidationResponse = bikersService.emailFromBiker(email).execute();
+            return bikerEmailValidationResponse.getValidEmail();
+        } catch (IOException e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+
+        return false;
     }
 
     public void navigateToOrdersDeliveryFragment(FirebaseUser firebaseUser) {
