@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -41,10 +42,11 @@ public class BikersLandingFragment extends BaseFragment {
 
     @Inject
     BikersPresenter bikersPresenter;
+    private ProgressBar loadingProgressBar;
 
     @Override
     protected int getLayoutId() {
-        return R.layout.home_fragment;
+        return R.layout.bikers_landing_fragment;
     }
 
     @Override
@@ -87,16 +89,18 @@ public class BikersLandingFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         toolbar = (Toolbar) getView().findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         viewPager = (ViewPager) getView().findViewById(R.id.homeViewPager);
         tabLayout = (TabLayout) getView().findViewById(R.id.branchTabLayout);
+
+        loadingProgressBar = (ProgressBar) getView().findViewById(R.id.progressBar);
 
         bikersPresenter.getBikers();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onBikersReceivedEvent(BikersReceivedEvent event) {
+        loadingProgressBar.setVisibility(View.GONE);
         setupViewPager(event.getBikers());
     }
 
