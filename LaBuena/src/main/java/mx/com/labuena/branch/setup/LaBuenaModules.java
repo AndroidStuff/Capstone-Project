@@ -8,7 +8,7 @@ import mx.com.labuena.branch.services.FetchAddressIntentService;
 import mx.com.labuena.branch.services.FindBikersService;
 import mx.com.labuena.branch.views.activities.HomeActivity;
 import mx.com.labuena.branch.views.fragments.BaseFragment;
-import mx.com.labuena.branch.views.fragments.BikersFragment;
+import mx.com.labuena.branch.views.fragments.BikersLocationFragment;
 import mx.com.labuena.branch.views.fragments.LoginFragment;
 
 /**
@@ -21,7 +21,7 @@ public interface LaBuenaModules {
 
     void inject(LoginFragment loginFragment);
 
-    void inject(BikersFragment bikersFragment);
+    void inject(BikersLocationFragment bikersLocationFragment);
 
     void inject(FetchAddressIntentService fetchAddressIntentService);
 

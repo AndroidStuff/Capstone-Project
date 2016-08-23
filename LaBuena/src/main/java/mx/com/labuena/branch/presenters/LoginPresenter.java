@@ -29,7 +29,7 @@ import mx.com.labuena.branch.models.Action;
 import mx.com.labuena.branch.models.Credentials;
 import mx.com.labuena.branch.models.User;
 import mx.com.labuena.branch.utils.EndpointUtils;
-import mx.com.labuena.branch.views.fragments.BikersFragment;
+import mx.com.labuena.branch.views.fragments.BikersLocationFragment;
 import mx.com.labuena.services.branches.Branches;
 import mx.com.labuena.services.branches.model.EmailValidationResponse;
 
@@ -142,6 +142,6 @@ public class LoginPresenter extends BasePresenter {
         Log.d(TAG, "onAuthStateChanged:signed_in:" + firebaseUser.getUid());
         User user = new User(firebaseUser.getEmail(), firebaseUser.getDisplayName());
         Log.d(TAG, "User:" + user);
-        eventBus.post(new ReplaceFragmentEvent(BikersFragment.newInstance(user), false));
+        eventBus.post(new ReplaceFragmentEvent(BikersLocationFragment.newInstance(user), false));
     }
 }

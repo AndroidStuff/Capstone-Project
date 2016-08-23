@@ -43,7 +43,7 @@ import mx.com.labuena.services.bikers.model.Coordinates;
  * Created by moracl6 on 8/17/2016.
  */
 
-public class BikersFragment extends BaseFragment implements GoogleMap.OnMarkerClickListener,
+public class BikersLocationFragment extends BaseFragment implements GoogleMap.OnMarkerClickListener,
         OnMapReadyCallback {
 
     public static final String DATA_USER_KEY = "DataUser";
@@ -67,7 +67,7 @@ public class BikersFragment extends BaseFragment implements GoogleMap.OnMarkerCl
 
     @Override
     protected int getLayoutId() {
-        return R.layout.bikers_fragment;
+        return R.layout.bikers_location_fragment;
     }
 
     @Override
@@ -98,11 +98,11 @@ public class BikersFragment extends BaseFragment implements GoogleMap.OnMarkerCl
         mapsFragment.getMapAsync(this);
     }
 
-    public static BikersFragment newInstance(User user) {
+    public static BikersLocationFragment newInstance(User user) {
 
         Bundle args = new Bundle();
         args.putParcelable(DATA_USER_KEY, user);
-        BikersFragment fragment = new BikersFragment();
+        BikersLocationFragment fragment = new BikersLocationFragment();
         fragment.setArguments(args);
         return fragment;
     }
