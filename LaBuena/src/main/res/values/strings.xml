@@ -31,4 +31,5 @@
     <string name="reset_password_email_sent">An email has been sent to %s with the instructions to reset the password</string>
     <string name="error_resetting_password">Error trying to send reset password email</string>
     <string name="email_not_from_branch">Invalid branch email</string>
+    <string name="amount_to_deliver">%d kg</string>
 </resources>
