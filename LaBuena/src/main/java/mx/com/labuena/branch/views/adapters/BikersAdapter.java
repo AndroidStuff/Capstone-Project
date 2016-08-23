@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import mx.com.labuena.branch.R;
-import mx.com.labuena.services.bikers.model.Biker;
+import mx.com.labuena.branch.models.Biker;
 
 /**
  * Created by clerks on 8/22/16.

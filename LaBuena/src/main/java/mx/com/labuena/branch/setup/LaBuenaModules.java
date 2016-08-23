@@ -11,6 +11,7 @@ import mx.com.labuena.branch.views.fragments.BikerRegistrationFragment;
 import mx.com.labuena.branch.views.fragments.BikersFragment;
 import mx.com.labuena.branch.views.fragments.BikersLocationFragment;
 import mx.com.labuena.branch.views.fragments.ForgotPasswordFragment;
+import mx.com.labuena.branch.views.fragments.BikersLandingFragment;
 import mx.com.labuena.branch.views.fragments.LoginFragment;
 
 /**
@@ -36,4 +37,6 @@ public interface LaBuenaModules {
     void inject(BikerRegistrationFragment bikerRegistrationFragment);
 
     void inject(ForgotPasswordFragment forgotPasswordFragment);
+
+    void inject(BikersLandingFragment bikersLandingFragment);
 }

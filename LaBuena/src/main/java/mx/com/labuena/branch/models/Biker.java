@@ -3,6 +3,8 @@ package mx.com.labuena.branch.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * Created by moracl6 on 8/18/2016.
  */
@@ -12,6 +14,8 @@ public class Biker implements Parcelable {
     private final String email;
     private final String password;
     private final String phone;
+    private int lastStock;
+    private Coordinates lastLocation;
 
 
     public Biker(String name, String email, String password, String phone) {
@@ -19,6 +23,17 @@ public class Biker implements Parcelable {
         this.email = email;
         this.password = password;
         this.phone = phone;
+    }
+
+    public Biker(String name, String email, String password, String phone, int lastStock) {
+        this(name, email, password, phone);
+        this.lastStock = lastStock;
+    }
+
+    public Biker(String name, String email, String phone, int lastStock,
+                 Coordinates lastLocation) {
+        this(name, email, StringUtils.EMPTY, phone, lastStock);
+        this.lastLocation = lastLocation;
     }
 
     public String getName() {
@@ -37,6 +52,13 @@ public class Biker implements Parcelable {
         return phone;
     }
 
+    public int getLastStock() {
+        return lastStock;
+    }
+
+    public Coordinates getLastLocation() {
+        return lastLocation;
+    }
 
     @Override
     public int describeContents() {
@@ -49,6 +71,8 @@ public class Biker implements Parcelable {
         dest.writeString(this.email);
         dest.writeString(this.password);
         dest.writeString(this.phone);
+        dest.writeInt(this.lastStock);
+        dest.writeParcelable(lastLocation, flags);
     }
 
     protected Biker(Parcel in) {
@@ -56,6 +80,8 @@ public class Biker implements Parcelable {
         this.email = in.readString();
         this.password = in.readString();
         this.phone = in.readString();
+        this.lastStock = in.readInt();
+        lastLocation = in.readParcelable(Coordinates.class.getClassLoader());
     }
 
     public static final Creator<Biker> CREATOR = new Creator<Biker>() {

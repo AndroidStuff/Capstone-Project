@@ -13,6 +13,7 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
+import mx.com.labuena.branch.assemblers.BikerConverter;
 import mx.com.labuena.branch.events.BikersReceivedEvent;
 import mx.com.labuena.branch.setup.LaBuenaApplication;
 import mx.com.labuena.branch.setup.LaBuenaModules;
@@ -49,7 +50,7 @@ public class FindBikersService extends IntentService {
         try {
 
             BikersResponse bikersResponse = bikersService.getAll().execute();
-            eventBus.post(new BikersReceivedEvent(bikersResponse.getBikers()));
+            eventBus.post(new BikersReceivedEvent(BikerConverter.toModel(bikersResponse.getBikers())));
         } catch (IOException e) {
             Log.e(TAG, e.getMessage(), e);
         }
