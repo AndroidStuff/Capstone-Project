@@ -106,8 +106,8 @@ public class BikersLandingFragment extends BaseFragment {
 
     private void setupViewPager(ArrayList<Biker> bikers) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getFragmentManager());
-        adapter.addFragment(BikersLocationFragment.newInstance(bikers), "Bikers Location");
-        adapter.addFragment(BikersFragment.newInstance(bikers), "Bikers Management");
+        adapter.addFragment(BikersLocationFragment.newInstance(bikers), getString(R.string.biker_tab_location));
+        adapter.addFragment(BikersFragment.newInstance(bikers), getString(R.string.biker_tab_management));
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
     }

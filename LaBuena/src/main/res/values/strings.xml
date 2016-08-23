@@ -32,4 +32,6 @@
     <string name="error_resetting_password">Error trying to send reset password email</string>
     <string name="email_not_from_branch">Invalid branch email</string>
     <string name="amount_to_deliver">%d kg</string>
+    <string name="biker_tab_location">Bikers Location</string>
+    <string name="biker_tab_management">Bikers Management</string>
 </resources>
