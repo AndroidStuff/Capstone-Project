@@ -19,6 +19,7 @@ import javax.inject.Inject;
 
 import mx.com.labuena.branch.events.BikerAlreadyRegisterEvent;
 import mx.com.labuena.branch.events.InvalidBikerEvent;
+import mx.com.labuena.branch.events.ProcessingBikerRegistrationEvent;
 import mx.com.labuena.branch.events.RegistrationFailureEvent;
 import mx.com.labuena.branch.models.Action;
 import mx.com.labuena.branch.models.Biker;
@@ -28,14 +29,14 @@ import mx.com.labuena.branch.services.BikerRegistrationService;
  * Created by moracl6 on 8/9/2016.
  */
 
-public class ClientRegistrationPresenter extends BasePresenter {
-    private static final String TAG = ClientRegistrationPresenter.class.getSimpleName();
+public class BikerRegistrationPresenter extends BasePresenter {
+    private static final String TAG = BikerRegistrationPresenter.class.getSimpleName();
     private final FirebaseAuth.AuthStateListener mAuthListener;
     private Biker biker;
     private Action nextAction;
 
     @Inject
-    public ClientRegistrationPresenter(final EventBus eventBus, Application application) {
+    public BikerRegistrationPresenter(final EventBus eventBus, Application application) {
         super(application, eventBus);
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -56,6 +57,7 @@ public class ClientRegistrationPresenter extends BasePresenter {
         Intent intent = new Intent(application, BikerRegistrationService.class);
         intent.putExtra(BikerRegistrationService.BIKER_DATA_EXTRA, biker);
         application.startService(intent);
+        eventBus.post(new ProcessingBikerRegistrationEvent());
     }
 
     public void createBiker(final Activity activity, FirebaseAuth mAuth, final Biker biker) {

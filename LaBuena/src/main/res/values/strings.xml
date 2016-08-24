@@ -34,4 +34,7 @@
     <string name="amount_to_deliver">%d kg</string>
     <string name="biker_tab_location">Bikers Location</string>
     <string name="biker_tab_management">Bikers Management</string>
+    <string name="user_phone_required">Enter phone number</string>
+    <string name="hint_phone">Phone number</string>
+    <string name="processing_biker_registration">Processing biker registration</string>
 </resources>

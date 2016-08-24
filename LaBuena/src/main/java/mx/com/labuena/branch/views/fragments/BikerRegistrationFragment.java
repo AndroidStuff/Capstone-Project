@@ -17,13 +17,13 @@ import org.greenrobot.eventbus.ThreadMode;
 import javax.inject.Inject;
 
 import mx.com.labuena.branch.R;
-import mx.com.labuena.branch.events.InvalidBikerEvent;
-import mx.com.labuena.branch.events.RegistrationFailureEvent;
 import mx.com.labuena.branch.events.BikerAlreadyRegisterEvent;
+import mx.com.labuena.branch.events.InvalidBikerEvent;
+import mx.com.labuena.branch.events.ProcessingBikerRegistrationEvent;
+import mx.com.labuena.branch.events.RegistrationFailureEvent;
 import mx.com.labuena.branch.models.Biker;
-import mx.com.labuena.branch.presenters.ClientRegistrationPresenter;
+import mx.com.labuena.branch.presenters.BikerRegistrationPresenter;
 import mx.com.labuena.branch.setup.LaBuenaModules;
-import mx.com.labuena.services.clients.model.Client;
 
 
 /**
@@ -35,13 +35,14 @@ public class BikerRegistrationFragment extends BaseFragment {
     EventBus eventBus;
 
     @Inject
-    ClientRegistrationPresenter clientRegistrationPresenter;
+    BikerRegistrationPresenter bikerRegistrationPresenter;
 
     private FirebaseAuth firebaseAuth;
     private EditText userEmailEditText;
     private EditText userPasswordEditText;
     private ProgressBar progressBar;
     private EditText userNameEditText;
+    private EditText userPhoneEditText;
 
     @Override
     protected int getLayoutId() {
@@ -63,6 +64,7 @@ public class BikerRegistrationFragment extends BaseFragment {
         userNameEditText = (EditText) rootView.findViewById(R.id.nameEditText);
         userEmailEditText = (EditText) rootView.findViewById(R.id.emailEditText);
         userPasswordEditText = (EditText) rootView.findViewById(R.id.passwordEditText);
+        userPhoneEditText = (EditText) rootView.findViewById(R.id.phoneEditText);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
         loadControlEvents(rootView);
     }
@@ -70,7 +72,7 @@ public class BikerRegistrationFragment extends BaseFragment {
     @Override
     public void onStart() {
         super.onStart();
-        firebaseAuth.addAuthStateListener(clientRegistrationPresenter.getmAuthListener());
+        firebaseAuth.addAuthStateListener(bikerRegistrationPresenter.getmAuthListener());
     }
 
     @Override
@@ -90,8 +92,8 @@ public class BikerRegistrationFragment extends BaseFragment {
     @Override
     public void onStop() {
         super.onStop();
-        if (clientRegistrationPresenter.getmAuthListener() != null) {
-            firebaseAuth.removeAuthStateListener(clientRegistrationPresenter.getmAuthListener());
+        if (bikerRegistrationPresenter.getmAuthListener() != null) {
+            firebaseAuth.removeAuthStateListener(bikerRegistrationPresenter.getmAuthListener());
         }
     }
 
@@ -108,6 +110,12 @@ public class BikerRegistrationFragment extends BaseFragment {
         if (TextUtils.isEmpty(biker.getEmail())) {
             userEmailEditText.setError(getString(R.string.email_address_required));
             userEmailEditText.requestFocus();
+            return;
+        }
+
+        if (TextUtils.isEmpty(biker.getPhone())) {
+            userPhoneEditText.setError(getString(R.string.user_phone_required));
+            userPhoneEditText.requestFocus();
             return;
         }
 
@@ -135,6 +143,20 @@ public class BikerRegistrationFragment extends BaseFragment {
         Toast.makeText(getActivity(), getString(R.string.duplicate_biker), Toast.LENGTH_LONG).show();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onProcessingBikerRegistrationEvent(ProcessingBikerRegistrationEvent event) {
+        progressBar.setVisibility(View.GONE);
+        Toast.makeText(getActivity(), getString(R.string.processing_biker_registration), Toast.LENGTH_LONG).show();
+        clearBikerInputControls();
+    }
+
+    private void clearBikerInputControls() {
+        userEmailEditText.setText(StringUtils.EMPTY);
+        userPasswordEditText.setText(StringUtils.EMPTY);
+        userNameEditText.setText(StringUtils.EMPTY);
+        userPhoneEditText.setText(StringUtils.EMPTY);
+    }
+
     private void loadControlEvents(View rootView) {
         View newUserButton = rootView.findViewById(R.id.signUpButton);
         newUserButton.setOnClickListener(new View.OnClickListener() {
@@ -142,14 +164,13 @@ public class BikerRegistrationFragment extends BaseFragment {
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);
                 Biker biker = getUserInput();
-                clientRegistrationPresenter.createBiker(getActivity(), firebaseAuth, biker);
+                bikerRegistrationPresenter.createBiker(getActivity(), firebaseAuth, biker);
             }
         });
     }
 
     public Biker getUserInput() {
-        String name = userNameEditText.getText().toString();
-        return new Biker(name, userEmailEditText.getText().toString(),
-                userPasswordEditText.getText().toString(), StringUtils.EMPTY);
+        return new Biker(userNameEditText.getText().toString(), userEmailEditText.getText().toString(),
+                userPasswordEditText.getText().toString(), userPhoneEditText.getText().toString());
     }
 }

@@ -97,6 +97,7 @@ public class Biker implements Parcelable {
     };
 
     public boolean isValid() {
-        return true;
+        return StringUtils.isNoneBlank(name) && StringUtils.isNoneBlank(password)
+                && StringUtils.isNoneBlank(phone) && StringUtils.isNoneBlank(email);
     }
 }
