@@ -20,6 +20,7 @@ import javax.inject.Inject;
 import mx.com.labuena.branch.events.BikerAlreadyRegisterEvent;
 import mx.com.labuena.branch.events.InvalidBikerEvent;
 import mx.com.labuena.branch.events.RegistrationFailureEvent;
+import mx.com.labuena.branch.models.Action;
 import mx.com.labuena.branch.models.Biker;
 import mx.com.labuena.branch.services.BikerRegistrationService;
 
@@ -31,6 +32,7 @@ public class ClientRegistrationPresenter extends BasePresenter {
     private static final String TAG = ClientRegistrationPresenter.class.getSimpleName();
     private final FirebaseAuth.AuthStateListener mAuthListener;
     private Biker biker;
+    private Action nextAction;
 
     @Inject
     public ClientRegistrationPresenter(final EventBus eventBus, Application application) {
@@ -41,7 +43,8 @@ public class ClientRegistrationPresenter extends BasePresenter {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                 if (isUserAuthenticated(firebaseUser)) {
-                    registerBikerInServer(biker);
+                    if (nextAction != null)
+                        nextAction.execute(firebaseUser);
                 } else {
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
@@ -57,6 +60,12 @@ public class ClientRegistrationPresenter extends BasePresenter {
 
     public void createBiker(final Activity activity, FirebaseAuth mAuth, final Biker biker) {
         this.biker = biker;
+        nextAction = new Action() {
+            @Override
+            public void execute(Object... params) {
+                registerBikerInServer(biker);
+            }
+        };
 
         if (biker.isValid()) {
             mAuth.createUserWithEmailAndPassword(biker.getEmail(), biker.getPassword())

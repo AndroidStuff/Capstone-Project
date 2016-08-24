@@ -2,6 +2,8 @@ package mx.com.labuena.branch.views.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -26,6 +28,7 @@ import mx.com.labuena.branch.setup.LaBuenaModules;
 public class BikersLocationFragment extends BaseFragment implements OnMapReadyCallback {
 
     public static final String DATA_USER_KEY = "Bikers";
+    public static final String MAP_FRAGMENT_TAG = "mapFragment";
 
     private GoogleMap googleMap;
     private SupportMapFragment mapsFragment;
@@ -45,7 +48,16 @@ public class BikersLocationFragment extends BaseFragment implements OnMapReadyCa
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mapsFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+
+        FragmentManager fm = getChildFragmentManager();
+        mapsFragment = (SupportMapFragment) fm.findFragmentByTag(MAP_FRAGMENT_TAG);
+        if (mapsFragment == null) {
+            mapsFragment = new SupportMapFragment();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.add(R.id.mapFragmentContainer, mapsFragment, MAP_FRAGMENT_TAG);
+            ft.commit();
+            fm.executePendingTransactions();
+        }
         mapsFragment.getMapAsync(this);
     }
 

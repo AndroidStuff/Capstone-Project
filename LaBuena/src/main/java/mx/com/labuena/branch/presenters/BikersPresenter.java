@@ -10,8 +10,10 @@ import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 
+import mx.com.labuena.branch.events.ReplaceFragmentEvent;
 import mx.com.labuena.branch.services.FetchAddressIntentService;
 import mx.com.labuena.branch.services.FindBikersService;
+import mx.com.labuena.branch.views.fragments.BikerRegistrationFragment;
 
 /**
  * Created by clerks on 8/17/16.
@@ -43,5 +45,9 @@ public class BikersPresenter extends BasePresenter {
                 application.startService(intent);
             }
         });
+    }
+
+    public void navigateToBikerRegistration() {
+        eventBus.post(new ReplaceFragmentEvent(new BikerRegistrationFragment(), true));
     }
 }

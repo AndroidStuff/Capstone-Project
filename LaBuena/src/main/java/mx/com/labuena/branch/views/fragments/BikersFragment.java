@@ -59,6 +59,17 @@ public class BikersFragment extends BaseFragment {
     }
 
     @Override
+    protected void initView(View rootView) {
+        View newBiker = rootView.findViewById(R.id.newBikerActionButton);
+        newBiker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bikersPresenter.navigateToBikerRegistration();
+            }
+        });
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         displayBikers();

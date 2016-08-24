@@ -1,27 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/bikersRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="?attr/actionBarSize" />
+        android:layout_height="match_parent" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/newBikerActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom|right"
         android:layout_marginBottom="16dp"
         android:layout_marginRight="16dp"
         android:background="@color/accent"
-        android:src="@drawable/ic_add_alert_white"
+        android:src="@drawable/ic_add_white"
         app:backgroundTint="@color/accent"
         app:elevation="@dimen/fab_margin"
         app:fabSize="normal"
         app:pressedTranslationZ="12dp" />
-</RelativeLayout>
+</FrameLayout>

@@ -14,7 +14,6 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
         <android.support.design.widget.TabLayout
@@ -30,7 +29,7 @@
         android:id="@+id/homeViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"  />
+        android:layout_marginTop="@dimen/view_pager_top_margin"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
