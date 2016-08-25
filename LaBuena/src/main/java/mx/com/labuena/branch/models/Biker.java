@@ -100,4 +100,8 @@ public class Biker implements Parcelable {
         return StringUtils.isNoneBlank(name) && StringUtils.isNoneBlank(password)
                 && StringUtils.isNoneBlank(phone) && StringUtils.isNoneBlank(email);
     }
+
+    public boolean hasReportedLocation() {
+        return lastLocation != null && lastLocation.getLatitude() != 0;
+    }
 }

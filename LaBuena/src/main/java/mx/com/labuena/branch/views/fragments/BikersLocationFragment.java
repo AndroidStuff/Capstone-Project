@@ -89,15 +89,16 @@ public class BikersLocationFragment extends BaseFragment implements OnMapReadyCa
         Coordinates coordinates = null;
         Biker lastBiker = null;
 
-        for (Biker biker :
-                bikers) {
-            lastBiker = biker;
-            coordinates = biker.getLastLocation();
-            String snipped = String.format(getString(R.string.map_snipped_format), biker.getLastStock());
-            googleMap.addMarker(new MarkerOptions()
-                    .position(new LatLng(coordinates.getLatitude(), coordinates.getLongitude()))
-                    .title(biker.getName())
-                    .snippet(snipped));
+        for (Biker biker : bikers) {
+            if (biker.hasReportedLocation()) {
+                lastBiker = biker;
+                coordinates = biker.getLastLocation();
+                String snipped = String.format(getString(R.string.map_snipped_format), biker.getLastStock());
+                googleMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(coordinates.getLatitude(), coordinates.getLongitude()))
+                        .title(biker.getName())
+                        .snippet(snipped));
+            }
         }
 
         if (lastBiker != null) {
