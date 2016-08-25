@@ -19,10 +19,12 @@ import mx.com.labuena.branch.models.Biker;
 public class BikersAdapter extends RecyclerView.Adapter<BikersAdapter.MainHolder> {
     private final Context context;
     private final List<Biker> bikers;
+    private final BikerClickListener bikerClickListener;
 
-    public BikersAdapter(Context context, List<Biker> bikers) {
+    public BikersAdapter(Context context, List<Biker> bikers, BikerClickListener bikerClickListener) {
         this.context = context;
         this.bikers = bikers;
+        this.bikerClickListener = bikerClickListener;
     }
 
     @Override
@@ -64,7 +66,13 @@ public class BikersAdapter extends RecyclerView.Adapter<BikersAdapter.MainHolder
 
         @Override
         public void onClick(View v) {
-
+            int position = this.getAdapterPosition();
+            Biker biker = bikers.get(position);
+            bikerClickListener.onBikerClick(biker);
         }
+    }
+
+    public interface BikerClickListener {
+        void onBikerClick(Biker biker);
     }
 }

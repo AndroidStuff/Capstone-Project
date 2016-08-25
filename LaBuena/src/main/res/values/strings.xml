@@ -5,7 +5,8 @@
     <string name="lbl_external_stock">External Stock</string>
     <string name="lbl_orders_to_deliver">Orders to deliver</string>
     <string name="amount_metric_unit">kg</string>
-	
+
+    <string name="hint_stock">Stock</string>
 	<string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
     <string name="btn_login">Sign in</string>
@@ -26,7 +27,7 @@
     <string name="biker_added_notification_title">New biker added</string>
     <string name="biker_added_notification_content">" successfully registered"</string>
     <string name="lbl_forgot_password">Forgot password?</string>
-    <string name="forgot_password_msg">Please enter your accounts email address below and click the reset password button to receive a reset password email.</string>
+    <string name="forgot_password_msg">Please click the reset password button to send a reset password email to %1$s for %2$s or click in update stock button to refresh the bikers current stock.</string>
     <string name="btn_reset_password">Reset Password</string>
     <string name="reset_password_email_sent">An email has been sent to %s with the instructions to reset the password</string>
     <string name="error_resetting_password">Error trying to send reset password email</string>
@@ -37,4 +38,5 @@
     <string name="user_phone_required">Enter phone number</string>
     <string name="hint_phone">Phone number</string>
     <string name="processing_biker_registration">Processing biker registration</string>
+    <string name="btn_update_stock">Update stock</string>
 </resources>

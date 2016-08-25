@@ -1,12 +1,13 @@
 package mx.com.labuena.branch.views.fragments;
 
+import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -16,7 +17,8 @@ import javax.inject.Inject;
 import mx.com.labuena.branch.R;
 import mx.com.labuena.branch.events.ResetPasswordFailureEvent;
 import mx.com.labuena.branch.events.ResetPasswordSuccessfulEvent;
-import mx.com.labuena.branch.presenters.ForgotPasswordPresenter;
+import mx.com.labuena.branch.models.Biker;
+import mx.com.labuena.branch.presenters.UpdateBikerPresenter;
 import mx.com.labuena.branch.setup.LaBuenaModules;
 
 import static mx.com.labuena.branch.R.id.progressBar;
@@ -26,20 +28,25 @@ import static mx.com.labuena.branch.R.id.progressBar;
  * Created by moracl6 on 8/8/2016.
  */
 
-public class ForgotPasswordFragment extends BaseFragment {
+public class UpdateBikerFragment extends BaseFragment {
+    public static final String BIKERS_DATA_KEY = "BikersData";
     @Inject
     EventBus eventBus;
 
     @Inject
-    ForgotPasswordPresenter forgotPasswordPresenter;
+    UpdateBikerPresenter updateBikerPresenter;
 
-    private EditText userEmailEditText;
+    private EditText userStockEditText;
+
     private ProgressBar resetingPasswordProgressBar;
+
     private TextInputLayout imputEmailLayout;
+
+    private Biker biker;
 
     @Override
     protected int getLayoutId() {
-        return R.layout.forgot_password_fragment;
+        return R.layout.update_biker_fragment;
     }
 
     @Override
@@ -47,10 +54,28 @@ public class ForgotPasswordFragment extends BaseFragment {
         modules.inject(this);
     }
 
+    public static UpdateBikerFragment newInstance(Biker biker) {
+        Bundle args = new Bundle();
+        args.putParcelable(BIKERS_DATA_KEY, biker);
+        UpdateBikerFragment fragment = new UpdateBikerFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    protected void loadFragmentArguments() {
+        if (getArguments() != null) {
+            this.biker = getArguments().getParcelable(BIKERS_DATA_KEY);
+        }
+    }
 
     @Override
     protected void initView(View rootView) {
-        userEmailEditText = (EditText) rootView.findViewById(R.id.emailEditText);
+        userStockEditText = (EditText) rootView.findViewById(R.id.stockEditText);
+        TextView forgotPasswordMessage = (TextView) rootView.findViewById(R.id.forgotPasswordMessageText);
+        forgotPasswordMessage.setText(String.format(getString(R.string.forgot_password_msg),
+                biker.getEmail(), biker.getName()));
+
         resetingPasswordProgressBar = (ProgressBar) rootView.findViewById(progressBar);
         imputEmailLayout = (TextInputLayout) rootView.findViewById(R.id.inputEmailAddress);
         loadControlEvents(rootView);
@@ -73,7 +98,6 @@ public class ForgotPasswordFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onResetPasswordSuccessfulEvent(ResetPasswordSuccessfulEvent event) {
         resetingPasswordProgressBar.setVisibility(View.GONE);
-        userEmailEditText.setText(StringUtils.EMPTY);
         String message = String.format(getString(R.string.reset_password_email_sent), event.getEmail());
         Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
     }
@@ -89,13 +113,8 @@ public class ForgotPasswordFragment extends BaseFragment {
         newUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = userEmailEditText.getText().toString();
-                if (StringUtils.isBlank(email)) {
-                    userEmailEditText.setError(getString(R.string.email_address_required));
-                    return;
-                }
                 resetingPasswordProgressBar.setVisibility(View.VISIBLE);
-                forgotPasswordPresenter.resetPassword(email);
+                updateBikerPresenter.resetPassword(biker.getEmail());
             }
         });
     }

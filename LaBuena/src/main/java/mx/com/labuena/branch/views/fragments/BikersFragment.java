@@ -22,7 +22,7 @@ import mx.com.labuena.branch.views.adapters.BikersAdapter;
  * Created by clerks on 8/22/16.
  */
 
-public class BikersFragment extends BaseFragment {
+public class BikersFragment extends BaseFragment implements BikersAdapter.BikerClickListener {
     public static final String DATA_USER_KEY = "Bikers";
     private ArrayList<Biker> bikers;
 
@@ -76,7 +76,7 @@ public class BikersFragment extends BaseFragment {
     }
 
     private void displayBikers() {
-        BikersAdapter adapter = new BikersAdapter(getActivity(), bikers);
+        BikersAdapter adapter = new BikersAdapter(getActivity(), bikers, this);
 
         final RecyclerView addonsRecyclerView = (RecyclerView) getView().findViewById(R.id.bikersRecyclerView);
 
@@ -87,5 +87,10 @@ public class BikersFragment extends BaseFragment {
         addonsRecyclerView.setAdapter(adapter);
         addonsRecyclerView.setLayoutManager(linearLayoutManager);
         addonsRecyclerView.setHasFixedSize(true);
+    }
+
+    @Override
+    public void onBikerClick(Biker biker) {
+        bikersPresenter.navigateToBikeUpdate(biker);
     }
 }

@@ -2,7 +2,6 @@ package mx.com.labuena.branch.presenters;
 
 import android.app.Application;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Handler;
 import android.os.HandlerThread;
 
@@ -11,9 +10,10 @@ import org.greenrobot.eventbus.EventBus;
 import javax.inject.Inject;
 
 import mx.com.labuena.branch.events.ReplaceFragmentEvent;
-import mx.com.labuena.branch.services.FetchAddressIntentService;
+import mx.com.labuena.branch.models.Biker;
 import mx.com.labuena.branch.services.FindBikersService;
 import mx.com.labuena.branch.views.fragments.BikerRegistrationFragment;
+import mx.com.labuena.branch.views.fragments.UpdateBikerFragment;
 
 /**
  * Created by clerks on 8/17/16.
@@ -25,13 +25,6 @@ public class BikersPresenter extends BasePresenter {
     @Inject
     public BikersPresenter(Application application, EventBus eventBus) {
         super(application, eventBus);
-    }
-
-
-    public void findLocation(Location location) {
-        Intent intent = new Intent(application, FetchAddressIntentService.class);
-        intent.putExtra(FetchAddressIntentService.LOCATION_DATA_EXTRA, location);
-        application.startService(intent);
     }
 
     public void getBikers() {
@@ -49,5 +42,9 @@ public class BikersPresenter extends BasePresenter {
 
     public void navigateToBikerRegistration() {
         eventBus.post(new ReplaceFragmentEvent(new BikerRegistrationFragment(), true));
+    }
+
+    public void navigateToBikeUpdate(Biker biker) {
+        eventBus.post(new ReplaceFragmentEvent(UpdateBikerFragment.newInstance(biker), true));
     }
 }

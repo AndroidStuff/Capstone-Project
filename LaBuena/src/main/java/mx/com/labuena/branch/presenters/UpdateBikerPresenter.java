@@ -19,11 +19,11 @@ import mx.com.labuena.branch.events.ResetPasswordSuccessfulEvent;
  * Created by moracl6 on 8/11/2016.
  */
 
-public class ForgotPasswordPresenter extends BasePresenter {
-    private static final String TAG = ForgotPasswordPresenter.class.getSimpleName();
+public class UpdateBikerPresenter extends BasePresenter {
+    private static final String TAG = UpdateBikerPresenter.class.getSimpleName();
 
     @Inject
-    public ForgotPasswordPresenter(Application application, EventBus eventBus) {
+    public UpdateBikerPresenter(Application application, EventBus eventBus) {
         super(application, eventBus);
     }
 
