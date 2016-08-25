@@ -38,14 +38,13 @@ public class MysqlBikerDao extends BaseDao implements BikerDao, BikeDriverSelect
         List<Biker> bikers = new ArrayList<>();
         Connection connection = connectionProvider.get();
         try {
-            String bikersQuery = "select name, email, phone, stock, location.latitude, " +
-                    "location.longitude, location.created_at " +
-                    "from la_buena_db.biker join (select biker.id_biker, max(biker_location.id_location) as id_location " +
-                    "from la_buena_db.biker " +
-                    "join la_buena_db.biker_location on biker.id_biker = biker_location.id_biker " +
-                    "group by biker.id_biker) latest_location " +
-                    "on biker.id_biker = latest_location.id_biker " +
-                    "join la_buena_db.location on latest_location.id_location = location.id_location;";
+            String bikersQuery = "select name, email, phone, stock, location.latitude, location.longitude, location.created_at \n" +
+                    "from la_buena_db.biker \n" +
+                    "left join (select biker.id_biker, max(biker_location.id_location) as id_location \n" +
+                    "\tfrom la_buena_db.biker \n" +
+                    "\tjoin la_buena_db.biker_location on biker.id_biker = biker_location.id_biker group by biker.id_biker) latest_location \n" +
+                    "on biker.id_biker = latest_location.id_biker \n" +
+                    "left join la_buena_db.location on latest_location.id_location = location.id_location;";
             ResultSet rs = connection.prepareStatement(bikersQuery).executeQuery();
 
             while (rs.next()) {
