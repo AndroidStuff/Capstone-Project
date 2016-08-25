@@ -169,7 +169,7 @@ public class MysqlBikerDao extends BaseDao implements BikerDao, BikeDriverSelect
         try {
             Connection connection = connectionProvider.get();
             try {
-                String saveBikerQuery = "update la_buena_db.biker set cloud_messaging_token = ? " +
+                String saveBikerQuery = "update la_buena_db.biker set cloud_messaging_token = ?, updated_at = NOW() " +
                         "where email = ?;";
                 connection.setAutoCommit(false);
                 PreparedStatement preparedStatement = connection.prepareStatement(saveBikerQuery);
@@ -211,6 +211,33 @@ public class MysqlBikerDao extends BaseDao implements BikerDao, BikeDriverSelect
             return emailFromBiker;
         } catch (SQLException e) {
             closeConnection(connection);
+            log.log(Level.SEVERE, e.getMessage(), e);
+            throw new InternalServerErrorException(e);
+        }
+    }
+
+    @Override
+    public void updateStock(Biker biker) throws InternalServerErrorException {
+        try {
+            Connection connection = connectionProvider.get();
+            try {
+                String saveBikerQuery = "update la_buena_db.biker set stock = ?, updated_at = NOW() " +
+                        "where email = ?;";
+                connection.setAutoCommit(false);
+                PreparedStatement preparedStatement = connection.prepareStatement(saveBikerQuery);
+                preparedStatement.setInt(1, biker.getLastStock());
+                preparedStatement.setString(2, biker.getEmail());
+                preparedStatement.execute();
+                connection.commit();
+            } catch (SQLException e) {
+                connection.rollback();
+                log.log(Level.SEVERE, e.getMessage(), e);
+                throw new InternalServerErrorException(e);
+            } finally {
+                connection.setAutoCommit(true);
+                closeConnection(connection);
+            }
+        } catch (SQLException e) {
             log.log(Level.SEVERE, e.getMessage(), e);
             throw new InternalServerErrorException(e);
         }

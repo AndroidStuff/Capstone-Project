@@ -18,4 +18,6 @@ public interface BikerDao {
     void updateToken(Biker biker) throws InternalServerErrorException;
 
     boolean isEmailFromBiker(String email) throws InternalServerErrorException;
+
+    void updateStock(Biker biker) throws InternalServerErrorException;
 }
