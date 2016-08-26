@@ -1,5 +1,6 @@
 package mx.com.labuena.bikedriver.data;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
@@ -40,5 +41,21 @@ public class DataBaseTest extends AndroidTestCase {
 
         cursor.close();
         sqliteDatabase.close();
+    }
+
+    public void testOrderTableInsertion() {
+        SQLiteDatabase database = new BikeDriverDbHelper(mContext).getWritableDatabase();
+        ContentValues contentValues = TestUtilities.createOrderDummyValues();
+        long id = database.insert(BikeDriverContracts.OrderEntry.TABLE_NAME, null, contentValues);
+
+        Cursor movieCursor = database.query(BikeDriverContracts.OrderEntry.TABLE_NAME, null, null,
+                null, null, null, null);
+        assertTrue("No records return from order query", movieCursor.moveToFirst());
+        TestUtilities.validateCurrentRecord("The query doesn't return the espected values and columns " +
+                "for the order ", movieCursor, contentValues);
+        assertFalse(movieCursor.moveToNext());
+
+        movieCursor.close();
+        database.close();
     }
 }

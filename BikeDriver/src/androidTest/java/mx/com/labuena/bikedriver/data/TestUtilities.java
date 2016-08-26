@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Set;
 
 import static junit.framework.TestCase.assertFalse;
-import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -19,12 +18,6 @@ import static org.junit.Assert.assertEquals;
  */
 
 public class TestUtilities {
-    /**
-     * Allows to test if a result of a query has the expected values.
-     * @param error Error to display it the projection, doesn't include a value.
-     * @param valueCursor Current result of a query.
-     * @param expectedValues Values to look for in a cursor.
-     */
     public static void validateCurrentRecord(String error, Cursor valueCursor, ContentValues expectedValues) {
         Set<Map.Entry<String, Object>> valueSet = expectedValues.valueSet();
 
@@ -33,22 +26,10 @@ public class TestUtilities {
             int idx = valueCursor.getColumnIndex(columnName);
             assertFalse("Column '" + columnName + "' not found. " + error, idx == -1);
             String expectedValue = entry.getValue().toString();
-            assertEquals("Value '" + entry.getValue().toString() +
+            assertEquals("Value '" + valueCursor.getString(idx) +
                     "' did not match the expected value '" +
                     expectedValue + "'. " + error, expectedValue, valueCursor.getString(idx));
         }
-    }
-
-    /**
-     * Allows to validate a cursor with the expected values that it needs to carry.
-     * @param error Error to display in case of a value or column doesn't match.
-     * @param valueCursor Current cursor.
-     * @param expectedValues Expected values for the cursor.
-     */
-    static void validateCursor(String error, Cursor valueCursor, ContentValues expectedValues) {
-        assertTrue("Empty cursor returned. " + error, valueCursor.moveToFirst());
-        validateCurrentRecord(error, valueCursor, expectedValues);
-        valueCursor.close();
     }
 
     /**
@@ -59,31 +40,25 @@ public class TestUtilities {
         return createDummyOrderValues(135397);
     }
 
-    /**
-     * Allows to create a bunch of dummy values to insert.
-     * @return Bunch of dummy values to insert.
-     */
-    public static ContentValues[] createBulkDummyInsert() {
-        ContentValues[] values = new ContentValues[5];
+    public static ContentValues[] createBulkDummyInsert(int numberOfEntries) {
+        ContentValues[] values = new ContentValues[numberOfEntries];
 
-        int movieIdBase = 135397;
+        int orderId = 23;
         for (int i = 0; i < 5; i++) {
-            values[i] = createDummyOrderValues(++movieIdBase);
+            values[i] = createDummyOrderValues(++orderId);
         }
 
         return values;
     }
 
-    /**
-     * Allows to create a dummy movie to insert.
-     * @param movieId Id of the movie.
-     * @return ContentValue with the data of the movie.
-     */
-    private static ContentValues createDummyOrderValues(int movieId) {
+    private static ContentValues createDummyOrderValues(int orderId) {
         ContentValues values = new ContentValues();
-        //values.put(PopularMoviesContract.MovieEntry.ID, movieId);
-        //values.put(PopularMoviesContract.MovieEntry.COLUMN_BACKDROP_IMAGE, "dkMD5qlogeRMiEixC4YNPUvax2T.jpg");
-        //values.put(PopularMoviesContract.MovieEntry.COLUMN_VOTE_AVERAGE, 7.7);
+        values.put(BikeDriverContracts.OrderEntry.ID, orderId);
+        values.put(BikeDriverContracts.OrderEntry.CLIENT_EMAIL_COLUMN, "morales.fernandez.clemente@gmail.com");
+        values.put(BikeDriverContracts.OrderEntry.CLIENT_NAME_COLUMN, "Clemente Morales Fernandez");
+        values.put(BikeDriverContracts.OrderEntry.QUANTITY_COLUMN, 18);
+        values.put(BikeDriverContracts.OrderEntry.LATITUDE_COLUMN, 72.8765);
+        values.put(BikeDriverContracts.OrderEntry.LONGITUDE_COLUMN, 26.4537);
         return values;
     }
 
