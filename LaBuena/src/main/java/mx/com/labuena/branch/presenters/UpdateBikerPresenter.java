@@ -1,6 +1,7 @@
 package mx.com.labuena.branch.presenters;
 
 import android.app.Application;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -12,8 +13,11 @@ import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 
+import mx.com.labuena.branch.events.ProcessingBikerUpdateEvent;
 import mx.com.labuena.branch.events.ResetPasswordFailureEvent;
 import mx.com.labuena.branch.events.ResetPasswordSuccessfulEvent;
+import mx.com.labuena.branch.models.Biker;
+import mx.com.labuena.branch.services.BikerStockUpdateService;
 
 /**
  * Created by moracl6 on 8/11/2016.
@@ -42,5 +46,12 @@ public class UpdateBikerPresenter extends BasePresenter {
                         }
                     }
                 });
+    }
+
+    public void updateStock(Biker biker) {
+        Intent intent = new Intent(application, BikerStockUpdateService.class);
+        intent.putExtra(BikerStockUpdateService.BIKER_DATA_EXTRA, biker);
+        application.startService(intent);
+        eventBus.post(new ProcessingBikerUpdateEvent());
     }
 }

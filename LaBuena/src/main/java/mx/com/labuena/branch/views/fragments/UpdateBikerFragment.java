@@ -8,6 +8,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.commons.lang3.StringUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -15,6 +16,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import javax.inject.Inject;
 
 import mx.com.labuena.branch.R;
+import mx.com.labuena.branch.events.ProcessingBikerUpdateEvent;
 import mx.com.labuena.branch.events.ResetPasswordFailureEvent;
 import mx.com.labuena.branch.events.ResetPasswordSuccessfulEvent;
 import mx.com.labuena.branch.models.Biker;
@@ -38,7 +40,7 @@ public class UpdateBikerFragment extends BaseFragment {
 
     private EditText userStockEditText;
 
-    private ProgressBar resetingPasswordProgressBar;
+    private ProgressBar executingTaskProgressBar;
 
     private TextInputLayout imputEmailLayout;
 
@@ -76,7 +78,7 @@ public class UpdateBikerFragment extends BaseFragment {
         forgotPasswordMessage.setText(String.format(getString(R.string.forgot_password_msg),
                 biker.getEmail(), biker.getName()));
 
-        resetingPasswordProgressBar = (ProgressBar) rootView.findViewById(progressBar);
+        executingTaskProgressBar = (ProgressBar) rootView.findViewById(progressBar);
         imputEmailLayout = (TextInputLayout) rootView.findViewById(R.id.inputEmailAddress);
         loadControlEvents(rootView);
     }
@@ -97,24 +99,49 @@ public class UpdateBikerFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onResetPasswordSuccessfulEvent(ResetPasswordSuccessfulEvent event) {
-        resetingPasswordProgressBar.setVisibility(View.GONE);
+        executingTaskProgressBar.setVisibility(View.GONE);
         String message = String.format(getString(R.string.reset_password_email_sent), event.getEmail());
         Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onResetPasswordFailureEvent(ResetPasswordFailureEvent event) {
-        resetingPasswordProgressBar.setVisibility(View.GONE);
+        executingTaskProgressBar.setVisibility(View.GONE);
         Toast.makeText(getActivity(), getString(R.string.error_resetting_password), Toast.LENGTH_LONG).show();
+        getActivity().getSupportFragmentManager().popBackStack();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onProcessingBikerUpdateEvent(ProcessingBikerUpdateEvent event) {
+        executingTaskProgressBar.setVisibility(View.GONE);
+        Toast.makeText(getActivity(), getString(R.string.processing_biker_update), Toast.LENGTH_LONG).show();
+        getActivity().getSupportFragmentManager().popBackStack();
     }
 
     private void loadControlEvents(View rootView) {
-        View newUserButton = rootView.findViewById(R.id.resetPasswordButton);
-        newUserButton.setOnClickListener(new View.OnClickListener() {
+        View resetPasswordButton = rootView.findViewById(R.id.resetPasswordButton);
+        resetPasswordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resetingPasswordProgressBar.setVisibility(View.VISIBLE);
+                executingTaskProgressBar.setVisibility(View.VISIBLE);
                 updateBikerPresenter.resetPassword(biker.getEmail());
+            }
+        });
+
+        View updateStockButton = rootView.findViewById(R.id.updateStockButton);
+        updateStockButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (StringUtils.isBlank(userStockEditText.getText().toString())) {
+                    userStockEditText.setError(getString(R.string.stock_required));
+                    userStockEditText.requestFocus();
+                    return;
+                }
+
+                executingTaskProgressBar.setVisibility(View.VISIBLE);
+                int stock = Integer.parseInt(userStockEditText.getText().toString());
+                biker.setLastStock(stock);
+                updateBikerPresenter.updateStock(biker);
             }
         });
     }

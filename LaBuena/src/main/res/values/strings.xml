@@ -39,4 +39,8 @@
     <string name="hint_phone">Phone number</string>
     <string name="processing_biker_registration">Processing biker registration</string>
     <string name="btn_update_stock">Update stock</string>
+    <string name="stock_required">Please add the driver stock</string>
+    <string name="biker_stock_updated_notification_title">Biker updated</string>
+    <string name="biker_stock_updated_content">Biker stock updated successfully</string>
+    <string name="processing_biker_update">Processing biker update.</string>
 </resources>

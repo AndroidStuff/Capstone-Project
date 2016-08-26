@@ -56,6 +56,10 @@ public class Biker implements Parcelable {
         return lastStock;
     }
 
+    public void setLastStock(int lastStock) {
+        this.lastStock = lastStock;
+    }
+
     public Coordinates getLastLocation() {
         return lastLocation;
     }

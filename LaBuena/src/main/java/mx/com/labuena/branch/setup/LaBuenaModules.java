@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import mx.com.labuena.branch.services.BikerRegistrationService;
+import mx.com.labuena.branch.services.BikerStockUpdateService;
 import mx.com.labuena.branch.services.FetchAddressIntentService;
 import mx.com.labuena.branch.services.FindBikersService;
 import mx.com.labuena.branch.views.activities.HomeActivity;
@@ -39,4 +40,6 @@ public interface LaBuenaModules {
     void inject(UpdateBikerFragment updateBikerFragment);
 
     void inject(BikersLandingFragment bikersLandingFragment);
+
+    void inject(BikerStockUpdateService bikerStockUpdateService);
 }

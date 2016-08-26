@@ -19,6 +19,7 @@ import javax.inject.Inject;
 
 import mx.com.labuena.branch.R;
 import mx.com.labuena.branch.events.BikersReceivedEvent;
+import mx.com.labuena.branch.events.UpdateBikersRequiredEvent;
 import mx.com.labuena.branch.models.Biker;
 import mx.com.labuena.branch.models.User;
 import mx.com.labuena.branch.presenters.BikersPresenter;
@@ -42,7 +43,10 @@ public class BikersLandingFragment extends BaseFragment {
 
     @Inject
     BikersPresenter bikersPresenter;
+
     private ProgressBar loadingProgressBar;
+
+    private ViewPagerAdapter adapter;
 
     @Override
     protected int getLayoutId() {
@@ -104,8 +108,15 @@ public class BikersLandingFragment extends BaseFragment {
         setupViewPager(event.getBikers());
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUpdateBikersRequiredEvent(UpdateBikersRequiredEvent event) {
+        eventBus.removeStickyEvent(event);
+        loadingProgressBar.setVisibility(View.VISIBLE);
+        bikersPresenter.getBikers();
+    }
+
     private void setupViewPager(ArrayList<Biker> bikers) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
+        adapter = new ViewPagerAdapter(getChildFragmentManager());
         adapter.addFragment(BikersLocationFragment.newInstance(bikers), getString(R.string.biker_tab_location));
         adapter.addFragment(BikersFragment.newInstance(bikers), getString(R.string.biker_tab_management));
         viewPager.setAdapter(adapter);
