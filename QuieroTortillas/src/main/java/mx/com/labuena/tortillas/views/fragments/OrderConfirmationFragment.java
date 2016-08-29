@@ -2,6 +2,7 @@ package mx.com.labuena.tortillas.views.fragments;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -45,6 +46,11 @@ public class OrderConfirmationFragment extends BaseFragment {
 
     @Override
     protected void initView(View rootView) {
+        TextView orderMessage = (TextView) rootView.findViewById(R.id.orderMessageTextView);
+        String messageFormat = getString(R.string.lbl_order_send);
+        String message = String.format(messageFormat, orderRequest.getAmount(), orderRequest.getAddress());
+        orderMessage.setText(message);
+
         loadControlEvents(rootView);
     }
 

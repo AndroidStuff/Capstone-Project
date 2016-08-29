@@ -58,4 +58,24 @@ public class DataBaseTest extends AndroidTestCase {
         movieCursor.close();
         database.close();
     }
+
+    public void testBulkTableInsertion() {
+        SQLiteDatabase database = new BikeDriverDbHelper(mContext).getWritableDatabase();
+        ContentValues[] contentValues = TestUtilities.createBulkDummyInsert(5);
+        mContext.getContentResolver().bulkInsert(BikeDriverContracts
+                .OrderEntry.CONTENT_URI, contentValues);
+
+        Cursor movieCursor = database.query(BikeDriverContracts.OrderEntry.TABLE_NAME, null, null,
+                null, null, null, BikeDriverContracts.OrderEntry.ID+" ASC");
+        assertTrue("No records return from order query", movieCursor.moveToFirst());
+
+        int index = 0;
+        while (movieCursor.moveToNext()) {
+            TestUtilities.validateCurrentRecord("The query doesn't return the espected values and columns " +
+                    "for the order ", movieCursor, contentValues[index++]);
+        }
+
+        movieCursor.close();
+        database.close();
+    }
 }

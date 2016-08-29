@@ -16,6 +16,8 @@ public class TortillasRequest implements Parcelable {
     private final User user;
     private DeviceLocation deviceLocation;
 
+    private String address;
+
     public TortillasRequest(User user) {
         this.user = user;
     }
@@ -56,6 +58,13 @@ public class TortillasRequest implements Parcelable {
         --amount;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     @Override
     public int describeContents() {
@@ -67,12 +76,14 @@ public class TortillasRequest implements Parcelable {
         dest.writeInt(this.amount);
         dest.writeParcelable(this.user, flags);
         dest.writeParcelable(this.deviceLocation, flags);
+        dest.writeString(this.address);
     }
 
     protected TortillasRequest(Parcel in) {
         this.amount = in.readInt();
         this.user = in.readParcelable(User.class.getClassLoader());
         this.deviceLocation = in.readParcelable(DeviceLocation.class.getClassLoader());
+        this.address = in.readString();
     }
 
     public static final Creator<TortillasRequest> CREATOR = new Creator<TortillasRequest>() {

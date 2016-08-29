@@ -85,6 +85,7 @@ public class TortillasRequestorFragment extends BaseFragment implements GoogleAp
     private TextView locationDeliveryTextView;
     private boolean sendingRequest;
     private ConfirmationDialogFragment dialog;
+    private String currentAddress;
 
     @TargetApi(Build.VERSION_CODES.M)
     @Override
@@ -225,6 +226,7 @@ public class TortillasRequestorFragment extends BaseFragment implements GoogleAp
     public void onAddressReceivedEvent(AddressReceivedEvent event) {
         String deliveryMessage = getString(R.string.delivery_message);
         locationDeliveryTextView.setText(String.format(deliveryMessage, event.getAddress()));
+        currentAddress = event.getAddress();
 
         if (sendingRequest) {
             sendingRequest = false;
@@ -234,6 +236,7 @@ public class TortillasRequestorFragment extends BaseFragment implements GoogleAp
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onConfirmationAcceptedEvent(ConfirmationAcceptedEvent event) {
+        tortillasRequest.setAddress(currentAddress);
         tortillasRequestorPresenter.requestOrder(tortillasRequest);
     }
 
