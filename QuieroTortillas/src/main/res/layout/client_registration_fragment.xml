@@ -18,6 +18,7 @@
             android:layout_gravity="center_horizontal"
             android:padding="10dp"
             android:text="@string/lbl_new_client"
+            android:contentDescription="@string/lbl_new_client"
             android:textColor="@android:color/white"
             android:textSize="20dp" />
 
@@ -26,6 +27,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/wrap_96"
             android:scaleType="centerCrop"
+            android:contentDescription="@string/app_icon_description"
             android:layout_marginTop="60dp"/>
 
         <android.support.design.widget.TextInputLayout
@@ -37,6 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/name"
+                android:contentDescription="@string/name"
                 android:inputType="textPersonName"
                 android:maxLines="1"
                 android:singleLine="true"
@@ -53,6 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/email"
+                android:contentDescription="@string/email"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:singleLine="true"
@@ -70,6 +74,7 @@
                 android:layout_height="wrap_content"
                 android:focusableInTouchMode="true"
                 android:hint="@string/hint_password"
+                android:contentDescription="@string/hint_password"
                 android:imeActionId="@+id/login"
                 android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
@@ -87,6 +92,7 @@
             android:layout_marginTop="16dp"
             android:background="@color/accent"
             android:text="@string/action_sign_in_short"
+            android:contentDescription="@string/action_sign_in_short"
             android:textColor="@android:color/black"
             android:textStyle="bold" />
     </LinearLayout>

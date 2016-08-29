@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Quiero Tortillas</string>
+    <string name="app_icon_description">Tortillas Icon</string>
     <string name="facebook_app_id"></string>
     <string name="action_sign_in_short">Register</string>
     <string name="email">Email</string>
@@ -58,4 +59,9 @@
     <string name="error_resetting_password">Error trying to send reset password email</string>
     <string name="user_name_required">Enter user name</string>
     <string name="order_notitication">Congratulations your order is coming</string>
+    <string name="google_sign_in">Google Sign In</string>
+    <string name="facebook_sign_in">Facebook Sign In</string>
+    <string name="more_tortillas_description">Increase tortillas amount</string>
+    <string name="less_tortillas_description">Decrease tortillas amount</string>
+    <string name="request_tortillas_description">Request tortillas</string>
 </resources>

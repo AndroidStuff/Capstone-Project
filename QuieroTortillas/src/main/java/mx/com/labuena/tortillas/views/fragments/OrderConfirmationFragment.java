@@ -50,6 +50,7 @@ public class OrderConfirmationFragment extends BaseFragment {
         String messageFormat = getString(R.string.lbl_order_send);
         String message = String.format(messageFormat, orderRequest.getAmount(), orderRequest.getAddress());
         orderMessage.setText(message);
+        orderMessage.setContentDescription(message);
 
         loadControlEvents(rootView);
     }

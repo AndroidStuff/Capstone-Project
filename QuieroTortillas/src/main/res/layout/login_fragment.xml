@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
+        android:contentDescription="@string/app_icon_description"
         android:src="@drawable/wrap_96" />
 
 
@@ -24,6 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:hint="@string/hint_email"
+            android:contentDescription="@string/hint_email"
             android:inputType="textEmailAddress"
             android:textColor="@android:color/white"
             android:textColorHint="@android:color/white" />
@@ -39,6 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:hint="@string/hint_password"
+            android:contentDescription="@string/hint_password"
             android:inputType="textPassword"
             android:textColor="@android:color/white"
             android:textColorHint="@android:color/white" />
@@ -51,6 +54,7 @@
         android:layout_marginTop="20dp"
         android:background="@color/accent"
         android:text="@string/btn_login"
+        android:contentDescription="@string/btn_login"
         android:textColor="@android:color/black" />
 
     <LinearLayout
@@ -67,6 +71,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/lbl_forgot_password"
+            android:contentDescription="@string/lbl_forgot_password"
             android:textStyle="bold" />
 
         <TextView
@@ -75,11 +80,13 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/lbl_register_here"
+            android:contentDescription="@string/lbl_register_here"
             android:textStyle="bold" />
     </LinearLayout>
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/gmailSigninButton"
+        android:contentDescription="@string/google_sign_in"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -87,6 +94,7 @@
         android:id="@+id/facebookSigninButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/facebook_sign_in"
         android:layout_marginTop="10dp"
         android:paddingBottom="13dp"
         android:paddingTop="13dp" />
