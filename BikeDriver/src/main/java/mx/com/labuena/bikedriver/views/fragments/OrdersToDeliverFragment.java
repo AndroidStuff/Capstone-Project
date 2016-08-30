@@ -144,6 +144,7 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAddressReceivedEvent(AddressReceivedEvent event) {
         clientAddressTextView.setText(event.getAddress());
+        clientAddressTextView.setContentDescription(event.getAddress());
     }
 
     @Override
@@ -235,7 +236,9 @@ public class OrdersToDeliverFragment extends BaseFragment implements GoogleMap.O
     private void displayOrder(Order order) {
         String snipped = String.format(TORTILLAS_AMOUNT_FORMAT_KG, order.getQuantity());
         clientNameTextView.setText(order.getClientName());
+        clientNameTextView.setContentDescription(order.getClientName());
         tortillasAmountTextView.setText(snipped);
+        tortillasAmountTextView.setContentDescription(snipped);
         Coordinate coordinate = order.getCoordinates();
         Location location = new Location(StringUtils.EMPTY);
         location.setLatitude(coordinate.getLatitude());
