@@ -44,4 +44,7 @@
     <string name="biker_stock_updated_content">Biker stock updated successfully</string>
     <string name="processing_biker_update">Processing biker update.</string>
     <string name="app_icon_description">La Buena icon image</string>
+    <string name="invalid_phone_number">Enter a valid phone number</string>
+    <string name="invalid_email">Enter a valid email</string>
+    <string name="invalid_password">Enter a password length of 6 to 12 characters. Only letters and digits allowed</string>
 </resources>

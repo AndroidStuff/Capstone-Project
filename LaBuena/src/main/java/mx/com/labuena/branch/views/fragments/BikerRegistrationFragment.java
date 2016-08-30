@@ -122,6 +122,25 @@ public class BikerRegistrationFragment extends BaseFragment {
         if (TextUtils.isEmpty(biker.getPassword())) {
             userPasswordEditText.setError(getString(R.string.password_required));
             userPasswordEditText.requestFocus();
+            return;
+        }
+
+        if (!biker.isValidPhone()) {
+            userPhoneEditText.setError(getString(R.string.invalid_phone_number));
+            userPhoneEditText.requestFocus();
+            return;
+        }
+
+        if (!biker.isValidEmail()) {
+            userEmailEditText.setError(getString(R.string.invalid_email));
+            userEmailEditText.requestFocus();
+            return;
+        }
+
+        if (!biker.isValidPassword()) {
+            userPasswordEditText.setError(getString(R.string.invalid_password));
+            userPasswordEditText.requestFocus();
+            return;
         }
     }
 

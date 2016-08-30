@@ -57,13 +57,6 @@ public class ClientRegistrationPresenter extends BasePresenter {
                 if (isUserAuthenticated(firebaseUser)) {
                     if (action != null)
                         action.execute(firebaseUser);
-                    else {
-                        User user = new User(firebaseUser.getUid(), firebaseUser.getEmail(),
-                                clientName, firebaseUser.getPhotoUrl());
-                        registerUser(user);
-                        eventBus.post(new ReplaceFragmentEvent(TortillasRequestorFragment.newInstance(user), false));
-                    }
-
                 } else {
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
@@ -72,7 +65,16 @@ public class ClientRegistrationPresenter extends BasePresenter {
     }
 
     private void updateUserName(final FirebaseUser firebaseUser, final Client client) {
-        action = null;
+        action = new Action() {
+            @Override
+            public void execute(Object... params) {
+                User user = new User(firebaseUser.getUid(), firebaseUser.getEmail(),
+                        clientName, firebaseUser.getPhotoUrl());
+                registerUser(user);
+                eventBus.post(new ReplaceFragmentEvent(TortillasRequestorFragment.newInstance(user), false));
+            }
+        };
+
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(clientName)
                 .build();
