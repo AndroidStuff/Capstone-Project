@@ -64,4 +64,6 @@
     <string name="more_tortillas_description">Increase tortillas amount</string>
     <string name="less_tortillas_description">Decrease tortillas amount</string>
     <string name="request_tortillas_description">Request tortillas</string>
+    <string name="invalid_email">Enter a valid email</string>
+    <string name="invalid_password">Enter a valid password</string>
 </resources>

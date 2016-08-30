@@ -113,6 +113,19 @@ public class ClientRegistrationFragment extends BaseFragment {
         if (TextUtils.isEmpty(client.getPassword())) {
             userPasswordEditText.setError(getString(R.string.password_required));
             userPasswordEditText.requestFocus();
+            return;
+        }
+
+        if (!client.isValidEmail()) {
+            userEmailEditText.setError(getString(R.string.invalid_email));
+            userEmailEditText.requestFocus();
+            return;
+        }
+
+        if (!client.isValidPassword()) {
+            userPasswordEditText.setError(getString(R.string.invalid_password));
+            userPasswordEditText.requestFocus();
+            return;
         }
     }
 
