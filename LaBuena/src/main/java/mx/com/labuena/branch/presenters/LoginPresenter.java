@@ -9,11 +9,15 @@ import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.io.IOException;
 
 import javax.inject.Inject;
 
@@ -24,7 +28,12 @@ import mx.com.labuena.branch.events.ReplaceFragmentEvent;
 import mx.com.labuena.branch.models.Action;
 import mx.com.labuena.branch.models.Credentials;
 import mx.com.labuena.branch.models.User;
+import mx.com.labuena.branch.utils.EndpointUtils;
 import mx.com.labuena.branch.views.fragments.BikersLandingFragment;
+import mx.com.labuena.services.branches.Branches;
+import mx.com.labuena.services.branches.model.EmailValidationResponse;
+
+import static mx.com.labuena.branch.utils.EndpointUtils.getApplicationName;
 
 
 /**
@@ -111,8 +120,6 @@ public class LoginPresenter extends BasePresenter {
     }
 
     private boolean emailFromBranch(String email) {
-        return true;
-        /*
         String rootUrl = EndpointUtils.getRootUrl(application);
         Branches.Builder builder = new Branches.Builder(AndroidHttp.newCompatibleTransport(),
                 new AndroidJsonFactory(), null).setApplicationName(getApplicationName(application))
@@ -127,7 +134,7 @@ public class LoginPresenter extends BasePresenter {
             Log.e(TAG, e.getMessage(), e);
         }
 
-        return false;*/
+        return false;
     }
 
     public void navigateToBikersFragment(FirebaseUser firebaseUser) {
