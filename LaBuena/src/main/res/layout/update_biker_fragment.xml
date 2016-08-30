@@ -18,6 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_store_white"
+            android:contentDescription="@string/app_icon_description"
             android:scaleType="centerCrop"/>
 
         <TextView
@@ -28,6 +29,7 @@
             android:gravity="center_horizontal"
             android:padding="@dimen/activity_horizontal_margin"
             android:text="@string/forgot_password_msg"
+            android:contentDescription="@string/forgot_password_msg"
             android:textColor="@android:color/white"
             android:textSize="14dp" />
 
@@ -43,6 +45,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="20dp"
                 android:hint="@string/hint_stock"
+                android:contentDescription="@string/hint_stock"
                 android:inputType="number"
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/white" />
@@ -61,6 +64,7 @@
                 android:layout_marginTop="20dip"
                 android:background="@color/accent"
                 android:text="@string/btn_reset_password"
+                android:contentDescription="@string/btn_reset_password"
                 android:textColor="@android:color/black"
                 android:layout_marginRight="5dp"/>
             <Button
@@ -71,6 +75,7 @@
                 android:layout_marginTop="20dip"
                 android:background="@color/accent"
                 android:text="@string/btn_update_stock"
+                android:contentDescription="@string/btn_update_stock"
                 android:textColor="@android:color/black" />
         </LinearLayout>
 

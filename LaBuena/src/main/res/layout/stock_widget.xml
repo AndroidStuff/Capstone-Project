@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/lbl_manufacture"
+            android:contentDescription="@string/lbl_manufacture"
             android:textSize="14sp"
             android:textStyle="bold"/>
 
@@ -65,7 +66,8 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:text="@string/lbl_external_stock"/>
+            android:text="@string/lbl_external_stock"
+            android:contentDescription="@string/lbl_external_stock"/>
 
         <TextView
             android:id="@+id/externalStockTextView"
@@ -81,7 +83,8 @@
             android:layout_marginTop="20dp"
             android:textSize="14sp"
             android:textStyle="bold"
-            android:text="@string/lbl_orders_to_deliver"/>
+            android:text="@string/lbl_orders_to_deliver"
+            android:contentDescription="@string/lbl_orders_to_deliver"/>
 
         <TextView
             android:id="@+id/ordersToDeliverTextView"

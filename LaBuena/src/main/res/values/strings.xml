@@ -43,4 +43,5 @@
     <string name="biker_stock_updated_notification_title">Biker updated</string>
     <string name="biker_stock_updated_content">Biker stock updated successfully</string>
     <string name="processing_biker_update">Processing biker update.</string>
+    <string name="app_icon_description">La Buena icon image</string>
 </resources>

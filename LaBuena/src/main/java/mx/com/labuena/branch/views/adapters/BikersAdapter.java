@@ -38,10 +38,16 @@ public class BikersAdapter extends RecyclerView.Adapter<BikersAdapter.MainHolder
     public void onBindViewHolder(MainHolder holder, int position) {
         Biker biker = bikers.get(position);
         holder.bikerNameTextView.setText(biker.getName());
+        holder.bikerNameTextView.setContentDescription(biker.getName());
         holder.bikerPhoneTextView.setText(biker.getPhone());
+        holder.bikerPhoneTextView.setContentDescription(biker.getPhone());
         holder.bikerStockTextView.setText(String.format(context.getString(R.string.amount_to_deliver),
                 biker.getLastStock()));
+        holder.bikerStockTextView.setContentDescription(String.format(context.
+                getString(R.string.amount_to_deliver),
+                biker.getLastStock()));
         holder.bikerEmailTextView.setText(biker.getEmail());
+        holder.bikerEmailTextView.setContentDescription(biker.getEmail());
     }
 
     @Override

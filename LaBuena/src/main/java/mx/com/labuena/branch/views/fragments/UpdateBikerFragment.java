@@ -75,8 +75,10 @@ public class UpdateBikerFragment extends BaseFragment {
     protected void initView(View rootView) {
         userStockEditText = (EditText) rootView.findViewById(R.id.stockEditText);
         TextView forgotPasswordMessage = (TextView) rootView.findViewById(R.id.forgotPasswordMessageText);
-        forgotPasswordMessage.setText(String.format(getString(R.string.forgot_password_msg),
-                biker.getEmail(), biker.getName()));
+        String message = String.format(getString(R.string.forgot_password_msg),
+                biker.getEmail(), biker.getName());
+        forgotPasswordMessage.setText(message);
+        forgotPasswordMessage.setContentDescription(message);
 
         executingTaskProgressBar = (ProgressBar) rootView.findViewById(progressBar);
         imputEmailLayout = (TextInputLayout) rootView.findViewById(R.id.inputEmailAddress);

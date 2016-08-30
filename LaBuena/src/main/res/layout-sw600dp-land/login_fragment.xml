@@ -21,6 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:contentDescription="@string/app_icon_description"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_store_white" />
 
@@ -38,6 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:hint="@string/hint_email"
+                android:contentDescription="@string/hint_email"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white" />
@@ -55,6 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:hint="@string/hint_password"
+                android:contentDescription="@string/hint_password"
                 android:inputType="textPassword"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white" />
@@ -68,6 +71,7 @@
             android:layout_marginTop="40dp"
             android:background="@drawable/login_button_background"
             android:text="@string/btn_login"
+            android:contentDescription="@string/btn_login"
             android:textColor="@android:color/black" />
     </RelativeLayout>
 
