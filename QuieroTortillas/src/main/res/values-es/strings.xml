@@ -12,7 +12,7 @@
     <string name="btn_reset_password">Resetear Password</string>
     <string name="lbl_forgot_password">Olvidaste el password?</string>
     <string name="forgot_password_msg">Por favor introduce tu email y da click en el boton resetear password para recibir un email con el link para reseteo de password.</string>
-    <string name="web_client_id">269028494679-a06mh94qbqt3qvborhnu3nc7rfem1uo5.apps.googleusercontent.com</string>
+    <string name="web_client_id"></string>
     <string name="service_not_available">Servicio no disponible</string>
     <string name="invalid_lat_long_used">Latitude o longitud invalida.</string>
     <string name="no_address_found">No se ha podido encontrar una direccion con la ultima ubicacion almacenada</string>
