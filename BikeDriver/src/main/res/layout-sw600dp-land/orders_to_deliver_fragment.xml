@@ -52,6 +52,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="30dp"
                 android:textColor="@color/white"
+                android:freezesText="true"
                 android:textSize="16sp" />
 
             <TextView
@@ -59,6 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/nameTextView"
+                android:freezesText="true"
                 android:layout_marginLeft="30dp"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
@@ -67,6 +69,7 @@
                 android:id="@+id/addressTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:freezesText="true"
                 android:layout_below="@id/amountTextView"
                 android:layout_marginLeft="30dp"
                 android:textColor="@color/white"
