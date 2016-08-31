@@ -21,3 +21,6 @@ LaBuena will have an application to access the external stock, and pending order
 ### Generate APK
 To compile the project add in the gradle.properties file the values for the properties KEYSTORE_PASSWORD, KEY_PASSWORD
 
+Add in string resources the web_client_id (Web client id created by Google Service) stored in the Google cloud project
+
+
