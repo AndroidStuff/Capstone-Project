@@ -42,6 +42,7 @@
                 android:contentDescription="@string/hint_name"
                 android:inputType="textPersonName"
                 android:maxLines="1"
+                android:freezesText="true"
                 android:singleLine="true"
                 android:textColor="@android:color/white" />
 
@@ -56,6 +57,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_email"
+                android:freezesText="true"
                 android:contentDescription="@string/hint_email"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
@@ -72,6 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_phone"
+                android:freezesText="true"
                 android:contentDescription="@string/hint_phone"
                 android:inputType="phone"
                 android:maxLines="1"
@@ -89,6 +92,7 @@
                 android:layout_height="wrap_content"
                 android:focusableInTouchMode="true"
                 android:hint="@string/hint_password"
+                android:freezesText="true"
                 android:contentDescription="@string/hint_password"
                 android:imeActionId="@+id/login"
                 android:imeOptions="actionUnspecified"

@@ -29,6 +29,7 @@
             android:gravity="center_horizontal"
             android:padding="@dimen/activity_horizontal_margin"
             android:text="@string/forgot_password_msg"
+            android:freezesText="true"
             android:contentDescription="@string/forgot_password_msg"
             android:textColor="@android:color/white"
             android:textSize="14dp" />
@@ -45,6 +46,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="20dp"
                 android:hint="@string/hint_stock"
+                android:freezesText="true"
                 android:contentDescription="@string/hint_stock"
                 android:inputType="number"
                 android:textColor="@android:color/white"

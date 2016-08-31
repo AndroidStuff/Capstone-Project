@@ -24,6 +24,7 @@ import mx.com.labuena.branch.views.adapters.BikersAdapter;
 
 public class BikersFragment extends BaseFragment implements BikersAdapter.BikerClickListener {
     public static final String DATA_USER_KEY = "Bikers";
+    public static final String BIKERS_COLLECTION_KEY = "BikersCollection";
     private ArrayList<Biker> bikers;
 
     @Inject
@@ -37,7 +38,7 @@ public class BikersFragment extends BaseFragment implements BikersAdapter.BikerC
         return R.layout.bikers_fragment;
     }
 
-    public static BikersFragment newInstance(ArrayList<mx.com.labuena.branch.models.Biker> bikers) {
+    public static BikersFragment newInstance(ArrayList<Biker> bikers) {
 
         Bundle args = new Bundle();
         args.putParcelableArrayList(DATA_USER_KEY, bikers);
@@ -72,7 +73,16 @@ public class BikersFragment extends BaseFragment implements BikersAdapter.BikerC
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if (savedInstanceState != null)
+            bikers = savedInstanceState.getParcelableArrayList(BIKERS_COLLECTION_KEY);
+
         displayBikers();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelableArrayList(BIKERS_COLLECTION_KEY, bikers);
+        super.onSaveInstanceState(outState);
     }
 
     private void displayBikers() {
