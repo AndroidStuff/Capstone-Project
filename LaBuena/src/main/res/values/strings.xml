@@ -5,7 +5,6 @@
     <string name="lbl_external_stock">External Stock</string>
     <string name="lbl_orders_to_deliver">Orders to deliver</string>
     <string name="amount_metric_unit">kg</string>
-
     <string name="hint_stock">Stock</string>
 	<string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
@@ -17,7 +16,6 @@
     <string name="service_not_available">The service is not available</string>
     <string name="no_address_found">We could not find an address with that last saved location</string>
     <string name="invalid_lat_long_used">Invalid latitude, longitude used.</string>
-    <string name="tortillas_to_deliver_format">%d kg to deliver</string>
     <string name="map_snipped_format">%d kg</string>
     <string name="lbl_new_biker">New Biker</string>
     <string name="hint_name">Name</string>

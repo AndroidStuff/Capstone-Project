@@ -1,12 +1,11 @@
 <resources>
     <string name="app_name">Bike Driver</string>
-    <string name="web_client_id">269028494679-a06mh94qbqt3qvborhnu3nc7rfem1uo5.apps.googleusercontent.com</string>
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
     <string name="btn_login">Sign in</string>
     <string name="email_address_required">Enter email address!</string>
     <string name="password_required">Enter password!</string>
-    <string name="order_notitication">New order received</string>
+    <string name="order_notification">New order received</string>
     <string name="minimum_password">Password too short, enter minimum 6 characters!</string>
     <string name="auth_failed">Authentication failed, check your email and password or register to get access.</string>
     <string name="service_not_available">The service is not available</string>

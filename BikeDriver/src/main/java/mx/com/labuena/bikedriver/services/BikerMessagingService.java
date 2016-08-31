@@ -91,7 +91,7 @@ public class BikerMessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_add_alert_white)
                 .setContentTitle(getString(R.string.app_name))
-                .setContentText(getString(R.string.order_notitication))
+                .setContentText(getString(R.string.order_notification))
                 .setAutoCancel(true)
                 .extend(new NotificationCompat.WearableExtender().addAction(action))
                 .setSound(defaultSoundUri);
