@@ -20,6 +20,7 @@
             android:layout_gravity="center_horizontal"
             android:padding="10dp"
             android:text="@string/lbl_order_confirmation_title"
+            android:freezesText="true"
             android:contentDescription="@string/lbl_order_confirmation_title"
             android:textColor="@android:color/white"
             android:textSize="20dp" />
@@ -32,6 +33,7 @@
             android:gravity="center_horizontal"
             android:padding="@dimen/activity_horizontal_margin"
             android:text="@string/lbl_order_send"
+            android:freezesText="true"
             android:contentDescription="@string/lbl_order_send"
             android:textColor="@android:color/white"
             android:textSize="14dp" />
