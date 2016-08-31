@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">Quiero Tortillas</string>
+    <string name="app_icon_description">Icono tortillas</string>
+    <string name="facebook_app_id"></string>
+    <string name="action_sign_in_short">Registrar</string>
+    <string name="email">Email</string>
+    <string name="minimum_password">Password incompleto, por favor introduzca al menos 6 caracteres!</string>
+    <string name="auth_failed">Error de autenticacion, revisa tu email y password o ve a registro para obtener acceso a la aplicacion.</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="btn_login">Sign in</string>
+    <string name="btn_reset_password">Resetear Password</string>
+    <string name="lbl_forgot_password">Olvidaste el password?</string>
+    <string name="forgot_password_msg">Por favor introduce tu email y da click en el boton resetear password para recibir un email con el link para reseteo de password.</string>
+    <string name="web_client_id">269028494679-a06mh94qbqt3qvborhnu3nc7rfem1uo5.apps.googleusercontent.com</string>
+    <string name="service_not_available">Servicio no disponible</string>
+    <string name="invalid_lat_long_used">Latitude o longitud invalida.</string>
+    <string name="no_address_found">No se ha podido encontrar una direccion con la ultima ubicacion almacenada</string>
+    <string name="lbl_register_here">| Registrarse aqui!.</string>
+    <string name="lbl_more_tortillas">+</string>
+    <string name="lbl_less_tortillas">-</string>
+    <string name="lbl_new_client">Nuevo Cliente</string>
+    <string name="welcome_message">Bienvenido %s</string>
+    <string name="delivery_message">Entrega en %s</string>
+    <string name="tortillas_amount_format">%d kg</string>
+    <string name="name">Nombre</string>
+    <string name="duplicate_user">El email ya ha sido asociado con un usuario.</string>
+    <string name="lbl_order_send" formatted="false">estamos procesando la orden de tortillas por %d kg la cual sera entregada en %s.</string>
+    <string name="lbl_order_confirmation_title">Gracias por usar La Buena!</string>
+    <string name="btn_new_request">Nueva orden</string>
+    <string name="confirm_order_message">Quieres ordenar %d kg de tortillas?</string>
+    <string name="email_address_required">Ingresa el email!</string>
+    <string name="password_required">Ingresa un password!</string>
+    <string name="reset_password_email_sent">Se ha enviado un email a %s con las instrucciones para resetear el password</string>
+    <string name="error_resetting_password">Error enviando email de reseteo de password</string>
+    <string name="user_name_required">Ingresa nombre de usuario</string>
+    <string name="order_notitication">Felicidades tu orden ya viene en camino</string>
+    <string name="google_sign_in">Google Sign In</string>
+    <string name="facebook_sign_in">Facebook Sign In</string>
+    <string name="more_tortillas_description">Aumentar cantidad de tortillas</string>
+    <string name="less_tortillas_description">Disminuir cantidad de tortillas</string>
+    <string name="request_tortillas_description">Pedir tortillas</string>
+    <string name="invalid_email">Ingresa un email valido</string>
+    <string name="invalid_password">Ingresa un password valido</string>
+</resources>
