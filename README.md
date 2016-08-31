@@ -17,3 +17,7 @@ This application is designed to let the customer request their tortillas and bas
 Bikers will have an application to keep track of the places to deliver.
 
 LaBuena will have an application to access the external stock, and pending orders to manufacture the required demand.
+
+### Generate APK
+To compile the project add in the gradle.properties file the values for the properties KEYSTORE_PASSWORD, KEY_PASSWORD
+
