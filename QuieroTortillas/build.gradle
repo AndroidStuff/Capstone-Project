@@ -16,9 +16,20 @@ android {
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    signingConfigs {
+        releaseConfig {
+            keyAlias 'release_key'
+            keyPassword KEY_PASSWORD
+            storeFile file('../signingkeys/la_buena.keystore')
+            storePassword KEYSTORE_PASSWORD
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            signingConfig signingConfigs.releaseConfig
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
@@ -35,6 +46,11 @@ android {
             outputs.upToDateWhen { false }
             showStandardStreams = true
         }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
     }
 }
 
