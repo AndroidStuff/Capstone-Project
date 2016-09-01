@@ -18,9 +18,14 @@ Bikers will have an application to keep track of the places to deliver.
 
 LaBuena will have an application to access the external stock, and pending orders to manufacture the required demand.
 
-### Generate APK
-To compile the project add in the gradle.properties file the values for the properties KEYSTORE_PASSWORD, KEY_PASSWORD
+## Generate APK
+To compile the project add the values for KEYSTORE_PASSWORD and KEY_PASSWORD in gradle.properties file
 
+### QuieroTortillas
 Add in string resources the web_client_id (Web client id created by Google Service) stored in the Google cloud project
+Add the google-services.json file with the configuration details such as keys and identifiers, for the services
+Add the value for the String resource facebook_app_id with the Facebook App ID
 
-
+### BikeDriver
+Add in string resources the web_client_id (Web client id created by Google Service) stored in the Google cloud project
+Add the google-services.json file with the configuration details such as keys and identifiers, for the services
