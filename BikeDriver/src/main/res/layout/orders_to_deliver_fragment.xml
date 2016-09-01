@@ -52,6 +52,7 @@
                 android:freezesText="true"
                 android:layout_marginTop="5dp"
                 android:layout_marginLeft="30dp"
+                android:layout_marginStart="30dp"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 
@@ -62,6 +63,7 @@
                 android:freezesText="true"
                 android:layout_below="@id/nameTextView"
                 android:layout_marginLeft="30dp"
+                android:layout_marginStart="30dp"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 
@@ -72,6 +74,7 @@
                 android:freezesText="true"
                 android:layout_below="@id/amountTextView"
                 android:layout_marginLeft="30dp"
+                android:layout_marginStart="30dp"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 
@@ -85,6 +88,7 @@
             android:layout_alignParentRight="true"
             android:layout_gravity="right"
             android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
             android:background="@color/accent"
             android:src="@drawable/ic_done_white"
             app:backgroundTint="@color/accent"
