@@ -146,6 +146,29 @@ public class MysqlOrderDao extends BaseDao implements OrderDao {
                 PreparedStatement preparedStatement = connection.prepareStatement(saveBikerQuery);
                 preparedStatement.setInt(1, order.getOrderId());
                 preparedStatement.execute();
+
+
+                String ordersQuery = "select order.id_biker, order.quantity from la_buena_db.order where order.id_order = ?;";
+                preparedStatement = connection.prepareStatement(ordersQuery);
+                preparedStatement.setInt(1, order.getOrderId());
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                int bikerId = 0;
+                int quantity = 0;
+
+                while (resultSet.next()) {
+                    bikerId = resultSet.getInt("id_biker");
+                    quantity = resultSet.getInt("quantity");
+                }
+                resultSet.close();
+
+                String updateBikerStock = "update la_buena_db.biker set stock = (stock-?) " +
+                        "where id_biker = ?;";
+                preparedStatement = connection.prepareStatement(updateBikerStock);
+                preparedStatement.setInt(1, quantity);
+                preparedStatement.setInt(2, bikerId);
+                preparedStatement.execute();
+
                 connection.commit();
             } catch (SQLException e) {
                 connection.rollback();
