@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Bike Driver</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="btn_login">Sign in</string>
+    <string name="email_address_required">Introduzca un email válido!</string>
+    <string name="password_required">Ingrese un password válido!</string>
+    <string name="order_notification">Nueva orden recibida</string>
+    <string name="minimum_password">El password es demasiado corto, introduzca al menos 6 caracteres!</string>
+    <string name="auth_failed">Error de autenticación, revise su email y password o registrese para poder acceder a la aplicación.</string>
+    <string name="service_not_available">Servicio no disponible</string>
+    <string name="no_address_found">No se ha podido encontrar una dirección con la ubicación más reciente</string>
+    <string name="invalid_lat_long_used">Longitud o latitud inválida.</string>
+    <string name="open_order">Ir a la dirección!</string>
+    <string name="email_not_from_biker">Email inválido</string>
+    <string name="app_icon_description">Icono del condutor</string>
+</resources>
