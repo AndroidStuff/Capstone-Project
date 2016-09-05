@@ -43,6 +43,7 @@ captures/
 .idea/
 
 google-services.json
-google_maps_api.xml
 
 signingkeys/
+
+.DS_Store

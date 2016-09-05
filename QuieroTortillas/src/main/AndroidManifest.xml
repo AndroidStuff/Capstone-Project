@@ -58,6 +58,10 @@
             android:name=".services.ClientRegistrationIntentService"
             android:exported="false"></service>
 
+        <provider
+            android:name=".data.QuieroTortillasProvider"
+            android:authorities="mx.com.labuena.tortillas"></provider>
+
     </application>
 
 </manifest>
