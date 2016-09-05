@@ -16,7 +16,7 @@ public class QuieroTortillasDbHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         final String SQL_CREATE_ORDER_TABLE = "CREATE TABLE " + QuieroTortillasContract.OrderEntry.TABLE_NAME + " (" +
-                QuieroTortillasContract.OrderEntry.ID + " INTEGER PRIMARY KEY," +
+                QuieroTortillasContract.OrderEntry.ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 QuieroTortillasContract.OrderEntry.CLIENT_EMAIL_COLUMN + " TEXT NOT NULL," +
                 QuieroTortillasContract.OrderEntry.BIKER_NAME_COLUMN + " TEXT NULL," +
                 QuieroTortillasContract.OrderEntry.CREATED_AT_COLUMN + " INTEGER NOT NULL," +

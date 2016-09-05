@@ -7,8 +7,8 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
+import static junit.framework.Assert.assertEquals;
 import static junit.framework.TestCase.assertFalse;
-import static org.junit.Assert.assertEquals;
 
 /**
  * Created by clerks on 8/26/16.
@@ -34,25 +34,9 @@ public class TestUtilities {
      * @return Dummy value to insert for an order.
      */
     public static ContentValues createOrderDummyValues() {
-        return createDummyOrderValues(135397);
-    }
-
-    public static ContentValues[] createBulkDummyInsert(int numberOfEntries) {
-        ContentValues[] values = new ContentValues[numberOfEntries];
-
-        int orderId = 23;
-        for (int i = 0; i < 5; i++) {
-            values[i] = createDummyOrderValues(++orderId);
-        }
-
-        return values;
-    }
-
-    private static ContentValues createDummyOrderValues(int orderId) {
         Date date = new Date(System.currentTimeMillis());
 
         ContentValues values = new ContentValues();
-        values.put(QuieroTortillasContract.OrderEntry.ID, orderId);
         values.put(QuieroTortillasContract.OrderEntry.CLIENT_EMAIL_COLUMN, "morales.fernandez.clemente@gmail.com");
         values.put(QuieroTortillasContract.OrderEntry.BIKER_NAME_COLUMN, "Ramon Garcia Sanchez");
         values.put(QuieroTortillasContract.OrderEntry.CREATED_AT_COLUMN, date.getTime());
